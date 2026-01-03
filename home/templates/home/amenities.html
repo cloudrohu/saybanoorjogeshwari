@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FAQs | {{ settings_obj.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block content %}
+
+<!-- ================= AMENITIES SECTION ================= -->
+<section class="w-full py-14">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Heading -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-800">
+        World-Class Amenities
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Designed for comfort, luxury & modern living
+      </p>
+    </div>
+
+    <!-- Amenities Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+            {% for item in project.amenities.all|slice:":6" %}
+            <div class="relative rounded-xl overflow-hidden border group hover:shadow-xl transition">
+
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center"
+                style="background-image:url('{{ item.amenities.image.url }}');">
+            </div>
+
+            <!-- Dark Overlay -->
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition"></div>
+
+            <!-- Content -->
+            <div class="relative p-5 h-44 flex flex-col justify-end text-white">
+
+                <!-- Icon -->
+                <div class="w-12 h-12 flex items-center justify-center bg-orange-500 rounded-full mb-3">
+                <i class="fa-solid fa-star text-white"></i>
+                </div>
+
+                <!-- Title -->
+                <h4 class="font-semibold text-lg leading-tight">
+                {{ item.amenities.title }}
+                </h4>
+
+            </div>
+
+            </div>
+            {% endfor %}
+
+
+
+    </div>
+
+  </div>
+</section>
+<!-- ================= END ================= -->
+
+{% endblock content %}

@@ -43,130 +43,52 @@
 <!-- ====================== -->
 <!-- DESKTOP VIEW -->
 <!-- ====================== -->
-<div class="hidden md:block">
-  <header class="w-full backdrop-blur-md"
-    style="background-color: {{ settings_obj.header_footer_color }}; color: {{ settings_obj.text_color }};">
+<header class="hidden lg:block sticky top-0 z-50"
+  style="background: {{ settings_obj.header_footer_color }}; color: {{ settings_obj.text_color }}">
 
-    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
 
-      <!-- LEFT: LOGO -->
-      <a href="/" class="flex items-center">
-        {% if settings_obj.logo %}
+    <!-- LOGO -->
+    <a href="/" class="flex items-center gap-2">
+      {% if settings_obj.logo %}
         <img src="{{ settings_obj.logo.url }}"
-             alt="{{ settings_obj.site_name|default:'settings_obj.title' }}"
-             class="h-14 w-auto object-contain">
-        {% else %}
-        <span class="font-bold text-2xl">{{ settings_obj.site_name|default:'RealEstatePro' }}</span>
-        {% endif %}
+             alt="{{ settings_obj.site_name }}"
+             class="h-14 object-contain">
+      {% else %}
+        <span class="text-2xl font-bold">{{ settings_obj.site_name }}</span>
+      {% endif %}
+    </a>
+
+    <!-- NAVIGATION -->
+    <nav class="flex items-center gap-8 font-medium text-base">
+      <a href="/" class="hover:opacity-80 {% if request.path == '/' %}font-semibold{% endif %}">Home</a>
+      <a href="{% url 'about' %}" class="hover:opacity-80">About</a>
+      <a href="/projects/" class="hover:opacity-80">Projects</a>
+      <a href="/blogs/" class="hover:opacity-80">Blogs</a>
+      <a href="{% url 'faq' %}" class="hover:opacity-80">FAQ</a>
+      <a href="{% url 'contact' %}" class="hover:opacity-80">Contact</a>
+    </nav>
+
+    <!-- CTA -->
+    <div class="flex items-center gap-3">
+
+      <!-- Call -->
+      <a href="tel:{{ settings_obj.phone }}"
+        class="px-4 py-2 rounded-lg border border-white/30 hover:bg-white/10 transition">
+        📞 Call Now
       </a>
 
-
-      <!-- CENTER: NAV MENU -->
-      <nav class="flex items-center gap-8 text-lg font-medium">
-
-        <!-- HOME -->
-        <a href="/"
-          class="relative group transition duration-300
-          {% if request.path == '/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Home
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- FAQ -->
-        <a href="{% url 'faq' %}"
-          class="relative group transition duration-300
-          {% if request.path == '/faq/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          FAQ's
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/faq/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- BLOGS -->
-        <a href="/blogs/"
-          class="relative group transition duration-300
-          {% if request.path == '/blogs/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Blogs
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/blogs/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- ABOUT -->
-        <a href="{% url 'about' %}"
-          class="relative group transition duration-300
-          {% if request.path == '/about/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          About
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/about/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- SERVICES -->
-        <a href="/services/"
-          class="relative group transition duration-300
-          {% if request.path == '/services/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Services
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/services/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- CONTACT -->
-        <a href="{% url 'contact' %}"
-          class="relative group transition duration-300
-          {% if request.path == '/contact/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Contact
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/contact/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-      </nav>
-
-
-          <!-- RIGHT: BUTTONS -->
-          <div class="flex items-center gap-4">
-
-        <div class="flex items-center p-1 ">
-
-          <!-- Left -->
-          <div class="flex-1 bg-black text-white flex items-center gap-2 px-4 py-3 rounded-md">
-            <div class="w-9 h-9 rounded-full bg-white p-2 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                  class="w-5 h-5 text-red-500"
-                  fill="currentColor"
-                  viewBox="0 0 16 16">
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                <path d="M14 14s-1-4-6-4-6 4-6 4 1 1 6 1 6-1 6-1z"/>
-              </svg>
-            </div>
-            <span class="font-semibold text-lg">Pre Register</span>
-          </div>
-
-          <!-- WhatsApp -->
-          <a href="https://wa.me/919228170765"
-            target="_blank"
-            class="w-16 bg-green-500 flex items-center justify-center rounded-md ml-2">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-                class="w-9 h-[65px]"
-                alt="WhatsApp">
-          </a>
-        </div>
-
-          </div>
+      <!-- WhatsApp -->
+      <a href="https://wa.me/{{ settings_obj.whatsapp_number }}"
+         target="_blank"
+         class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        WhatsApp
+      </a>
 
     </div>
-  </header>
-</div>
+
+  </div>
+</header>
 
 
 

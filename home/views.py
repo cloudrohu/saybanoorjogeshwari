@@ -17,6 +17,9 @@ from projects.models import Project  # import your Project model
 
 
 def index(request):
+
+    project = Project.objects.filter(active=True, featured_property=True).first()
+
     settings_obj = Setting.objects.first()
     cities = City.objects.filter(level_type="CITY").order_by("name")
 
@@ -70,6 +73,7 @@ def index(request):
             "testimonials": testimonials,
             "faqs": faqs,
             "slider": slider,
+            "project": project,
 
         }
     )
@@ -145,13 +149,48 @@ def faq_view(request):
 
     # Fetch all FAQs (no setting filter because model doesn't have it)
     faqs = FAQ.objects.all().order_by('id')
+    project = Project.objects.filter(active=True, featured_property=True).first()
+
 
     context = {
         "settings_obj": settings_obj,
         "faqs": faqs,
+        "project": project,
     }
     return render(request, 'home/faq.html', context)
 
+def gallery_view(request):
+    settings_obj = Setting.objects.first()
+    project = Project.objects.filter(active=True, featured_property=True).first()
+
+
+    context = {
+        "settings_obj": settings_obj,
+        "project": project,
+    }
+    return render(request, 'home/gallery.html', context)
+
+def configs_view(request):
+    settings_obj = Setting.objects.first()
+    project = Project.objects.filter(active=True, featured_property=True).first()
+
+
+    context = {
+        "settings_obj": settings_obj,
+        "project": project,
+    }
+    return render(request, 'home/configurations.html', context)
+
+def amenities_view(request):
+    settings_obj = Setting.objects.first()
+    project = Project.objects.filter(active=True, featured_property=True).first()
+
+
+    context = {
+        "settings_obj": settings_obj,
+        "project": project,
+    }
+    return render(request, 'home/amenities.html', context)
 
 #-----------------------------------------------------------------------------------------------
 

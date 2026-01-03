@@ -37,20 +37,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # 📌 My Apps
     'home',
+
+    'response.apps.ResponseConfig',
     'projects.apps.ProjectsConfig',
-    'properties',
-    'utility',
-    'crm',
-    'user',
-    'blog',
+    'properties.apps.PropertiesConfig',
+    'utility.apps.UtilityConfig',
+    'crm.apps.CrmConfig',
+    'user.apps.UserConfig',
+    'blog.apps.BlogConfig',
 
     'easy_thumbnails',
 ]
 
-# 🧠 5️⃣ Middleware
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,11 +63,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-# 🧠 6️⃣ URL & WSGI
+#  URL & WSGI
 ROOT_URLCONF = 'saybanoorjogeshwari.urls'
 WSGI_APPLICATION = 'saybanoorjogeshwari.wsgi.application'
 
-# 🧠 7️⃣ Templates
+#  Templates
 TEMPLATES = [
     {   
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -86,7 +86,7 @@ TEMPLATES = [
 ]
 
 
-# 🧠 9️⃣ Auth
+#  Auth
 AUTH_USER_MODEL = 'user.CustomUser'
 
 RECAPTCHA_SITE_KEY = "6Lfs5zssAAAAADMVaU7ADWR-KVRYTiceY2iapH0U"

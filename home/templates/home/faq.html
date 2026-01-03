@@ -15,61 +15,46 @@
   </div>
 </section>
 
-<!-- FAQ Section -->
-<section class="py-20 bg-gray-50">
-  <div class="max-w-5xl mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12" data-aos="fade-up">
-      Your Questions, Answered
-    </h2>
+<!-- ================= FAQ SECTION ================= -->
+<section class="w-full py-12 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4">
 
-    {% if faqs %}
-    <div class="space-y-6">
-      {% for faq in faqs %}
-      <div class="bg-white shadow-lg rounded-xl border border-gray-100 overflow-hidden" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
-        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
-          <span class="text-lg font-semibold text-gray-800">{{ forloop.counter }}. {{ faq.question }}</span>
-          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-bold text-gray-800">Frequently Asked Questions</h2>
+      <p class="text-sm text-gray-500 mt-2">Quick answers to common queries</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+
+      {% for faq in project.faqs.all|slice:":6" %}
+      <div class="border rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition">
+        
+        <button
+          class="w-full flex items-center justify-between p-4 text-left faq-btn focus:outline-none">
+          
+          <span class="font-medium text-gray-800">
+            {{ faq.question }}
+          </span>
+
+          <i class="fa-solid fa-plus text-orange-500 transition duration-200"></i>
         </button>
-        <div class="faq-content hidden px-5 pb-5 text-gray-600 leading-relaxed">
-          {{ faq.answer|safe }}
+        
+        <div class="faq-content hidden px-4 pb-4 text-sm text-gray-600 bg-gray-50/50">
+          {{ faq.answer|linebreaks }}
         </div>
+
+      </div>
+      {% empty %}
+      <div class="col-span-2 text-center text-gray-500 py-4">
+        No questions added yet. Please contact us for details.
       </div>
       {% endfor %}
+
     </div>
-    {% else %}
-    <p class="text-center text-gray-500 text-lg">No FAQs available yet. Please check back later.</p>
-    {% endif %}
   </div>
 </section>
+<!-- ================= END FAQ SECTION ================= -->
 
-<!-- Toggle Script -->
-<script>
-  document.querySelectorAll(".faq-toggle").forEach(button => {
-    button.addEventListener("click", () => {
-      const content = button.nextElementSibling;
-      const icon = button.querySelector("svg");
-
-      document.querySelectorAll(".faq-content").forEach(c => {
-        if (c !== content) c.classList.add("hidden");
-      });
-      document.querySelectorAll(".faq-toggle svg").forEach(i => {
-        if (i !== icon) i.classList.remove("rotate-180");
-      });
-
-      content.classList.toggle("hidden");
-      icon.classList.toggle("rotate-180");
-    });
-  });
-</script>
-
-<!-- Animation -->
-<style>
-@keyframes moveBg { 0% { background-position: 0 0; } 100% { background-position: 1000px 0; } }
-.animate-moveBg { animation: moveBg 40s linear infinite; }
-</style>
 
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>

@@ -10,6 +10,10 @@ urlpatterns = [
     path('about/', views.about_page_view, name='about'),
     path('contact/', views.contact_view, name='contact'),
     path('faq/', views.faq_view, name='faq'),
+    path('gallery/', views.gallery_view, name='gallery'),
+    path('all_configurations/', views.configs_view, name='all_configurations'),
+    path('amenities/', views.amenities_view, name='amenities'),
+
 
     path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
     path('terms-conditions/', views.terms_conditions, name='terms_conditions'),
