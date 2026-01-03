@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+
+{% block title %}User Login{% endblock %}
+
+{% block content %}
+    <h1>Login</h1>
+    <hr>
+
+    <form method="POST">
+        {% csrf_token %} 
+        
+        {{ form.as_p }} 
+        
+        <button type="submit">Login</button>
+    </form>
+    
+    <p>Don't have an account? <a href="{% url 'register' %}">Register now</a></p>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

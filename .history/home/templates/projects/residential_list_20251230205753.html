@@ -1,0 +1,546 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+<style>
+    /* Auto sliding gallery */
+  .slider-animation {
+      display: flex;
+      animation: slide 12s infinite linear;
+  }
+  .slider-animation img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+  }
+
+  @keyframes slide {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(0); }
+
+      25% { transform: translateX(-100%); }
+      45% { transform: translateX(-100%); }
+
+      50% { transform: translateX(-200%); }
+      70% { transform: translateX(-200%); }
+
+      75% { transform: translateX(-300%); }
+      100% { transform: translateX(-300%); }
+  }
+</style>
+
+{% block content %}
+
+
+
+<!-- ================= MAIN CONTAINER ================= -->
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+
+  <!-- ================================================= -->
+  <!-- =============== LEFT SIDEBAR (FILTERS) =========== -->
+  <!-- ================================================= -->
+  <aside class="space-y-6 lg:sticky lg:top-24 order-2 lg:order-1">
+
+    <!-- DESKTOP FILTER -->
+    <form method="get" id="filterForm"
+          class="bg-white shadow-lg rounded-xl p-6 space-y-4 hidden lg:block">
+
+      <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
+        Advanced Search
+      </h3>
+
+      <!-- 🔽 EXACT SAME FILTER CODE -->
+      <!-- Category -->
+      <select name="category" class="w-full border px-3 py-2 rounded-lg text-sm">
+        <option value="">Residential</option>
+        <option value="commercial"
+          {% if selected.category == "commercial" %}selected{% endif %}>
+          Commercial
+        </option>
+      </select>
+
+      <!-- Property Type -->
+      <select name="property_type" class="w-full border px-3 py-2 rounded-lg text-sm">
+        <option value="">Property Type</option>
+        <option value="apartment" {% if selected.property_type == "apartment" %}selected{% endif %}>
+          Apartment
+        </option>
+        <option value="villa">Villa</option>
+        <option value="plot">Plot</option>
+      </select>
+
+      <!-- City -->
+      <select name="city" class="w-full border px-3 py-2 rounded-lg">
+        <option value="">Select City</option>
+        {% for city in cities %}
+          <option value="{{ city.id }}"
+            {% if selected.city == city.id|stringformat:"s" %}selected{% endif %}>
+            {{ city.name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <input type="text" name="location"
+        value="{{ selected.location }}"
+        placeholder="Search by Project / Locality"
+        class="w-full border px-3 py-2 rounded-lg text-sm">
+
+      <button class="w-full bg-orange-500 text-white py-3 rounded-xl">
+        Search Properties
+      </button>
+    </form>
+
+  </aside>
+
+  <!-- ================================================= -->
+  <!-- =============== RIGHT SIDE (PROJECT LIST) ======== -->
+  <!-- ================================================= -->
+  <div class="lg:col-span-2 space-y-6 order-1 lg:order-2">
+
+    <!-- ================= HEADER ================= -->
+    <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+
+      <button id="listViewBtn"
+              class="bg-orange-500 text-white p-2 rounded">
+        <i class="fas fa-list"></i>
+      </button>
+
+      <button id="gridViewBtn"
+              class="hidden md:inline-flex bg-gray-200 text-gray-700 p-2 rounded">
+        <i class="fas fa-th"></i>
+      </button>
+
+      <span class="font-semibold text-orange-600">Properties</span>
+    </div>
+
+    <!-- ================= MOBILE FILTER ================= -->
+    <!-- ❗ SAME mobile filter code as before (unchanged) -->
+
+    <!-- ================= LIST VIEW ================= -->
+    <div id="listView" class="space-y-6">
+      {% for project in projects %}
+        <!-- 🔥 TUMHARA FULL PROJECT CARD CODE (AS-IS) -->
+        {{ project.project_name }}
+      {% empty %}
+        <div class="text-center text-gray-500 py-10">
+          No projects found.
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- ================= GRID VIEW ================= -->
+    <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {% for project in projects %}
+        <!-- 🔥 TUMHARA FULL GRID CARD CODE (AS-IS) -->
+        {{ project.project_name }}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= VIEW TOGGLE JS ================= -->
+<script>
+const listViewBtn = document.getElementById("listViewBtn");
+const gridViewBtn = document.getElementById("gridViewBtn");
+const listView = document.getElementById("listView");
+const gridView = document.getElementById("gridView");
+
+listViewBtn.onclick = () => {
+  listView.classList.remove("hidden");
+  gridView.classList.add("hidden");
+};
+
+gridViewBtn.onclick = () => {
+  gridView.classList.remove("hidden");
+  listView.classList.add("hidden");
+};
+</script>
+
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+<!-- ================= CONTACT POPUP ================= -->
+<div id="contactPopup"
+     class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-3">
+
+  <div class="relative w-full max-w-sm rounded-xl shadow-2xl bg-white overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-white">
+      <h3 class="text-base font-semibold">Enquiry For</h3>
+      <p id="enquiryProjectName" class="text-xs opacity-90 mt-0.5">
+        Project Name
+      </p>
+    </div>
+
+    <!-- CLOSE -->
+    <button id="closeContactPopup"
+            class="absolute top-3 right-3 text-white text-lg">
+      ✕
+    </button>
+
+    <!-- FORM -->
+    <form method="post" id="enquiryForm"
+          class="p-4 space-y-3 text-sm bg-white">
+      {% csrf_token %}
+
+      <!-- Honeypot -->
+      <input type="text" name="company" class="hidden">
+
+      <!-- reCAPTCHA token -->
+      <input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
+
+      <input type="hidden" name="project_id" id="projectIdInput">
+
+      <!-- NAME -->
+      <div>
+        <label class="font-medium text-gray-600">Full Name</label>
+        <input type="text" name="name" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- EMAIL -->
+      <div>
+        <label class="font-medium text-gray-600">Email</label>
+        <input type="email" name="email"
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label class="font-medium text-gray-600">Mobile</label>
+        <input type="tel" name="phone" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- MESSAGE -->
+      <div>
+        <label class="font-medium text-gray-600">Message</label>
+        <textarea name="message" rows="2"
+                  class="mt-1 w-full border rounded-md px-3 py-2"></textarea>
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit"
+              class="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold">
+        Submit Enquiry
+      </button>
+
+      <p class="text-[11px] text-center text-gray-400">
+        🔒 100% Privacy Protected
+      </p>
+    </form>
+
+  </div>
+</div>
+<!-- ================= END POPUP ================= -->
+
+<style>
+  /* ===== TABS ===== */
+  .bhk-tabs {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .bhk-tab {
+    padding: 10px 0;
+    color: #4b5563;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    background: none;
+    outline: none;
+  }
+
+  .bhk-tab.active {
+    color: #16a34a;
+    border-color: #16a34a;
+  }
+
+  /* ===== TABLE ===== */
+  .bhk-scroll {
+    max-height: 220px;          /* ⬅ zyada rows pe scroll */
+    overflow-y: auto;
+  }
+
+  .bhk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .bhk-table th {
+    background: #f7f7f7;
+    padding: 10px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    font-weight: 600;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+  }
+
+  .bhk-table td {
+    padding: 12px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+  }
+
+  /* ===== SCROLLBAR (OPTIONAL CLEAN) ===== */
+  .bhk-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .bhk-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const popup = document.getElementById("contactPopup");
+  const closeBtn = document.getElementById("closeContactPopup");
+  const projectNameText = document.getElementById("enquiryProjectName");
+  const projectIdInput = document.getElementById("projectIdInput");
+  const enquiryForm = document.getElementById("enquiryForm");
+
+  document.querySelectorAll(".openContactPopup").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const projectName = this.dataset.project;
+      const projectId = this.dataset.projectId;
+
+      projectNameText.textContent = projectName;
+      projectIdInput.value = projectId;
+
+      enquiryForm.action = `/projects/submit-enquiry/${projectId}/`;
+
+      popup.classList.remove("hidden");
+      popup.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeBtn.addEventListener("click", closePopup);
+
+  popup.addEventListener("click", e => {
+    if (e.target === popup) closePopup();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closePopup();
+  });
+
+  function closePopup() {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+});
+</script>
+
+<script>
+function openBHK(e, id) {
+  document.querySelectorAll('.bhk-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.bhk-tab').forEach(el => el.classList.remove('active'));
+
+  document.getElementById(id).classList.remove('hidden');
+  e.target.classList.add('active');
+}
+</script>
+
+<script>
+document.getElementById("city").addEventListener("change", function () {
+  fetch(`/ajax/load-localities/?city_id=${this.value}`)
+    .then(res => res.json())
+    .then(data => {
+      let locality = document.getElementById("locality");
+      locality.innerHTML = '<option value="">Select Locality</option>';
+      data.forEach(l => {
+        locality.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+      });
+    });
+});
+</script>
+
+<script>
+document.addEventListener("click", function (e) {
+
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab) return;
+
+  const card = tab.closest(".config-card");
+  if (!card) return;
+
+  const tabsWrapper = card.querySelector(".bhk-tabs");
+  const underline = tabsWrapper.querySelector(".bhk-underline");
+
+  /* ================= RESET TABS ================= */
+  card.querySelectorAll(".bhk-tab").forEach(btn => {
+    btn.classList.remove("text-green-600");
+    btn.classList.add("text-gray-600");
+  });
+
+  /* ================= HIDE PANELS ================= */
+  card.querySelectorAll(".bhk-panel").forEach(panel => {
+    panel.classList.add("hidden");
+  });
+
+  /* ================= ACTIVATE TAB ================= */
+  tab.classList.remove("text-gray-600");
+  tab.classList.add("text-green-600");
+
+  /* ================= MOVE UNDERLINE ================= */
+  const tabRect = tab.getBoundingClientRect();
+  const wrapperRect = tabsWrapper.getBoundingClientRect();
+
+  underline.style.width = `${tabRect.width}px`;
+  underline.style.left = `${tabRect.left - wrapperRect.left}px`;
+
+  /* ================= SHOW PANEL ================= */
+  const target = tab.dataset.target;
+  const panel = card.querySelector(`[data-panel="${target}"]`);
+  if (panel) panel.classList.remove("hidden");
+
+});
+</script>
+
+
+<script>
+document.addEventListener("click", function (e) {
+
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab) return;
+
+  const card = tab.closest(".bg-white");
+  if (!card) return;
+
+  // reset tabs
+  card.querySelectorAll(".bhk-tab").forEach(t => {
+    t.classList.remove("border-orange-500", "text-orange-600");
+    t.classList.add("border-transparent", "text-gray-600");
+  });
+
+  // reset panels
+  card.querySelectorAll(".bhk-panel").forEach(p => {
+    p.classList.add("hidden");
+  });
+
+  // activate
+  tab.classList.add("border-orange-500", "text-orange-600");
+  tab.classList.remove("border-transparent", "text-gray-600");
+
+  const panel = card.querySelector(`[data-panel="${tab.dataset.target}"]`);
+  if (panel) panel.classList.remove("hidden");
+});
+</script>
+
+<script>
+function activateTab(tab, card) {
+
+  const tabsWrapper = card.querySelector(".bhk-tabs");
+  const underline = tabsWrapper.querySelector(".bhk-underline");
+
+  // reset tabs
+  card.querySelectorAll(".bhk-tab").forEach(t => {
+    t.classList.remove("active");
+  });
+
+  // hide panels
+  card.querySelectorAll(".bhk-panel").forEach(p => {
+    p.classList.add("hidden");
+  });
+
+  // activate tab
+  tab.classList.add("active");
+
+  // move underline
+  const tabRect = tab.getBoundingClientRect();
+  const wrapRect = tabsWrapper.getBoundingClientRect();
+
+  underline.style.width = tabRect.width + "px";
+  underline.style.left = (tabRect.left - wrapRect.left) + "px";
+
+  // show panel
+  const panel = card.querySelector(
+    `[data-panel="${tab.dataset.target}"]`
+  );
+  if (panel) panel.classList.remove("hidden");
+}
+
+/* ================= CLICK HANDLER ================= */
+document.addEventListener("click", function (e) {
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab || tab.classList.contains("bhk-disabled")) return;
+
+  const card = tab.closest(".config-card");
+  if (!card) return;
+
+  activateTab(tab, card);
+});
+
+/* ================= AUTO ACTIVATE FIRST TAB ================= */
+document.querySelectorAll(".config-card").forEach(card => {
+  const firstTab = card.querySelector(".bhk-tab:not(.bhk-disabled)");
+  if (firstTab) activateTab(firstTab, card);
+});
+</script>
+
+
+<style>
+/* Glass tabs */
+.bhk-tab {
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.6);
+  color: #4b5563;
+}
+
+/* Active tab */
+.bhk-tab.active {
+  color: #16a34a;
+}
+
+/* Disabled tab */
+.bhk-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Gradient underline */
+.bhk-underline {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  width: 0;
+  left: 0;
+  opacity: 0;
+  transition:
+    left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
+
+
+
+
+{% endblock %}
+

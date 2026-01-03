@@ -1,0 +1,1580 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+<style>
+    /* Auto sliding gallery */
+  .slider-animation {
+      display: flex;
+      animation: slide 12s infinite linear;
+  }
+  .slider-animation img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+  }
+
+  @keyframes slide {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(0); }
+
+      25% { transform: translateX(-100%); }
+      45% { transform: translateX(-100%); }
+
+      50% { transform: translateX(-200%); }
+      70% { transform: translateX(-200%); }
+
+      75% { transform: translateX(-300%); }
+      100% { transform: translateX(-300%); }
+  }
+</style>
+
+{% block content %}
+
+
+
+
+<!-- ================= MAIN CONTAINER ================= -->
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+
+  <aside class="space-y-6 lg:sticky lg:top-24">
+
+    <form method="get" id="filterForm"
+          class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+
+      <!-- ================= HEADER ================= -->
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-gray-800 text-lg">Advanced Search</h3>
+        <button type="button"
+                onclick="clearAllFilters()"
+                class="text-orange-600 text-sm font-semibold">
+          Clear All Filters
+        </button>
+      </div>
+
+      <!-- ================= HIDDEN INPUTS (🔥 MUST) ================= -->
+      <input type="hidden" name="property_type" id="property_type_input">
+      <input type="hidden" name="bhk" id="bhk_input">
+      <input type="hidden" name="amenities" id="amenities_input">
+      <input type="hidden" name="furnishing" id="furnishing_input">
+      <input type="hidden" name="construction_status" id="construction_input">
+      <input type="hidden" name="rera" id="rera_input">
+
+      <!-- ================= CATEGORY ================= -->
+      <select name="category"
+              class="w-full border px-3 py-2 rounded-lg text-sm">
+        <option value="">Residential</option>
+        <option value="commercial">Commercial</option>
+      </select>
+
+      <!-- ================= TYPE OF PROPERTY ================= -->
+      <div class="border rounded-lg p-3">
+
+        <button type="button"
+                onclick="toggleBlock('propertyTypeBody','propertyArrow')"
+                class="w-full flex justify-between items-center font-semibold">
+          <span>Type of property</span>
+          <i id="propertyArrow"
+            class="fa-solid fa-chevron-down transition-transform"></i>
+        </button>
+
+        <div id="propertyTypeBody" class="hidden mt-3 flex flex-wrap gap-2">
+          <button type="button" class="property-pill"
+            data-group="property"
+            data-value="Residential Apartment"
+            onclick="togglePill(this,'property_type_input')">
+            + Residential Apartment
+          </button>
+
+          <button type="button" class="property-pill"
+            data-group="property"
+            data-value="Independent House/Villa"
+            onclick="togglePill(this,'property_type_input')">
+            + Independent House/Villa
+          </button>
+
+          <button type="button" class="property-pill"
+            data-group="property"
+            data-value="Residential Land"
+            onclick="togglePill(this,'property_type_input')">
+            + Residential Land
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= BHK ================= -->
+      <div class="border rounded-lg p-3">
+
+        <button type="button"
+                onclick="toggleBlock('bhkBody','bhkArrow')"
+                class="w-full flex justify-between items-center font-semibold">
+          <span>No. of Bedrooms</span>
+          <i id="bhkArrow"
+            class="fa-solid fa-chevron-down transition-transform"></i>
+        </button>
+
+       <div id="bhkBody" class="hidden mt-3 flex flex-wrap gap-2">
+        {% for bhk in bhk_choices %}
+          <button type="button" class="bedroom-pill"
+            data-group="bhk"
+            data-value="{{ bhk }}"
+            onclick="togglePill(this,'bhk_input')">
+            + {{ bhk }}
+          </button>
+        {% endfor %}
+      </div>
+      </div>
+
+      <!-- ================= CONSTRUCTION ================= -->
+      <div class="border rounded-lg p-3">
+
+        <button type="button"
+                onclick="toggleBlock('constructionBody','constructionArrow')"
+                class="w-full flex justify-between items-center font-semibold">
+          <span>Construction Status</span>
+          <i id="constructionArrow"
+            class="fa-solid fa-chevron-down transition-transform"></i>
+        </button>
+
+      <div id="constructionBody" class="hidden mt-3 flex flex-wrap gap-2">
+  {% for status in construction_choices %}
+    <button type="button" class="orange-pill"
+      data-group="construction"
+      data-value="{{ status }}"
+      onclick="togglePill(this,'construction_input')">
+      + {{ status }}
+    </button>
+  {% endfor %}
+</div>
+
+      </div>
+
+      <!-- ================= AMENITIES ================= -->
+      <div class="border rounded-lg p-3">
+
+        <button type="button"
+                onclick="toggleBlock('amenitiesBody','amenitiesArrow')"
+                class="w-full flex justify-between items-center font-semibold">
+          <span>Amenities</span>
+          <i id="amenitiesArrow"
+            class="fa-solid fa-chevron-down transition-transform"></i>
+        </button>
+
+        <div id="amenitiesBody" class="hidden mt-3 flex flex-wrap gap-2">
+          {% for a in amenities_list %}
+          <button type="button" class="amenities-pill"
+            data-group="amenities"
+            data-value="{{ a.name }}"
+            onclick="togglePill(this,'amenities_input')">
+            + {{ a.name }}
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- ================= FURNISHING ================= -->
+      <div class="border rounded-lg p-3">
+
+        <button type="button"
+                onclick="toggleBlock('furnishingBody','furnishingArrow')"
+                class="w-full flex justify-between items-center font-semibold">
+          <span>Furnishing</span>
+          <i id="furnishingArrow"
+            class="fa-solid fa-chevron-down transition-transform"></i>
+        </button>
+
+        <div id="furnishingBody" class="hidden mt-3 flex flex-wrap gap-2">
+          {% for f in "Unfurnished,Semifurnished,Furnished".split(',') %}
+          <button type="button" class="furnishing-pill"
+            data-group="furnishing"
+            data-value="{{ f }}"
+            onclick="togglePill(this,'furnishing_input')">
+            + {{ f }}
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- ================= BUDGET ================= -->
+      <div class="grid grid-cols-2 gap-3">
+        <input type="number" name="min_price"
+              placeholder="Min Budget"
+              class="border px-3 py-2 rounded-lg">
+        <input type="number" name="max_price"
+              placeholder="Max Budget"
+              class="border px-3 py-2 rounded-lg">
+      </div>
+
+      <!-- ================= SUBMIT ================= -->
+      <button type="submit"
+        class="w-full bg-orange-500 hover:bg-orange-600
+              text-white font-semibold py-3 rounded-xl">
+        Search Properties
+      </button>
+
+    </form>
+  </aside>
+
+
+
+  <div class="lg:col-span-2 space-y-6">
+
+    <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+
+      <button id="listViewBtn"
+              class="bg-orange-500 text-white p-2 rounded">
+        <i class="fas fa-list"></i>
+      </button>
+
+      <!-- Grid Button (Desktop only) -->
+      <button id="gridViewBtn"
+              class="hidden sm:hidden md:inline-flex
+                    items-center justify-center
+                    bg-gray-200 text-gray-700 p-2 rounded
+                    hover:bg-orange-100 hover:text-orange-600 transition">
+        <i class="fas fa-th"></i>
+      </button>
+
+      <span class="font-semibold text-orange-600">
+        Properties
+      </span>
+
+    </div>
+
+
+
+    
+
+
+      <!-- ✅ List View -->
+      <div id="listView" class="space-y-6">
+        {% for project in projects %}
+
+          <div class="flex flex-col sm:flex-row bg-white  shadow border p-3 hover:border-orange-500 hover:shadow-xl transition-all ">
+
+            <a href="{{ project.get_absolute_url }}">
+            <!-- Project Image -->
+            {% if project.image %}
+              <img src="{{ project.image.url }}" 
+                  class="w-full sm:w-64 h-48 object-cover mt-0"
+                  style="height: 250px;" 
+                  alt="{{ project.project_name }}" class="h-80">
+            {% else %}
+              <img src="{% static 'images/no-images.jpg' %}" 
+                  class="w-full sm:w-64 h-48 object-cover"
+                  style="height: 250px;" 
+                  alt="No Image">
+            {% endif %}
+
+            </a>
+
+            <!-- Right Section -->
+            <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
+
+        <!-- Title + Price + Location -->
+        <div class="flex flex-col gap-1">
+
+          <a href="{{ project.get_absolute_url }}"
+            class="block rounded-lg p-1
+                    hover:bg-gray-50 transition-all duration-200">
+
+            <!-- Row 1 -->
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+
+              <!-- Project Name -->
+              <h2 class="text-[17px] sm:text-xl
+                        font-semibold text-gray-900
+                        leading-snug tracking-tight">
+                {{ project.project_name }}
+              </h2>
+
+              <!-- Price -->
+              <span class="text-[18px] sm:text-xl
+                          font-bold text-orange-600
+                          tracking-tight
+                          drop-shadow-sm">
+                {{ project.get_price_range }}
+              </span>
+
+            </div>
+
+            <!-- Row 2: Location -->
+            <p class="text-[13px] sm:text-sm
+                      text-gray-500
+                      flex items-center gap-1 mt-1">
+
+              <i class="fas fa-map-marker-alt
+                        text-orange-500 text-[12px]"></i>
+
+              <span class="leading-none">
+                {{ project.locality }}
+              </span>
+
+            </p>
+
+          </a>
+        </div>
+
+
+              <!-- Badges -->
+              <div class="flex flex-wrap gap-2 text-xs text-gray-700 mb-[10px]">
+                <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100">Possession {{ project.possession_month|default:"N/A" }}--{{ project.possession_year|default:"N/A" }}</span>
+              </div>
+
+              
+
+           
+
+      
+             <!-- ================= CONFIGURATION CARD ================= -->
+          <div class="config-card border bg-white">
+
+            {% with project.configurations.all as configs %}
+            {% if configs %}
+
+            {% regroup configs by bhk_type as bhk_groups %}
+
+            <!-- ================= BHK TABS ================= -->
+            <div class="relative  overflow-x-auto">
+              <div class="bhk-tabs flex gap-1 text-sm font-semibold whitespace-nowrap relative">
+
+                <!-- Animated underline -->
+                <span class="bhk-underline absolute bottom-0 h-[3px]"></span>
+
+                {% for group in bhk_groups %}
+                  <button type="button"
+                    class="bhk-tab px-2  transition-all duration-200
+                    {% if group.list|length == 0 %}
+                      bhk-disabled
+                    {% endif %}"
+                    data-target="bhk-{{ project.id }}-{{ forloop.counter }}">
+                    {{ group.grouper }}
+                  </button>
+                {% endfor %}
+
+              </div>
+            </div>
+
+
+
+            <!-- ================= PANELS ================= -->
+            {% for group in bhk_groups %}
+            <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
+                data-panel="bhk-{{ project.id }}-{{ forloop.counter }}">
+
+              <div class="max-h-[160px] overflow-y-auto  bg-white">
+
+                <table class="w-full text-xs sm:text-sm">
+                  <thead class="bg-gray-100 sticky top-0">
+                    <tr class="text-center font-semibold">
+                      <th class="border px-2 py-1">Area</th>
+                      <th class="border px-2 py-1">Price</th>
+                      <th class="border px-2 py-1">Parking</th>
+                      <th class="border px-2 py-1">Balcony</th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="text-center">
+                    {% for cfg in group.list %}
+                    <tr class="{% if cfg.sold_out %}bg-red-50{% endif %}">
+
+                      <!-- AREA -->
+                      <td class="border px-1 py-1">
+                        {{ cfg.area_sqft }} sqft
+                      </td>
+
+                      <!-- PRICE / SOLD OUT -->
+                          <td class="border px-1 py-1 font-semibold">
+                          {% if cfg.sold_out %}
+                            <span class="text-red-600 text-xs uppercase font-bold">
+                              Sold Out
+                            </span>
+                          {% else %}
+                            {{ cfg.formatted_price }}
+                          {% endif %}
+                        </td>
+
+
+                      <!-- PARKING -->
+                      <td class="border px-1 py-1">
+                        {% if cfg.parking %}
+                          <span class="text-green-600 font-semibold">Yes</span>
+                        {% else %}
+                          <span class="text-gray-500">* </span>
+                        {% endif %}
+                      </td>
+
+                      <!-- BALCONY -->
+                      <td class="border px-1 py-1">
+                        {% if cfg.balcony %}
+                          <span class="text-green-600 font-semibold">Yes</span>
+                        {% else %}
+                          <span class="text-gray-500">*</span>
+                        {% endif %}
+                      </td>
+
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+            {% endfor %}
+
+            {% else %}
+            <!-- ================= NO CONFIG ================= -->
+            <div class="text-center text-sm text-gray-500 py-3">
+              Configuration details available on request
+            </div>
+            {% endif %}
+            {% endwith %}
+
+          </div>
+
+
+
+
+
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
+
+              <!-- ================= DEVELOPER ================= -->
+              {% if project.developer %}
+              <div class="flex items-center gap-2">
+
+                <!-- Developer Logo -->
+                <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border bg-gray-100">
+                  {% if project.developer.logo %}
+                    <img src="{{ project.developer.logo.url }}"
+                        alt="{{ project.developer.title }}"
+                        class="h-[90px] w-full object-cover">
+                  {% else %}
+                    <i class="fas fa-building text-gray-400 text-sm"></i>
+                  {% endif %}
+                </span>
+
+                <!-- Developer Name -->
+                <span class="text-blue-600 text-sm font-medium">
+                  By {{ project.developer.title }}
+                </span>
+
+              </div>
+              {% endif %}
+
+
+                  <!-- CTA BUTTONS -->
+                  <div class="flex gap-3 md:justify-end">
+
+                    
+
+                        <!-- View Details -->
+                        <a href="{{ project.get_absolute_url }}"
+                          class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                  px-4 py-2 bg-orange-500 text-white text-sm font-semibold
+                                  rounded-3xl hover:bg-orange-600 transition">
+                          View Details
+                          
+                        </a>
+
+                        <!-- Contact Us -->
+                        <a href="javascript:void(0)"
+                          data-project="{{ project.project_name }}"
+                          data-project-id="{{ project.id }}"
+                          class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                  px-4 py-2 border border-orange-500 text-orange-600
+                                  text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                          Contact Us
+                        </a>
+
+                  </div>
+                </div>
+            </div>
+          </div>
+        
+
+        {% empty %}
+        <div class="text-center text-gray-500 py-10">No projects found.</div>
+        {% endfor %}
+      </div>
+
+      <!-- ================= GRID VIEW ================= -->
+      <div id="gridView"
+          class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+
+            {% for project in projects %}
+            <div class="bg-white rounded-xl shadow border hover:shadow-lg hover:border-orange-500 transition">
+
+              <!-- IMAGE -->
+              <a href="{{ project.get_absolute_url }}">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}"
+                      class="w-full h-[230px] object-cover rounded-t-xl"
+                      alt="{{ project.project_name }}">
+                {% else %}
+                  <img src="{% static 'images/no-images.jpg' %}"
+                      class="w-full h-[230px] object-cover rounded-t-xl"
+                      alt="No Image">
+                {% endif %}
+              </a>
+
+              <!-- CONTENT -->
+              <div class="p-4 space-y-3">
+
+                <!-- TITLE + PRICE -->
+                <div class="flex justify-between items-start gap-3">
+                  <h3 class="text-lg font-semibold text-gray-900 leading-snug">
+                    {{ project.project_name }}
+                  </h3>
+
+                  <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
+                    {{ project.get_price_range }}
+                  </span>
+                </div>
+
+                <!-- LOCATION -->
+                <p class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ project.locality }}, {{ project.city }}
+                </p>
+
+                <!-- BADGES -->
+                <div class="flex flex-wrap gap-2 text-[11px] text-gray-700">
+                  <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                    {{ project.construction_status }}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                    {{ project.propert_type.name }}
+                  </span>
+                </div>
+
+                <!-- ================= CONFIGURATION BOX ================= -->
+                <div class="border rounded-lg bg-white text-xs">
+
+                  {% with project.configurations.all as configs %}
+                  {% if configs %}
+
+                  {% regroup configs by bhk_type as bhk_groups %}
+
+                  <!-- ================= TABS ================= -->
+                  <div class="border-b px-3 pt-2 overflow-x-auto whitespace-nowrap">
+                    <div class="flex gap-4 font-semibold text-gray-600">
+                      {% for group in bhk_groups %}
+                      <button type="button"
+                        class="bhk-tab pb-1 border-b-2
+                        {% if forloop.first %}
+                          border-orange-500 text-orange-600
+                        {% else %}
+                          border-transparent hover:text-orange-600
+                        {% endif %}"
+                        data-target="grid-bhk-{{ project.id }}-{{ forloop.counter }}">
+                        {{ group.grouper }}
+                      </button>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <!-- ================= PANELS ================= -->
+                  {% for group in bhk_groups %}
+                  <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
+                      data-panel="grid-bhk-{{ project.id }}-{{ forloop.counter }}">
+
+                    <!-- HEADER -->
+                    <div class="grid grid-cols-4 px-3 py-2 bg-gray-50 border-b
+                                font-semibold text-gray-600 uppercase text-[10px]">
+                      <span>Area</span>
+                      <span>Balcony</span>
+                      <span>Parking</span>
+                      <span class="text-right">Price</span>
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="max-h-[120px] overflow-y-auto divide-y">
+
+                      {% for cfg in group.list %}
+                      <div class="grid grid-cols-4 px-3 py-1 items-center
+                                  {% if cfg.sold_out %}bg-red-50{% endif %}">
+
+                        <!-- AREA -->
+                        <span class="text-gray-700">
+                          {{ cfg.area_sqft }} sqft
+                        </span>
+
+                        <!-- BALCONY -->
+                        <span class="text-gray-500">
+                          {% if cfg.balcony %}Yes{% else %}No{% endif %}
+                        </span>
+
+                        <!-- PARKING -->
+                        <span class="text-gray-500">
+                          {% if cfg.parking %}Yes{% else %}No{% endif %}
+                        </span>
+
+                        <!-- PRICE / SOLD OUT -->
+                        <span class="text-right font-semibold">
+                          {% if cfg.sold_out %}
+                            <span class="text-red-600 uppercase text-[10px]">
+                              Sold Out
+                            </span>
+                          {% else %}
+                            {% if cfg.price_in_rupees %}
+                              ₹ {{ cfg.price_in_rupees|intcomma }}
+                            {% else %}
+                              On Request
+                            {% endif %}
+                          {% endif %}
+                        </span>
+
+                      </div>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  {% else %}
+                  <!-- ================= NO CONFIG ================= -->
+                  <div class="px-3 py-3 text-center text-gray-500">
+                    Configuration available on request
+                  </div>
+                  {% endif %}
+                  {% endwith %}
+
+                </div>
+
+                        <!-- Developer -->
+                  <div class="flex items-center gap-2">
+                    <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                      <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                          alt="Lodha Group"
+                          class="h-full w-full object-cover">
+                    </span>
+                    <span class="text-blue-600 text-sm font-medium">
+                      By Lodha Group
+                    </span>
+                  </div>
+
+
+                <!-- CTA -->
+                <div class="flex gap-3 pt-2">
+                  <a href="{{ project.get_absolute_url }}"
+                    class="flex-1 text-center px-3 py-2 bg-orange-500 text-white
+                            text-sm font-semibold rounded-full hover:bg-orange-600">
+                    View Details
+                  </a>
+
+                  <a href="javascript:void(0)"
+                    class="flex-1 text-center px-3 py-2 border border-orange-500
+                            text-orange-600 text-sm font-semibold rounded-full">
+                    Contact
+                  </a>
+                </div>
+
+              </div>
+            </div>
+            {% empty %}
+            <div class="col-span-2 text-center text-gray-500 py-10">
+              No projects found.
+            </div>
+            {% endfor %}
+        </div>
+    <!-- (Tumne jo code diya hai, wo yahin paste rahega) -->
+
+            <!-- Pagination Section -->
+    {% if projects.has_other_pages %}
+    <nav class="flex justify-center mt-10">
+      <ul class="flex items-center gap-2 text-gray-700">
+
+        {% if projects.has_previous %}
+          <li>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
+          </li>
+        {% else %}
+          <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
+        {% endif %}
+
+        {% for num in projects.paginator.page_range %}
+          {% if num == projects.number %}
+            <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
+          {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+            <li>
+              <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
+                class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if projects.has_next %}
+          <li>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
+          </li>
+        {% else %}
+          <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
+        {% endif %}
+
+      </ul>
+    </nav>
+    {% endif %}
+
+
+    <!-- ✅ JS Toggle -->
+    <script>
+    const listViewBtn = document.getElementById("listViewBtn");
+    const gridViewBtn = document.getElementById("gridViewBtn");
+    const listView = document.getElementById("listView");
+    const gridView = document.getElementById("gridView");
+
+    listViewBtn.addEventListener("click", () => {
+      listView.classList.remove("hidden");
+      gridView.classList.add("hidden");
+
+      listViewBtn.classList.add("bg-orange-500", "text-white");
+      listViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+      gridViewBtn.classList.remove("bg-orange-500", "text-white");
+      gridViewBtn.classList.add("bg-gray-200", "text-gray-700");
+    });
+
+    gridViewBtn.addEventListener("click", () => {
+      gridView.classList.remove("hidden");
+      listView.classList.add("hidden");
+
+      gridViewBtn.classList.add("bg-orange-500", "text-white");
+      gridViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+      
+      listViewBtn.classList.remove("bg-orange-500", "text-white");
+      listViewBtn.classList.add("bg-gray-200", "text-gray-700");
+    });
+    </script>
+
+
+  </div>
+
+</div>
+
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+<!-- ================= CONTACT POPUP ================= -->
+<div id="contactPopup"
+     class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-3">
+
+  <div class="relative w-full max-w-sm rounded-xl shadow-2xl bg-white overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-white">
+      <h3 class="text-base font-semibold">Enquiry For</h3>
+      <p id="enquiryProjectName" class="text-xs opacity-90 mt-0.5">
+        Project Name
+      </p>
+    </div>
+
+    <!-- CLOSE -->
+    <button id="closeContactPopup"
+            class="absolute top-3 right-3 text-white text-lg">
+      ✕
+    </button>
+
+    <!-- FORM -->
+    <form method="post" id="enquiryForm"
+          class="p-4 space-y-3 text-sm bg-white">
+      {% csrf_token %}
+
+      <!-- Honeypot -->
+      <input type="text" name="company" class="hidden">
+
+      <!-- reCAPTCHA token -->
+      <input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
+
+      <input type="hidden" name="project_id" id="projectIdInput">
+
+      <!-- NAME -->
+      <div>
+        <label class="font-medium text-gray-600">Full Name</label>
+        <input type="text" name="name" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- EMAIL -->
+      <div>
+        <label class="font-medium text-gray-600">Email</label>
+        <input type="email" name="email"
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label class="font-medium text-gray-600">Mobile</label>
+        <input type="tel" name="phone" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- MESSAGE -->
+      <div>
+        <label class="font-medium text-gray-600">Message</label>
+        <textarea name="message" rows="2"
+                  class="mt-1 w-full border rounded-md px-3 py-2"></textarea>
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit"
+              class="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold">
+        Submit Enquiry
+      </button>
+
+      <p class="text-[11px] text-center text-gray-400">
+        🔒 100% Privacy Protected
+      </p>
+    </form>
+
+  </div>
+</div>
+<!-- ================= END POPUP ================= -->
+
+<style>
+  /* ===== TABS ===== */
+  .bhk-tabs {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .bhk-tab {
+    padding: 10px 0;
+    color: #4b5563;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    background: none;
+    outline: none;
+  }
+
+  .bhk-tab.active {
+    color: #16a34a;
+    border-color: #16a34a;
+  }
+
+  /* ===== TABLE ===== */
+  .bhk-scroll {
+    max-height: 220px;          /* ⬅ zyada rows pe scroll */
+    overflow-y: auto;
+  }
+
+  .bhk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .bhk-table th {
+    background: #f7f7f7;
+    padding: 10px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    font-weight: 600;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+  }
+
+  .bhk-table td {
+    padding: 12px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+  }
+
+  /* ===== SCROLLBAR (OPTIONAL CLEAN) ===== */
+  .bhk-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .bhk-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const popup = document.getElementById("contactPopup");
+  const closeBtn = document.getElementById("closeContactPopup");
+  const projectNameText = document.getElementById("enquiryProjectName");
+  const projectIdInput = document.getElementById("projectIdInput");
+  const enquiryForm = document.getElementById("enquiryForm");
+
+  document.querySelectorAll(".openContactPopup").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const projectName = this.dataset.project;
+      const projectId = this.dataset.projectId;
+
+      projectNameText.textContent = projectName;
+      projectIdInput.value = projectId;
+
+      enquiryForm.action = `/projects/submit-enquiry/${projectId}/`;
+
+      popup.classList.remove("hidden");
+      popup.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeBtn.addEventListener("click", closePopup);
+
+  popup.addEventListener("click", e => {
+    if (e.target === popup) closePopup();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closePopup();
+  });
+
+  function closePopup() {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+});
+</script>
+
+<script>
+function openBHK(e, id) {
+  document.querySelectorAll('.bhk-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.bhk-tab').forEach(el => el.classList.remove('active'));
+
+  document.getElementById(id).classList.remove('hidden');
+  e.target.classList.add('active');
+}
+</script>
+
+<script>
+document.getElementById("city").addEventListener("change", function () {
+  fetch(`/ajax/load-localities/?city_id=${this.value}`)
+    .then(res => res.json())
+    .then(data => {
+      let locality = document.getElementById("locality");
+      locality.innerHTML = '<option value="">Select Locality</option>';
+      data.forEach(l => {
+        locality.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+      });
+    });
+});
+</script>
+
+<script>
+document.addEventListener("click", function (e) {
+
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab) return;
+
+  const card = tab.closest(".config-card");
+  if (!card) return;
+
+  const tabsWrapper = card.querySelector(".bhk-tabs");
+  const underline = tabsWrapper.querySelector(".bhk-underline");
+
+  /* ================= RESET TABS ================= */
+  card.querySelectorAll(".bhk-tab").forEach(btn => {
+    btn.classList.remove("text-green-600");
+    btn.classList.add("text-gray-600");
+  });
+
+  /* ================= HIDE PANELS ================= */
+  card.querySelectorAll(".bhk-panel").forEach(panel => {
+    panel.classList.add("hidden");
+  });
+
+  /* ================= ACTIVATE TAB ================= */
+  tab.classList.remove("text-gray-600");
+  tab.classList.add("text-green-600");
+
+  /* ================= MOVE UNDERLINE ================= */
+  const tabRect = tab.getBoundingClientRect();
+  const wrapperRect = tabsWrapper.getBoundingClientRect();
+
+  underline.style.width = `${tabRect.width}px`;
+  underline.style.left = `${tabRect.left - wrapperRect.left}px`;
+
+  /* ================= SHOW PANEL ================= */
+  const target = tab.dataset.target;
+  const panel = card.querySelector(`[data-panel="${target}"]`);
+  if (panel) panel.classList.remove("hidden");
+
+});
+</script>
+
+
+<script>
+document.addEventListener("click", function (e) {
+
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab) return;
+
+  const card = tab.closest(".bg-white");
+  if (!card) return;
+
+  // reset tabs
+  card.querySelectorAll(".bhk-tab").forEach(t => {
+    t.classList.remove("border-orange-500", "text-orange-600");
+    t.classList.add("border-transparent", "text-gray-600");
+  });
+
+  // reset panels
+  card.querySelectorAll(".bhk-panel").forEach(p => {
+    p.classList.add("hidden");
+  });
+
+  // activate
+  tab.classList.add("border-orange-500", "text-orange-600");
+  tab.classList.remove("border-transparent", "text-gray-600");
+
+  const panel = card.querySelector(`[data-panel="${tab.dataset.target}"]`);
+  if (panel) panel.classList.remove("hidden");
+});
+</script>
+
+<script>
+function activateTab(tab, card) {
+
+  const tabsWrapper = card.querySelector(".bhk-tabs");
+  const underline = tabsWrapper.querySelector(".bhk-underline");
+
+  // reset tabs
+  card.querySelectorAll(".bhk-tab").forEach(t => {
+    t.classList.remove("active");
+  });
+
+  // hide panels
+  card.querySelectorAll(".bhk-panel").forEach(p => {
+    p.classList.add("hidden");
+  });
+
+  // activate tab
+  tab.classList.add("active");
+
+  // move underline
+  const tabRect = tab.getBoundingClientRect();
+  const wrapRect = tabsWrapper.getBoundingClientRect();
+
+  underline.style.width = tabRect.width + "px";
+  underline.style.left = (tabRect.left - wrapRect.left) + "px";
+
+  // show panel
+  const panel = card.querySelector(
+    `[data-panel="${tab.dataset.target}"]`
+  );
+  if (panel) panel.classList.remove("hidden");
+}
+
+/* ================= CLICK HANDLER ================= */
+document.addEventListener("click", function (e) {
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab || tab.classList.contains("bhk-disabled")) return;
+
+  const card = tab.closest(".config-card");
+  if (!card) return;
+
+  activateTab(tab, card);
+});
+
+/* ================= AUTO ACTIVATE FIRST TAB ================= */
+document.querySelectorAll(".config-card").forEach(card => {
+  const firstTab = card.querySelector(".bhk-tab:not(.bhk-disabled)");
+  if (firstTab) activateTab(firstTab, card);
+});
+</script>
+
+
+
+
+<style>
+  .amenities-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;      /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;                 /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .amenities-pill:hover {
+    background: #fff7ed;            /* orange-50 */
+    border-color: #f97316;          /* orange-500 */
+  }
+
+  .amenities-pill.active {
+    background: #f97316;            /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+
+
+<script>
+  function toggleAmenities() {
+    document.getElementById("amenitiesBody").classList.toggle("hidden");
+    document.getElementById("amenitiesArrow").classList.toggle("rotate-180");
+  }
+
+  function clearAmenities() {
+    document
+      .querySelectorAll("#amenitiesBody .amenities-pill")
+      .forEach(btn => btn.classList.remove("active"));
+  }
+
+  // multi-select
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("amenities-pill")) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+<!-- filter style and scripts  -->
+
+<style>
+/* Glass tabs */
+.bhk-tab {
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.6);
+  color: #4b5563;
+}
+
+/* Active tab */
+.bhk-tab.active {
+  color: #16a34a;
+}
+
+/* Disabled tab */
+.bhk-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Gradient underline */
+.bhk-underline {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  width: 0;
+  left: 0;
+  opacity: 0;
+  transition:
+    left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
+
+<style>
+  .property-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c; /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c; /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .property-pill:hover {
+    background: #fff7ed; /* orange-50 */
+    border-color: #f97316; /* orange-500 */
+  }
+
+  .property-pill.active {
+    background: #f97316; /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+
+<script>
+  function togglePropertyType() {
+    const body = document.getElementById("propertyTypeBody");
+    const arrow = document.getElementById("propertyArrow");
+
+    body.classList.toggle("hidden");
+    arrow.classList.toggle("rotate-180");
+  }
+
+  function toggleMoreProperty(btn) {
+    document.getElementById("moreProperty").classList.remove("hidden");
+    btn.classList.add("hidden");
+  }
+
+  // active state (multi select)
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("property-pill")) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+
+<style>
+  .bedroom-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;      /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;                 /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .bedroom-pill:hover {
+    background: #fff7ed;            /* orange-50 */
+    border-color: #f97316;          /* orange-500 */
+  }
+
+  .bedroom-pill.active {
+    background: #f97316;            /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+<script>
+  function toggleBedrooms() {
+    const body = document.getElementById("bedroomBody");
+    const arrow = document.getElementById("bedroomArrow");
+
+    body.classList.toggle("hidden");
+    arrow.classList.toggle("rotate-180");
+  }
+
+  function toggleMoreBedrooms(btn) {
+    document.getElementById("moreBedrooms").classList.remove("hidden");
+    btn.classList.add("hidden");
+  }
+
+  // Active select (multi-select)
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("bedroom-pill")) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+<style>
+  .orange-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;      /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;                 /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .orange-pill:hover {
+    background: #fff7ed;            /* orange-50 */
+    border-color: #f97316;          /* orange-500 */
+  }
+
+  .orange-pill.active {
+    background: #f97316;            /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+<script>
+function toggleConstruction() {
+  document.getElementById("constructionBody").classList.toggle("hidden");
+  document.getElementById("constructionArrow").classList.toggle("rotate-180");
+}
+
+function togglePostedBy() {
+  document.getElementById("postedByBody").classList.toggle("hidden");
+  document.getElementById("postedByArrow").classList.toggle("rotate-180");
+}
+
+// active pill toggle (multi-select)
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("orange-pill")) {
+    e.target.classList.toggle("active");
+  }
+});
+</script>
+
+<style>
+  /* Furnishing */
+  .furnishing-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  .furnishing-pill:hover {
+    background: #fff7ed;
+    border-color: #f97316;
+  }
+  .furnishing-pill.active {
+    background: #f97316;
+    color: #fff;
+    border-color: #f97316;
+  }
+
+  /* RERA */
+  .rera-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  .rera-pill:hover {
+    background: #fff7ed;
+    border-color: #f97316;
+  }
+  .rera-pill.active {
+    background: #f97316;
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+<script>
+  function toggleFurnishing() {
+    document.getyan;
+    document.getElementById("furnishingBody").classList.toggle("hidden");
+    document.getElementById("furnishingArrow").classList.toggle("rotate-180");
+  }
+
+  function toggleRera() {
+    document.getElementById("reraBody").classList.toggle("hidden");
+    document.getElementById("reraArrow").classList.toggle("rotate-180");
+  }
+
+  // active pill (multi-select)
+  document.addEventListener("click", function (e) {
+    if (
+      e.target.classList.contains("furnishing-pill") ||
+      e.target.classList.contains("rera-pill")
+    ) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+<style>
+.active-pill{
+    background:#f97316;
+    color:#fff;
+    border-color:#f97316;
+}
+.locality-checkbox {
+  accent-color: #f97316; /* orange */
+}
+</style>
+
+
+
+<script>
+  function toggleLocalities() {
+    document.getElementById("localityBody").classList.toggle("hidden");
+    document.getElementById("localityArrow").classList.toggle("rotate-180");
+  }
+
+  function openLocalityModal() {
+    document.getElementById("localityModal").classList.remove("hidden");
+  }
+
+  function closeLocalityModal() {
+    document.getElementById("localityModal").classList.add("hidden");
+  }
+
+  function clearLocalities() {
+    document
+      .querySelectorAll('.locality-checkbox')
+      .forEach(cb => cb.checked = false);
+  }
+</script>
+
+<script>
+  function clearAllFilters() {
+
+    /* ================= CHECKBOXES ================= */
+    document
+      .querySelectorAll('input[type="checkbox"]')
+      .forEach(cb => cb.checked = false);
+
+    /* ================= TEXT / NUMBER INPUTS ================= */
+    document
+      .querySelectorAll('input[type="text"], input[type="number"]')
+      .forEach(input => input.value = "");
+
+    /* ================= SELECT DROPDOWNS ================= */
+    document
+      .querySelectorAll('select')
+      .forEach(select => select.selectedIndex = 0);
+
+    /* ================= PILLS (ALL TYPES) ================= */
+    document
+      .querySelectorAll(
+        '.property-pill, .bedroom-pill, .amenities-pill, ' +
+        '.furnishing-pill, .rera-pill, .orange-pill'
+      )
+      .forEach(pill => pill.classList.remove("active"));
+
+    /* ================= OPTIONAL: CLOSE ALL ACCORDIONS ================= */
+    document
+      .querySelectorAll('[id$="Body"]')
+      .forEach(body => body.classList.add("hidden"));
+
+    document
+      .querySelectorAll('[id$="Arrow"]')
+      .forEach(arrow => arrow.classList.remove("rotate-180"));
+  }
+</script>
+
+<script>
+function toggleBlock(bodyId, arrowId) {
+  document.getElementById(bodyId).classList.toggle("hidden");
+  document.getElementById(arrowId).classList.toggle("rotate-180");
+}
+
+function togglePill(btn, inputId) {
+  btn.classList.toggle("active-pill");
+
+  const group = btn.dataset.group;
+  const values = [];
+
+  document
+    .querySelectorAll(`[data-group="${group}"].active-pill`)
+    .forEach(el => values.push(el.dataset.value));
+
+  document.getElementById(inputId).value = values.join(",");
+}
+
+function clearAllFilters() {
+  document.getElementById("filterForm").reset();
+
+  document.querySelectorAll(".active-pill")
+    .forEach(el => el.classList.remove("active-pill"));
+
+  document.querySelectorAll("input[type=hidden]")
+    .forEach(el => el.value = "");
+}
+</script>
+
+
+<!-- ================= LOCALITY MODAL ================= -->
+<div id="localityModal"
+  class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center">
+
+  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 relative">
+
+    <!-- CLOSE -->
+    <button onclick="closeLocalityModal()"
+      class="absolute top-0 mb-6 right-1 text-gray-500 hover:text-orange-600">
+      <i class="fa-solid fa-xmark text-xl"></i>
+    </button>
+
+    <!-- SEARCH -->
+    <div class="flex items-center border rounded-lg px-4 py-2 mb-6">
+      <input type="text"
+        placeholder="Search Localities"
+        class="w-full outline-none text-sm">
+      <i class="fa-solid fa-magnifying-glass text-orange-500"></i>
+    </div>
+
+    <div class="grid grid-cols-2 gap-8">
+
+      <!-- TOP -->
+      <div>
+        <h4 class="font-semibold mb-3">Top Localities</h4>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox" checked>
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Malad
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Kandivali
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Andheri
+        </label>
+      </div>
+
+      <!-- MORE -->
+      <div>
+        <h4 class="font-semibold mb-3">More Localities</h4>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Kandivali East
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Andheri West
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Borivali West
+        </label>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+

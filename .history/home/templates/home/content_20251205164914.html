@@ -1,0 +1,798 @@
+{% load static %}
+{% load humanize %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<section class="bg-[#f8fafc] py-16 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Section Title -->
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-orange-400 uppercase tracking-wide">
+        Featured Projects
+      </h2>
+      <p class="text-gray-300 mt-1 text-sm md:text-base">
+        Explore our best and most popular real estate projects
+      </p>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="relative">
+      <div class="swiper mySwiper px-8"> <!-- Added padding so arrows stay outside cards -->
+        <div class="swiper-wrapper">
+
+          {% for rs in project_featured %}
+          <div class="swiper-slide">
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200">
+
+              <!-- Image Section -->
+              <div class="relative h-60 w-full overflow-hidden">
+                {% if rs.image %}
+                  <img src="{{ rs.image.url }}" alt="{{ rs.project_name }}  "
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-200">
+                {% else %}
+                  <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image"
+                    class="w-full h-full object-cover">
+                {% endif %}
+
+                <!-- Property Type Tag -->
+                <span class="absolute top-3 left-3 bg-orange-500 text-white text-[12px] font-semibold px-3 py-1 rounded-full shadow">
+                  {{ rs.propert_type }}
+                </span>
+
+                <!-- Construction Status -->
+                <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[11px] font-medium px-3 py-1 rounded-full">
+                  {{ rs.construction_status }}
+                </span>
+
+                <!-- Hover Icons -->
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 opacity-0 hover:opacity-100 transition duration-300">
+                  <a href="{{ rs.get_absolute_url }}" class="bg-white p-3 rounded-full shadow hover:bg-orange-500 hover:text-white transition">
+                    <i class="fas fa-link"></i>
+                  </a>
+                  <a href="{{ rs.get_absolute_url }}" class="bg-white p-3 rounded-full shadow hover:bg-orange-500 hover:text-white transition">
+                    <i class="fas fa-video"></i>
+                  </a>
+                </div>
+                
+              </div>
+
+              <!-- Content -->
+              <div class="p-3 space-y-2">
+                <h3 class="text-lg font-semibold text-gray-800 hover:text-orange-600 transition leading-snug">
+                  {{ rs.project_name }}
+                </h3>
+                <p class="text-sm text-gray-600 flex items-center gap-1 leading-relaxed">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ rs.locality }}
+                </p>
+
+                <!-- Configuration Details -->
+                <div class="pt-2 space-y-1">
+                  {% for line in rs.get_configuration_details.splitlines %}
+                    <p class="text-orange-600 font-medium text-[13px] leading-snug">{{ line }}</p>
+                  {% endfor %}
+                </div>
+
+                <!-- Developer -->
+                <div class="flex items-center gap-3 pt-3">
+                  {% if rs.developer.logo %}
+                    <img src="{{ rs.developer.logo.url }}" alt="Developer" class="h-10 w-10 rounded-full border object-cover">
+                  {% else %}
+                    <img src="{% static 'images/user-placeholder.png' %}" alt="Developer" class="h-10 w-10 rounded-full border object-cover">
+                  {% endif %}
+                  <span class="text-green-600 font-medium text-sm">{{ rs.developer }}</span>
+                </div>
+              </div>
+
+              <!-- Footer Button -->
+              <div class="bg-orange-500 text-center py-2 hover:bg-orange-600 transition">
+                <a href="{{ rs.get_absolute_url }}" class="text-white font-semibold uppercase tracking-wide text-[14px]">
+                  See Details
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {% empty %}
+          <p class="col-span-3 text-center text-gray-500">No featured projects available at the moment.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <br><br>
+      <!-- Swiper Pagination & Arrows -->
+      <div class="swiper-pagination mt-6"></div>
+      <div class="swiper-button-prev !text-orange-500 !left-0 -translate-x-8 scale-90"></div>
+      <div class="swiper-button-next !text-orange-500 !right-0 translate-x-8 scale-90"></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- SwiperJS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 3000, // Auto slide every 3 seconds
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true, // pause on hover
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      640: { slidesPerView: 1.2 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+</script>
+
+
+
+<!-- NEW LAUNCH SECTION -->
+<section class="py-12" data-aos="fade-up">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+    <!-- Title -->
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-8 text-orange-600 uppercase">
+      New Launch
+    </h2>
+
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+
+        <!-- MASTER CARD (Repeated Everywhere) -->
+        <!-- Repeat this same structure for all slides -->
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+          <div class="bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" 
+                   class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
+              <p class="text-gray-800 font-bold">₹80 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1">
+                <i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai
+              </p>
+
+              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
+                <div><strong>Area</strong><br>800 Sq.Ft.</div>
+                <div><strong>Status</strong><br>Available</div>
+                <div><strong>Transaction</strong><br>New</div>
+                <div><strong>Type</strong><br>Residential</div>
+              </div>
+
+              <div class="flex items-center gap-2 mt-3">
+                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" 
+                     class="h-10 w-10 rounded-full border">
+                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
+              </div>
+            </div>
+
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 (Same Card) -->
+        <div class="swiper-slide">
+          <div class="bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1"
+                   class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
+              <p class="text-gray-800 font-bold">₹80 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1">
+                <i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai
+              </p>
+
+              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
+                <div><strong>Area</strong><br>800 Sq.Ft.</div>
+                <div><strong>Status</strong><br>Available</div>
+                <div><strong>Transaction</strong><br>New</div>
+                <div><strong>Type</strong><br>Residential</div>
+              </div>
+
+              <div class="flex items-center gap-2 mt-3">
+                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" 
+                     class="h-10 w-10 rounded-full border">
+                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
+              </div>
+            </div>
+
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 (Same Card) -->
+        <div class="swiper-slide">
+          <!-- Same card (repeat as needed) -->
+        </div>
+
+      </div>
+
+      <br><br>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  function initSwiper() {
+    document.querySelectorAll(".mySwiper").forEach(swiperEl => {
+      new Swiper(swiperEl, {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+        },
+
+        speed: 800,
+
+        pagination: {
+          el: swiperEl.querySelector(".swiper-pagination"),
+          clickable: true,
+        },
+
+        navigation: {
+          nextEl: swiperEl.querySelector(".swiper-button-next"),
+          prevEl: swiperEl.querySelector(".swiper-button-prev"),
+        },
+
+        breakpoints: {
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        },
+      });
+    });
+  }
+
+  initSwiper();
+</script>
+
+
+
+<!-- POSSESSION START SECTION -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 items-center">
+
+    <!-- LEFT TEXT SECTION -->
+    <div class="md:col-span-1">
+      <h2 class="text-4xl font-extrabold text-yellow-600 leading-tight">
+        Possession Status
+      </h2>
+      <p class="text-gray-700 mt-2">
+        Project According to Possession Status in Mumbai
+      </p>
+
+      <button class="mt-6 bg-[#002D62] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[#001A3C] transition">
+        View All
+      </button>
+    </div>
+
+    <!-- RIGHT SIDE CARDS -->
+    <div class="md:col-span-3 grid md:grid-cols-3 gap-6">
+
+      <!-- CARD 1 - READY TO MOVE -->
+      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <!-- Text -->
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">Ready to Move</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            975 Projects
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD 2 - UNDER CONSTRUCTION -->
+      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/439416/pexels-photo-439416.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">Under Construction</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            3904 Projects
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD 3 - NEW LAUNCH -->
+      <div class="Find Your Dream Property
+relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">New Launch</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            512 Projects
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- POSSESSION END SECTION -->
+
+
+
+<!-- 🏡 ABOUT -->
+<section class="py-16 bg-white" id="about">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+    <img src="{{ about_page.image.url|default:'https://dummyimage.com/600x400/aaaaaa/fff&text=About+Us' }}"
+         alt="{{ about_page.title }}" class="rounded-lg shadow" data-aos="zoom-in" />
+    <div data-aos="fade-left">
+      <h2 class="text-3xl font-bold text-orange-600 mb-4">
+        {{ about_page.title|default:"About Us" }}
+      </h2>
+      <p class="text-gray-700 leading-relaxed">
+        {{ about_page.content|safe|default:"We are a trusted real estate agency with 15+ years of experience helping clients buy, sell, and rent properties across prime locations. Our team ensures transparency, trust, and customer-first approach." }}
+      </p>
+      <a href="{% url 'about' %}" class="mt-6 inline-block bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded">
+        Learn More
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- USP -->
+<section class="py-16 bg-gray-100" id="usp">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold text-orange-600 mb-10">Our USP</h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="bg-white shadow p-6 rounded">
+        <h3 class="font-bold text-lg mb-2">Trusted Agents</h3>
+        <p>Our certified experts guide you with every step.</p>
+      </div>
+      <div class="bg-white shadow p-6 rounded">
+        <h3 class="font-bold text-lg mb-2">Prime Locations</h3>
+        <p>Exclusive properties in top cities.</p>
+      </div>
+      <div class="bg-white shadow p-6 rounded">
+        <h3 class="font-bold text-lg mb-2">Best Deals</h3>
+        <p>We ensure best value for your investment.</p>
+      </div>
+      <div class="bg-white shadow p-6 rounded">
+        <h3 class="font-bold text-lg mb-2">Full Support</h3>
+        <p>End-to-end property management services.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="py-16 bg-white" id="services">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-orange-600 mb-10">Our Services</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="p-6 bg-gray-100 rounded shadow hover:shadow-lg">
+        <h3 class="font-bold mb-2">Buy Property</h3>
+        <p>Get access to best buying options across India.</p>
+      </div>
+      <div class="p-6 bg-gray-100 rounded shadow hover:shadow-lg">
+        <h3 class="font-bold mb-2">Sell Property</h3>
+        <p>List and sell faster with our digital marketing.</p>
+      </div>
+      <div class="p-6 bg-gray-100 rounded shadow hover:shadow-lg">
+        <h3 class="font-bold mb-2">Rent / Lease</h3>
+        <p>Find tenants or rental homes with ease.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PROJECTS -->
+<section class="py-16 bg-gray-100" id="projects">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-orange-400 mb-10">Featured Properties</h2>
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide bg-white rounded shadow p-4">Property 1</div>
+        <div class="swiper-slide bg-white rounded shadow p-4">Property 2</div>
+        <div class="swiper-slide bg-white rounded shadow p-4">Property 3</div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev text-orange-500"></div>
+      <div class="swiper-button-next text-orange-500"></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="py-16 bg-white" id="gallery">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-orange-600 mb-10">Gallery</h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <img src="https://dummyimage.com/400x300/aaa/fff&text=Gallery+1" class="rounded shadow">
+      <img src="https://dummyimage.com/400x300/aaa/fff&text=Gallery+2" class="rounded shadow">
+      <img src="https://dummyimage.com/400x300/aaa/fff&text=Gallery+3" class="rounded shadow">
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="py-16 bg-gray-100" id="team">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-orange-600 mb-10">Our Team</h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div>
+        <img src="https://dummyimage.com/150/aaa/fff&text=Agent" class="rounded-full mx-auto mb-3">
+        <h3 class="font-bold">Rahul Sharma</h3>
+        <p class="text-gray-600">Senior Agent</p>
+      </div>
+      <div>
+        <img src="https://dummyimage.com/150/aaa/fff&text=Agent" class="rounded-full mx-auto mb-3">
+        <h3 class="font-bold">Priya Singh</h3>
+        <p class="text-gray-600">Consultant</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🌟 WHY CHOOSE US -->
+<section class="py-14 bg-white" id="why-choose">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+
+    <!-- IMAGE SIDE -->
+    <div class="relative group" data-aos="zoom-in-right">
+
+      <div class="absolute -inset-2 bg-orange-500/10 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition"></div>
+
+      <img src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
+           class="relative w-full h-[300px] object-cover rounded-3xl shadow-xl transition group-hover:scale-[1.01]"
+           alt="Why Choose">
+
+      <div class="absolute inset-0 rounded-3xl border border-white/20 pointer-events-none"></div>
+    </div>
+
+    <!-- TEXT SIDE WITH INTERNAL SCROLL -->
+    <div data-aos="fade-left">
+
+      <h2 class="text-3xl font-bold text-orange-600 mb-4">
+        Why Choose Us
+      </h2>
+
+      <!-- SCROLL CONTAINER -->
+      <div class="max-h-[350px] overflow-y-auto pr-3 custom-scroll space-y-4 text-gray-800 text-[15px] leading-relaxed">
+
+        {% for item in why_choose_items %}
+        <div class="flex gap-3">
+
+          <span class="text-green-600 text-xl leading-none">
+            {% if item.icon %} {{ item.icon }} {% else %} ✔ {% endif %}
+          </span>
+
+          <span class="font-medium">
+            {{ item.title }}
+            {% if item.subtitle %}
+            <span class="text-gray-600 font-normal"> — {{ item.subtitle }}</span>
+            {% endif %}
+          </span>
+
+        </div>
+        {% empty %}
+
+        <div class="flex gap-3">
+          <span class="text-green-600 text-xl leading-none">✔</span>
+          <span class="font-medium">15+ Years of Experience</span>
+        </div>
+
+        <div class="flex gap-3">
+          <span class="text-green-600 text-xl leading-none">✔</span>
+          <span class="font-medium">Verified Properties Only</span>
+        </div>
+
+        {% endfor %}
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- 🏢 FEATURED DEVELOPERS -->
+<section class="py-16 bg-gray-100" id="developers">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+
+    <h2 class="text-3xl font-bold text-orange-600 mb-12">
+      Featured Developers
+    </h2>
+
+    {% if featured_developers %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
+
+      {% for dev in featured_developers %}
+      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl 
+                  bg-gradient-to-br from-orange-500 to-pink-600 
+                  shadow-lg hover:shadow-xl transition-all duration-300 group"
+           data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:70 }}">
+
+        <!-- INNER CARD -->
+        <div class="bg-white rounded-2xl p-6 group-hover:bg-gray-50 transition duration-300 flex flex-col items-center">
+
+          <!-- LOGO -->
+          {% if dev.logo %}
+          <a href="{{ dev.get_absolute_url }}" class="block">
+            <img src="{{ dev.logo.url }}"
+                 alt="{{ dev.title }}"
+                 class="h-16 w-auto object-contain mx-auto transition-all duration-300
+                        group-hover:scale-110 group-hover:opacity-100" />
+          </a>
+          {% endif %}
+
+          <h3 class="mt-4 text-gray-800 font-semibold text-sm group-hover:text-orange-600 transition">
+            {{ dev.title }}
+          </h3>
+
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <!-- DEFAULT SAMPLE CARDS -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
+
+      {% for i in "1234" %}
+      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl 
+                  bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg">
+
+        <div class="bg-white rounded-2xl p-6 flex flex-col items-center">
+          <img src="https://dummyimage.com/200x100/aaa/fff&text=Logo"
+               class="h-16 object-contain mx-auto" />
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- LOCALITY -->
+<section class="py-20 bg-white" id="locality">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-orange-600 mb-12">
+      Featured Localities
+    </h2>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+
+      <!-- CARD 1 -->
+      <div class="relative h-40 rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1597211678504-97000b9fc577?auto=format&fit=crop&w=900&q=60"
+             class="absolute w-full h-full object-cover group-hover:scale-110 transition duration-500">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition duration-500"></div>
+        <p class="absolute bottom-3 left-4 text-white text-lg font-semibold">Andheri</p>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="relative h-40 rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=900&q=60"
+             class="absolute w-full h-full object-cover group-hover:scale-110 transition duration-500">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition duration-500"></div>
+        <p class="absolute bottom-3 left-4 text-white text-lg font-semibold">Bandra</p>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="relative h-40 rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1589307004391-87aadf7cc512?auto=format&fit=crop&w=900&q=60"
+             class="absolute w-full h-full object-cover group-hover:scale-110 transition duration-500">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition duration-500"></div>
+        <p class="absolute bottom-3 left-4 text-white text-lg font-semibold">Chembur</p>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="relative h-40 rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1600585155511-2095c6abbf86?auto=format&fit=crop&w=900&q=60"
+             class="absolute w-full h-full object-cover group-hover:scale-110 transition duration-500">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition duration-500"></div>
+        <p class="absolute bottom-3 left-4 text-white text-lg font-semibold">Thane</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 💬 TESTIMONIALS -->
+<section class="py-16 bg-gray-100" id="testimonial">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold text-orange-600 mb-10">Testimonials</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      {% for t in testimonials %}
+      <div class="bg-white shadow rounded p-2" data-aos="fade-up">
+        {% if t.image %}
+        <img src="{{ t.image.url }}" class="w-16 h-16 rounded-full mx-auto mb-3" />
+        {% endif %}
+        <p class="text-gray-700 italic">"{{ t.message }}"</p>
+        <h3 class="mt-3 font-bold">{{ t.name }}</h3>
+        {% if t.designation %}<p class="text-sm text-gray-500">{{ t.designation }}</p>{% endif %}
+        <p class="text-yellow-400 mt-2">{% for i in "12345"|slice:":t.rating" %}⭐{% endfor %}</p>
+      </div>
+      {% empty %}
+      <p>No testimonials available.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ❓ FAQ -->
+<section class="py-20 bg-gray-100" id="faq">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h2 class="text-4xl font-bold text-orange-600 mb-12 text-center">
+      Frequently Asked Questions
+    </h2>
+
+    <!-- FAQ Grid -->
+    <div id="faqContainer" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+
+    <!-- Buttons -->
+    <div class="text-center mt-10 space-x-4">
+      <button id="loadMoreBtn"
+        class="px-6 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition">
+        Load More
+      </button>
+
+      <button id="showLessBtn"
+        class="px-3 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition hidden">
+        Show Less
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Hidden FAQ Data -->
+<div id="faqData" class="hidden">
+  {% for faq in faqs %}
+  <div class="faq-item">
+    <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+
+      <details class="group cursor-pointer">
+        <summary class="flex justify-between items-center font-semibold text-lg text-gray-900">
+          {{ faq.question }}
+          <i class="fas fa-chevron-down text-gray-600 transition-transform duration-300 group-open:rotate-180"></i>
+        </summary>
+
+        <p class="mt-4 text-gray-700 leading-7">
+          {{ faq.answer|safe }}
+        </p>
+      </details>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+<!-- LEFT DETAILS + RIGHT FORM CONTACT SECTION -->
+<section id="contact" class="py-14 bg-orange-50">
+    <h2 class="text-3xl font-bold text-orange-600 mb-4 text-center">Get In Touch</h2>
+      <p class="text-gray-600 mb-6 text-center">We are here to assist you with any queries.</p>
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
+
+    <!-- LEFT SIDE DETAILS -->
+    <div>
+    
+
+      <div class="space-y-6">
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-orange-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-1">Phone</h3>
+          <p class="text-gray-700">{{ settings_obj.phone }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-orange-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-1">Email</h3>
+          <p class="text-gray-700">{{ settings_obj.email }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-orange-100">
+          <h3 class="text-lg font-semibold text-gray-800 mb-1">Location</h3>
+          <p class="text-gray-700">Mumbai, India</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="bg-white p-8 rounded-xl shadow-md border border-orange-100">
+
+      <h3 class="text-xl font-semibold text-orange-600 mb-5">Send Us a Message</h3>
+
+      <form class="space-y-4">
+
+        <input type="text" placeholder="Your Name"
+               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 outline-none">
+
+        <input type="email" placeholder="Your Email"
+               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 outline-none">
+
+        <textarea rows="4" placeholder="Your Message"
+                  class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"></textarea>
+
+        <button class="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition">
+          Send Message
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+  });
+</script>
+<!-- Animate on Scroll -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({ duration: 1000, once: true });</script>

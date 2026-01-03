@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+{% load utility_tags %}
+{% block title %}All Property Listings{% endblock %}
+
+{% block content %}
+    <h1>Property Search & Listings</h1>
+    <hr>
+    
+    <div class="search-panel" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px;">
+        <form action="{% url 'properties' %}" method="GET">
+            
+            <label for="keywords">Keywords:</label>
+            <input type="text" name="keywords" id="keywords" placeholder="E.g. Sea View, New Construction" 
+                   value="{{ values.keywords|default:'' }}">
+            
+            <label for="bedrooms">Max Beds:</label>
+            <select name="bedrooms" id="bedrooms">
+                <option value="" selected>Any</option>
+                <option value="1" {% if values.bedrooms == '1' %}selected{% endif %}>1</option>
+                <option value="2" {% if values.bedrooms == '2' %}selected{% endif %}>2</option>
+                <option value="3" {% if values.bedrooms == '3' %}selected{% endif %}>3+</option>
+            </select>
+            
+            <label for="price">Max Price (₹):</label>
+            <input type="number" name="price" id="price" placeholder="E.g. 5000000"
+                   value="{{ values.price|default:'' }}">
+            
+            <button type="submit">Search</button>
+            <a href="{% url 'properties' %}">Reset</a>
+        </form>
+    </div>
+    
+    {% endblock %}

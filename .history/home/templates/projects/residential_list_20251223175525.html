@@ -1,0 +1,144 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+<style>
+  /* Auto sliding gallery */
+.slider-animation {
+    display: flex;
+    animation: slide 12s infinite linear;
+}
+.slider-animation img {
+    width: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(0); }
+
+    25% { transform: translateX(-100%); }
+    45% { transform: translateX(-100%); }
+
+    50% { transform: translateX(-200%); }
+    70% { transform: translateX(-200%); }
+
+    75% { transform: translateX(-300%); }
+    100% { transform: translateX(-300%); }
+}
+</style>
+
+{% block content %}
+
+
+
+<!-- Main Container -->
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+
+
+
+
+
+  <!-- Right Side - Sidebar -->
+  <aside class="space-y-6 md:hidden hidden lg:block">
+
+    <!-- Advanced Search -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-4 text-lg">ADVANCED SEARCH</h3>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>For Sale</option>
+        <option>For Rent</option>
+      </select>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>Types</option>
+        <option>Residential</option>
+        <option>Commercial</option>
+      </select>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>Property Types</option>
+        <option>Apartment</option>
+        <option>Villa</option>
+        <option>Plot</option>
+      </select>
+      <input type="text" placeholder="Location" class="w-full border px-3 py-2 rounded mb-3 text-sm">
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+          <option>BHK</option>
+          <option>1 BHK</option>
+          <option>2 BHK</option>
+          <option>3 BHK</option>
+        </select>
+        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+          <option>Transaction</option>
+          <option>New</option>
+          <option>Resale</option>
+        </select>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <input type="text" placeholder="Min Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+        <input type="text" placeholder="Max Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+      </div>
+      <label class="block text-sm text-gray-600 mb-1">Area</label>
+      <input type="range" min="0" max="1000000" value="2000" class="w-full accent-orange-500">
+      <div class="flex justify-between text-xs text-gray-600 mb-3">
+        <span>0 Sq.ft</span>
+        <span>1000000 Sq.ft</span>
+      </div>
+      <a href="#" class="text-orange-600 text-sm font-semibold block mb-4">+ Show More Options</a>
+      <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">SEARCH</button>
+    </div>
+
+    <!-- Popular Category -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">POPULAR CATEGORY</h3>
+      <p class="text-gray-600 text-sm flex justify-between">Residential Apartment <span>(14)</span></p>
+    </div>
+
+    <!-- Recent Properties -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">RECENT PROPERTIES</h3>
+      <div class="space-y-3 text-sm">
+        <div class="flex gap-3">
+          <img src="https://dummyimage.com/80x60/aaaaaa/000000" class="w-20 h-14 object-cover rounded">
+          <div>
+            <p class="text-orange-600">700 Sq.Ft. 2 BHK Apartment</p>
+            <p class="text-gray-600">₹65.00 Th</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <img src="https://dummyimage.com/80x60/cccccc/000000" class="w-20 h-14 object-cover rounded">
+          <div>
+            <p class="text-orange-600">610 Sq.Ft. 2 BHK Apartment</p>
+            <p class="text-gray-600">₹70.00 Th</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Helping Center -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">HELPING CENTER</h3>
+      <p class="text-gray-700 text-sm mb-2"><strong>Address</strong><br> {{ settings_obj.address}}</p>
+      <p class="text-gray-700 text-sm"><strong>Phone</strong><br> {{ settings_obj.phone}}</p>
+    </div>
+
+  </aside>
+</div>
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+
+{% endblock %}
+
+

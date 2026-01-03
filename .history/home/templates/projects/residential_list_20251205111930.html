@@ -1,0 +1,435 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+
+
+{% block content %}
+
+
+<section class="relative h-[300px] bg-cover bg-center" style="background-image: url('{% static 'images/no-images.jpg' %}');">
+  <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+  <div class="relative z-10 flex flex-col justify-center items-center h-full text-center text-white">
+    <h1 class="text-3xl md:text-5xl font-bold">{{ page_title|default:"Projects Listing" }}</h1>
+    <nav class="mt-3 text-sm md:text-base">
+      <ol class="flex justify-center space-x-2">
+        <li><a href="/" class="hover:text-orange-400">Home</a></li>
+        <li>/</li>
+        <li class="text-orange-400">{{ breadcrumb }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+
+
+
+<!-- Main Container -->
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+
+  <!-- Left Side - Property List -->
+  <div class="lg:col-span-2 space-y-6">
+
+    <!-- Header -->
+      <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+        <!-- List Button -->
+        <button id="listViewBtn" class="bg-orange-500 text-white p-2 rounded">
+          <i class="fas fa-list"></i>
+        </button>
+
+        <!-- Grid Button -->
+        <button id="gridViewBtn" class="bg-gray-200 text-gray-700 p-2 rounded">
+          <i class="fas fa-th"></i>
+        </button>
+
+        <span class="font-semibold text-orange-600">Properties</span>
+      </div>
+
+
+    <!-- Property Filters Start -->
+     <filter-section>
+
+      <div class="bg-white shadow rounded p-4 flex flex-wrap gap-4 items-center lg:hidden">
+
+        <!-- Location -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>All Locations</option>
+          <option>Mira Road</option>
+          <option>Andheri</option>
+          <option>Borivali</option>
+        </select>
+
+        <!-- Property Type -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>Property Type</option>
+          <option>Apartment</option>
+          <option>Plot</option>
+          <option>Villa</option>
+          <option>Builder Floor</option>
+        </select>
+
+        <!-- BHK -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>BHK</option>
+          <option>1 RK</option>
+          <option>1 BHK</option>
+          <option>1.5 BHK</option>
+          <option>2 BHK</option>
+          <option>2.5 BHK</option>
+          <option>3 BHK</option>
+          <option>3.5 BHK</option>
+        </select>
+
+        <!-- Price -->
+        <div class="flex gap-2">
+          <input type="text" placeholder="Min Price" class="border px-3 py-2 rounded text-sm w-28">
+          <input type="text" placeholder="Max Price" class="border px-3 py-2 rounded text-sm w-28">
+        </div>
+
+        <!-- Brokerage -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>Brokerage Charges</option>
+          <option>No Brokerage</option>
+          <option>With Brokerage</option>
+        </select>
+
+        <!-- Carpet Area -->
+        <div class="flex gap-2">
+          <input type="text" placeholder="Min (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+          <input type="text" placeholder="Max (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+        </div>
+
+        <!-- More Filters Button -->
+        <button id="moreFiltersBtn"
+          class="text-orange-600 font-semibold underline text-sm ml-auto">More Filters</button>
+
+        <!-- Submit -->
+        <button
+          class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 text-sm font-semibold">
+          Filter
+        </button>
+      </div>
+
+      <!-- More Filters Panel -->
+      <div id="moreFiltersPanel" class="hidden bg-white shadow rounded p-4 mt-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+          <select class="border px-3 py-2 rounded">
+            <option>Posted By</option>
+            <option>Owner</option>
+            <option>Dealer</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Sale Type</option>
+            <option>New</option>
+            <option>Resale</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Property Status</option>
+            <option>Ready to Move</option>
+            <option>Under Construction</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Possession From</option>
+            <option>2024</option>
+            <option>2025</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Property Age</option>
+            <option>0-5 Years</option>
+            <option>5-10 Years</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Bathrooms</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3+</option>
+          </select>
+          <label class="flex items-center gap-2">
+            <input type="checkbox"> Parking
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox"> Live-in Tour / Video
+          </label>
+        </div>
+
+        <!-- Bottom Buttons -->
+        <div class="flex justify-between items-center mt-4">
+          <button id="closeFilters" class="text-sm text-blue-600">Clear Filters & Close</button>
+          <button class="bg-orange-500 px-4 py-2 rounded text-white font-semibold">
+            Show Properties
+          </button>
+        </div>
+      </div>
+
+        <!-- JS -->
+        <script>
+          document.getElementById("moreFiltersBtn").addEventListener("click", () => {
+            document.getElementById("moreFiltersPanel").classList.toggle("hidden");
+          });
+          document.getElementById("closeFilters").addEventListener("click", () => {
+            document.getElementById("moreFiltersPanel").classList.add("hidden");
+          });
+        </script>
+     </filter-section>
+    <!-- Property Filters End -->
+    
+
+
+<!-- ✅ List View -->
+<!-- ✅ List View -->
+<div id="listView" class="space-y-6">
+  {% for project in projects %}
+  <div class="flex flex-col sm:flex-row bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+    {% if project.image %}
+    <img src="{{ project.image.url }}" class="w-full sm:w-64 h-50 lg:h-{25px} object-cover rounded" alt="{{ project.project_name }}" style="height: 250px;">
+    {% else %}
+    <img src="{% static 'images/no-images.jpg' %}" class="w-full sm:w-64 h-50 object-cover rounded" alt="No Image" style="height: 250px;">
+    {% endif %}
+    
+    <div class="sm:ml-4 mt-4 sm:mt-0 flex-1">
+      <h2 class="text-xl font-semibold text-gray-800">{{ project.project_name }}</h2>
+      <p class="text-sm text-gray-500 mb-2">
+        <i class="fas fa-map-marker-alt text-orange-500"></i> {{ project.locality }}, {{ project.city }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.construction_status }} | {{ project.propert_type }} | Land Parcel: {{ project.land_parce|default:"N/A" }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.get_configuration_summary }}
+      </p>
+      <p class="text-gray-700 text-sm mb-2 font-medium">Price: {{ project.get_price_range }}</p>
+      <p class="text-gray-600 text-sm mb-3">Possession: {{ project.possession_month }}, {{ project.possession_year }}</p>
+      <a href="{{ project.get_absolute_url }}" class="text-orange-500 font-semibold underline">View Details →</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="text-center text-gray-500 py-10">No projects found.</div>
+  {% endfor %}
+</div>
+
+
+<!-- ✅ Grid View -->
+<!-- ✅ Grid View (Dynamic Django Version) -->
+<div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+
+  {% for project in projects %}
+  <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+    
+    {% if project.image %}
+    <img src="{{ project.image.url }}" class="w-full h-48 object-cover rounded" alt="{{ project.project_name }}"style="height: 250px;">
+    {% else %}
+    <img src="{% static 'images/no-images.jpg' %}" class="w-full h-48 object-cover rounded" alt="No Image"style="height: 250px;">
+    {% endif %}
+
+    <div class="mt-4">
+      <h2 class="text-xl font-semibold text-gray-800">{{ project.project_name }}</h2>
+      <p class="text-sm text-gray-500 mb-2">
+        <i class="fas fa-map-marker-alt text-orange-500"></i> {{ project.locality }}, {{ project.city }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.construction_status }} | {{ project.propert_type.name }} | Land Parcel: {{ project.land_parce|default:"N/A" }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.get_configuration_summary }}
+      </p>
+      <p class="text-gray-700 text-sm mb-2 font-medium">Price: {{ project.get_price_range }}</p>
+      <p class="text-gray-600 text-sm mb-3">
+        Possession: {{ project.possession_month }}, {{ project.possession_year }}
+      </p>
+
+      <a href="{{ project.get_absolute_url }}" 
+         class="inline-block mt-2 text-sm text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded transition">
+         View Details
+      </a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
+  {% endfor %}
+</div>
+
+
+<!-- Pagination Section -->
+{% if projects.has_other_pages %}
+<nav class="flex justify-center mt-10">
+  <ul class="flex items-center gap-2 text-gray-700">
+
+    {% if projects.has_previous %}
+      <li>
+        <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
+           class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
+      </li>
+    {% else %}
+      <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
+    {% endif %}
+
+    {% for num in projects.paginator.page_range %}
+      {% if num == projects.number %}
+        <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
+      {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+        <li>
+          <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
+             class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if projects.has_next %}
+      <li>
+        <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
+           class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
+      </li>
+    {% else %}
+      <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
+    {% endif %}
+
+  </ul>
+</nav>
+{% endif %}
+
+
+<!-- ✅ JS Toggle -->
+<script>
+  const listViewBtn = document.getElementById("listViewBtn");
+  const gridViewBtn = document.getElementById("gridViewBtn");
+  const listView = document.getElementById("listView");
+  const gridView = document.getElementById("gridView");
+
+  listViewBtn.addEventListener("click", () => {
+    listView.classList.remove("hidden");
+    gridView.classList.add("hidden");
+
+    listViewBtn.classList.add("bg-orange-500", "text-white");
+    listViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+    gridViewBtn.classList.remove("bg-orange-500", "text-white");
+    gridViewBtn.classList.add("bg-gray-200", "text-gray-700");
+  });
+
+  gridViewBtn.addEventListener("click", () => {
+    gridView.classList.remove("hidden");
+    listView.classList.add("hidden");
+
+    gridViewBtn.classList.add("bg-orange-500", "text-white");
+    gridViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+    
+    listViewBtn.classList.remove("bg-orange-500", "text-white");
+    listViewBtn.classList.add("bg-gray-200", "text-gray-700");
+  });
+</script>
+
+
+
+
+    <!-- ✅ Repeat more project cards like above (they’ll stack nicely on mobile) -->
+
+  </div>
+
+
+
+
+
+
+  <!-- Right Side - Sidebar -->
+  <aside class="space-y-6 md:hidden hidden lg:block">
+
+    <!-- Advanced Search -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-4 text-lg">ADVANCED SEARCH</h3>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>For Sale</option>
+        <option>For Rent</option>
+      </select>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>Types</option>
+        <option>Residential</option>
+        <option>Commercial</option>
+      </select>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>Property Types</option>
+        <option>Apartment</option>
+        <option>Villa</option>
+        <option>Plot</option>
+      </select>
+      <input type="text" placeholder="Location" class="w-full border px-3 py-2 rounded mb-3 text-sm">
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+          <option>BHK</option>
+          <option>1 BHK</option>
+          <option>2 BHK</option>
+          <option>3 BHK</option>
+        </select>
+        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+          <option>Transaction</option>
+          <option>New</option>
+          <option>Resale</option>
+        </select>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <input type="text" placeholder="Min Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+        <input type="text" placeholder="Max Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+      </div>
+      <label class="block text-sm text-gray-600 mb-1">Area</label>
+      <input type="range" min="0" max="1000000" value="2000" class="w-full accent-orange-500">
+      <div class="flex justify-between text-xs text-gray-600 mb-3">
+        <span>0 Sq.ft</span>
+        <span>1000000 Sq.ft</span>
+      </div>
+      <a href="#" class="text-orange-600 text-sm font-semibold block mb-4">+ Show More Options</a>
+      <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">SEARCH</button>
+    </div>
+
+    <!-- Popular Category -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">POPULAR CATEGORY</h3>
+      <p class="text-gray-600 text-sm flex justify-between">Residential Apartment <span>(14)</span></p>
+    </div>
+
+    <!-- Recent Properties -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">RECENT PROPERTIES</h3>
+      <div class="space-y-3 text-sm">
+        <div class="flex gap-3">
+          <img src="https://dummyimage.com/80x60/aaaaaa/000000" class="w-20 h-14 object-cover rounded">
+          <div>
+            <p class="text-orange-600">700 Sq.Ft. 2 BHK Apartment</p>
+            <p class="text-gray-600">₹65.00 Th</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <img src="https://dummyimage.com/80x60/cccccc/000000" class="w-20 h-14 object-cover rounded">
+          <div>
+            <p class="text-orange-600">610 Sq.Ft. 2 BHK Apartment</p>
+            <p class="text-gray-600">₹70.00 Th</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Helping Center -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">HELPING CENTER</h3>
+      <p class="text-gray-700 text-sm mb-2"><strong>Address</strong><br> {{ settings_obj.address}}</p>
+      <p class="text-gray-700 text-sm"><strong>Phone</strong><br> {{ settings_obj.phone}}</p>
+    </div>
+
+  </aside>
+</div>
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+
+{% endblock %}
+
+

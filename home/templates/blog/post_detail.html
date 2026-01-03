@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 py-10">
+  <article>
+    <h1 class="text-4xl font-bold">{{ post.title }}</h1>
+    <p class="text-sm text-gray-500">By {{ post.author }} · {{ post.publish_date|date:"M d, Y" }} · {{ post.views }} views</p>
+
+    {% if post.featured_image %}
+      <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-72 object-cover rounded mt-4">
+    {% endif %}
+
+    <div class="mt-6 prose">
+      {{ post.content|linebreaks }}
+    </div>
+
+    <div class="mt-6">
+      <strong>Category:</strong> {% if post.category %}<a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a>{% else %}—{% endif %}
+      <br>
+      <strong>Tags:</strong>
+      {% for tag in post.tags.all %}
+        <a class="inline-block px-2 py-1 border rounded text-sm mr-1" href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
+      {% empty %}
+        —
+      {% endfor %}
+    </div>
+  </article>
+
+  <section class="mt-12">
+    <h3 class="text-2xl font-semibold mb-4">Comments ({{ comments.count }})</h3>
+    <div class="space-y-4">
+      {% for c in comments %}
+        <div class="border p-3 rounded">
+          <p class="text-sm text-gray-700"><strong>{{ c.name }}</strong> · {{ c.created_at|date:"M d, Y H:i" }}</p>
+          <div class="mt-2">{{ c.body|linebreaks }}</div>
+        </div>
+      {% empty %}
+        <p>No comments yet. Be the first to comment.</p>
+      {% endfor %}
+    </div>
+
+    <div class="mt-6">
+      <h4 class="text-xl font-semibold">Leave a Comment</h4>
+      <form action="{% url 'blog:post_comment' post.slug %}" method="post" class="space-y-3 mt-3">
+        {% csrf_token %}
+        {{ comment_form.non_field_errors }}
+        <div>
+          {{ comment_form.name.label_tag }}<br>
+          {{ comment_form.name }}
+          {{ comment_form.name.errors }}
+        </div>
+        <div>
+          {{ comment_form.email.label_tag }}<br>
+          {{ comment_form.email }}
+          {{ comment_form.email.errors }}
+        </div>
+        <div>
+          {{ comment_form.body.label_tag }}<br>
+          {{ comment_form.body }}
+          {{ comment_form.body.errors }}
+        </div>
+        <button class="px-4 py-2 bg-orange-500 text-white rounded">Post Comment</button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}

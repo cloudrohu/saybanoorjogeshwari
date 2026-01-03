@@ -1,0 +1,226 @@
+{% load static %}
+
+
+  <!-- ====================== -->
+  <!-- DESKTOP VIEW -->
+  <!-- ====================== -->
+  <div class="hidden md:block">
+    <header class="flex justify-between items-center px-8 py-4 bg-[#000428]/80 backdrop-blur-md">
+      <div class="flex items-center gap-2">
+        <img src="https://www.squareyards.com/images/sy-logo.svg" alt="logo" class="h-8">
+        <span class="font-bold text-xl">RealEstatePro</span>
+      </div>
+
+      <nav class="flex gap-8 text-sm font-medium">
+        <a href="#" class="hover:text-[#00E0FF] transition">Buy</a>
+        <a href="#" class="hover:text-[#00E0FF] transition">Rent</a>
+        <a href="#" class="hover:text-[#00E0FF] transition">Projects</a>
+        <a href="#" class="hover:text-[#00E0FF] transition">PG / Hostels</a>
+        <a href="#" class="hover:text-[#00E0FF] transition">Plot & Land</a>
+        <a href="#" class="hover:text-[#00E0FF] transition">Commercial</a>
+        <a href="#" class="hover:text-[#00E0FF] transition">Agents</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <button class="bg-[#00E0FF] text-black px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+          Sell / Rent Property
+        </button>
+        <!-- FLOATING CHAT BUTTON -->
+<button id="chatToggle"
+  class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition z-50">
+  💬
+</button>
+
+<!-- CHAT WINDOW -->
+<div id="chatWindow"
+  class="hidden fixed bottom-20 right-6 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+
+  <!-- Header -->
+  <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
+    <h3 class="font-semibold">Live Chat</h3>
+    <button id="chatClose" class="text-white text-xl">&times;</button>
+  </div>
+
+  <!-- Messages Area -->
+  <div class="p-4 h-64 overflow-y-auto bg-gray-50 text-sm" id="chatMessages">
+    <p class="text-gray-500 text-center">Start the conversation...</p>
+  </div>
+
+  <!-- Input -->
+  <div class="border-t p-3 flex items-center gap-2">
+    <input id="chatInput" type="text" placeholder="Type a message..."
+      class="w-full border px-3 py-2 rounded-lg text-sm focus:outline-none">
+    <button id="sendBtn" class="bg-blue-600 text-white px-3 py-2 rounded-lg">Send</button>
+  </div>
+</div>
+
+<script>
+  const chatToggle = document.getElementById("chatToggle");
+  const chatWindow = document.getElementById("chatWindow");
+  const chatClose = document.getElementById("chatClose");
+  const sendBtn = document.getElementById("sendBtn");
+  const chatInput = document.getElementById("chatInput");
+  const chatMessages = document.getElementById("chatMessages");
+
+  // Open / Close Chat
+  chatToggle.onclick = () => chatWindow.classList.toggle("hidden");
+  chatClose.onclick = () => chatWindow.classList.add("hidden");
+
+  // Send message
+  sendBtn.onclick = () => {
+    let text = chatInput.value.trim();
+    if (!text) return;
+
+    let msg = document.createElement("p");
+    msg.className = "bg-blue-100 p-2 rounded-lg mb-2";
+    msg.innerText = text;
+    chatMessages.appendChild(msg);
+
+    chatInput.value = "";
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  };
+</script>
+
+      </div>
+    </header>
+
+    <!-- Search Section -->
+    <section class="relative flex flex-col items-center justify-center text-center text-white h-[500px] bg-cover bg-center bg-no-repeat"
+  style="background-image: url('{% static "images/central-mumbai.jpeg" %}');">
+      <h1 class="text-3xl md:text-4xl font-bold mb-2">India's Largest Real Estate Platform</h1>
+      <p class="text-gray-300 mb-6">We’ve got you covered! From finding the perfect property to <span class="text-pink-400">Transactions</span></p>
+
+      <div class="bg-white w-[90%] md:w-[75%] rounded-2xl p-4 shadow-xl text-gray-900">
+        <div class="flex flex-wrap items-center gap-2 border-b pb-2 mb-4">
+          <button class="px-4 py-2 rounded-md bg-gray-200 font-semibold text-blue-700">Buy</button>
+          <button class="px-4 py-2 rounded-md hover:bg-gray-100">Rental</button>
+          <button class="px-4 py-2 rounded-md hover:bg-gray-100">Projects</button>
+          <button class="px-4 py-2 rounded-md hover:bg-gray-100">PG / Co-living</button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <select class="border rounded-md px-3 py-2 w-40">
+            <option>Residenti</option>
+            <option>Pune</option>
+            <option>Delhi</option>
+          </select>
+
+          <input type="text" placeholder="Search by Project, Locality, or Builder"
+            class="flex-grow border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+
+          <select class="border rounded-md px-3 py-2">
+            <option>Budget</option>
+            <option>₹10L - ₹50L</option>
+            <option>₹50L - ₹1Cr</option>
+          </select>
+
+          <select class="border rounded-md px-3 py-2">
+            <option>Property Type</option>
+            <option>1 BHK</option>
+            <option>2 BHK</option>
+          </select>
+
+          <select class="border rounded-md px-3 py-2">
+            <option>Possession Status</option>
+            <option>Ready to Move</option>
+            <option>Under Construction</option>
+          </select>
+
+          <button class="bg-green-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-600 transition">
+            Search
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ====================== -->
+  <!-- MOBILE VIEW -->
+  <!-- ====================== -->
+  <div class="md:hidden">
+    <!-- Top Navbar -->
+    <header class="flex items-center justify-between px-4 py-3 bg-black/80 backdrop-blur-md">
+      <div class="flex items-center gap-2">
+        <button>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+        <img src="https://www.squareyards.com/images/sy-logo.svg" alt="logo" class="h-6">
+        <span class="ml-1 font-semibold text-sm">Navi Mumbai ▾</span>
+      </div>
+      <button class="border border-green-400 px-3 py-1 text-green-400 rounded-lg text-sm hover:bg-green-400 hover:text-black transition">
+        Sell / Rent
+      </button>
+    </header>
+
+
+
+<!-- ===================== -->
+<!-- REAL ESTATE HERO SECTION -->
+<!-- ===================== -->
+<section class="relative flex flex-col items-center justify-center text-center text-white h-[400px] bg-cover bg-center bg-no-repeat overflow-hidden"
+  style="background-image: url('{% static "images/central-mumbai.jpeg" %}');">
+
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <!-- CONTENT -->
+  <div class="relative z-10 w-full px-4 sm:px-6 md:px-10">
+    <h2 class="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">Real Estate Made Real Easy</h2>
+    <p class="text-gray-300 mb-6 text-sm md:text-base">
+      We’ve got you covered! From finding the perfect property to 
+      <span class="text-pink-400 font-semibold">Interiors</span>
+    </p>
+
+    <!-- ✅ Tabs Row (Fixed layout) -->
+    <div class="flex justify-center gap-1 mt-4 whitespace-nowrap overflow-x-auto scrollbar-hide">
+      <button class="bg-white text-black px-3 py-2 rounded-md font-semibold hover:bg-gray-100 transition">Buy</button>
+      <button class="bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070] transition">Rental</button>
+      <button class="bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070] transition">PG / Co-living</button>
+      <button class="bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070] transition">Projects</button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="flex items-center bg-white mx-auto mt-6 rounded-full px-4 py-2 text-gray-700 shadow-lg max-w-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-4.35-4.35M11 6a5 5 0 100 10 5 5 0 000-10z" />
+      </svg>
+      <input type="text" placeholder="Search by Project, Locality, or Builder"
+        class="flex-grow outline-none text-sm bg-transparent" />
+      <div class="flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-400 cursor-pointer" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4l3 3m9 0A9 9 0 116 21a9 9 0 0118 0z" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-400 cursor-pointer" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 1a3 3 0 00-3 3v6a3 3 0 006 0V4a3 3 0 00-3-3zM19 10v1a7 7 0 01-14 0v-1m7 9v4m-4 0h8" />
+        </svg>
+      </div>
+    </div>
+
+    <p class="text-center text-sm mt-3 text-gray-200">
+      Search by 🚗 <span class="underline font-semibold text-yellow-300">commute</span>
+    </p>
+  </div>
+</section>
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+
+
+
+
+
+

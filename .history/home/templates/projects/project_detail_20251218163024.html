@@ -1,0 +1,2461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/projects_details.css">
+    <script src="assets/js/projects_details.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}
+</title>
+
+
+</head>
+
+<style>
+
+  iframe{
+    width: 100%;
+  }
+</style>
+    <body>
+
+  <!-- ======================== TOP HEADER ======================== -->
+<header class="w-full bg-white border-b sticky top-0 z-[999]">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 bg-white">
+
+        <!-- LOGO -->
+        <a href="#" class="flex items-center gap-2">
+            <img src="https://housiey.com/_next/static/media/logo.dfea690a.svg" 
+                 class="w-36" alt="Cloud Rohu Logo">
+        </a>
+
+        <!-- CITY DROPDOWN -->
+        <button class="flex items-center gap-1 bg-gray-100 px-3 py-2 rounded text-sm text-gray-700 hover:bg-gray-200">
+            <i class="fa-solid fa-location-dot text-blue-700"></i>
+            <span>Mumbai</span>
+            <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+        </button>
+
+        <!-- SEARCH BAR -->
+        <div class="hidden md:flex flex-1">
+            <div class="flex w-full bg-gray-100 rounded-lg overflow-hidden">
+                <input type="text" 
+                       placeholder="Search for Project, locality or builder"
+                       class="flex-1 px-4 py-2 bg-gray-100 outline-none text-gray-700" />
+                <button class="px-4 bg-[#133B5C] flex items-center justify-center text-white">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- WISHLIST -->
+        <button class="relative text-gray-700 hover:text-red-600">
+            <i class="fa-regular fa-heart text-xl"></i>
+            <span class="absolute -top-1 -right-2 bg-red-500 text-white 
+                         text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                0
+            </span>
+        </button>
+
+        <!-- SIGN IN BUTTON -->
+        <button class="hidden md:flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm hover:bg-green-200">
+            <i class="fa-regular fa-user"></i>
+            Sign in
+        </button>
+
+        <!-- MOBILE MENU TOGGLE -->
+        <button class="ml-auto text-gray-700 text-2xl md:hidden">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- MOBILE SEARCH -->
+    <div class="px-4 pb-3 md:hidden">
+        <div class="flex w-full bg-gray-100 rounded-lg overflow-hidden">
+            <input type="text" 
+                   placeholder="Search for Project, locality or builder"
+                   class="flex-1 px-4 py-2 bg-gray-100 outline-none text-gray-700" />
+            <button class="px-4 bg-[#133B5C] flex items-center justify-center text-white">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- ================= PROJECT HEADER ================= -->
+<section class="border-b bg-white">
+<div class="max-w-6xl mx-auto px-4 py-4 lg:py-6 sticky top-0 z-[999]">
+
+    <!-- BREADCRUMB -->
+    <nav class="text-xs sm:text-sm text-gray-500 flex flex-wrap gap-1 mb-3">
+        <a href="/" class="hover:underline">Home</a>
+        <span>/</span>
+
+        <a href="#" class="hover:underline">{{ project.city }}</a>
+        <span>/</span>
+
+        <a href="#" class="hover:underline">
+            New Projects in {{ project.city }}
+        </a>
+        <span>/</span>
+
+        <a href="#" class="hover:underline">
+            {{ project.locality }}
+        </a>
+        <span>/</span>
+
+        <span class="text-gray-700 font-medium">
+            {{ project.project_name }}
+        </span>
+    </nav>
+
+    <!-- MAIN ROW -->
+    <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-6">
+
+        <!-- LEFT: TITLE + ADDRESS -->
+        <div class="flex-1">
+            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
+                {{ project.project_name }}
+            </h1>
+
+            <p class="text-sm sm:text-base text-gray-700">
+                Flats by
+                <span class="text-orange-500 font-semibold">
+                    {{ project.developer }}
+                </span>
+                at {{ project.locality }}, {{ project.city }}
+            </p>
+
+            <!-- RERA TAGS -->
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+
+                {% if project.rera.exists %}
+                <span class="inline-flex items-center gap-2 text-xs sm:text-sm border px-3 py-1.5 bg-white text-gray-700">
+                    <i class="fa-solid fa-check-double text-green-500"></i>
+                    RERA Registered
+                </span>
+                {% endif %}
+
+                {% for r in project.rera.all %}
+                <span class="inline-flex items-center gap-2 text-xs sm:text-sm border px-3 py-1.5 bg-white text-gray-700">
+                    {{ r.registration_no }}
+                </span>
+                {% endfor %}
+
+                
+
+                <span class="inline-flex items-center gap-2 text-xs sm:text-sm border px-3 py-1.5 bg-white text-gray-700">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                    No Brokerage
+                </span>
+
+            </div>
+        </div>
+
+        <!-- RIGHT: PRICE + BUTTONS (DESKTOP) -->
+        <div class="lg:text-right flex flex-col items-start lg:items-end gap-3">
+
+            <!-- PRICE -->
+            <div class="hidden md:block">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Price</p>
+                <p class="text-xl sm:text-2xl font-semibold text-gray-900">
+                    {{ project.priceing }}
+                </p>
+                <p class="text-xs text-gray-500">Onwards</p>
+            </div>
+
+            <!-- BUTTONS DESKTOP -->
+            <div class="hidden lg:flex items-center gap-2 mt-1">
+
+                <!-- wishlist -->
+                <button class="w-9 h-9 flex items-center justify-center border text-gray-600 hover:bg-gray-50">
+                    <i class="fa-regular fa-heart text-sm"></i>
+                </button>
+
+                <!-- share -->
+                <button class="w-9 h-9 flex items-center justify-center border text-gray-600 hover:bg-gray-50">
+                    <i class="fa-solid fa-arrow-up-from-bracket text-sm"></i>
+                </button>
+
+                <!-- brochure -->
+                <a href="#" class="inline-flex items-center gap-2 border px-4 h-9 text-sm text-gray-700 hover:bg-gray-50">
+                    <i class="fa-solid fa-download text-xs"></i>
+                    Brochure
+                </a>
+
+                <!-- contact seller -->
+                <a href="#enquiry"
+                   class="inline-flex items-center justify-center px-5 h-9 text-sm font-semibold bg-orange-500 hover:bg-orange-600 text-white">
+                    Contact Seller
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE BUTTON BAR -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-3 flex items-center gap-2 sm:hidden z-50">
+
+        <!-- Wishlist -->
+        <button class="w-10 h-10 flex items-center justify-center border text-gray-600">
+            <i class="fa-regular fa-heart text-lg"></i>
+        </button>
+
+        <!-- Share -->
+        <button class="w-10 h-10 flex items-center justify-center border text-gray-600">
+            <i class="fa-solid fa-arrow-up-from-bracket text-lg"></i>
+        </button>
+
+        <!-- Brochure -->
+        <a href="#" class="flex-1 h-10 flex items-center justify-center gap-2 border text-gray-700 font-medium">
+            <i class="fa-solid fa-download text-sm"></i>
+            Brochure
+        </a>
+
+        <!-- Contact Seller -->
+        <a href="#enquiry"
+           class="flex-1 h-10 flex items-center justify-center text-white font-semibold bg-orange-500 hover:bg-orange-600">
+            Contact Seller
+        </a>
+
+    </div>
+
+</div>
+</section>
+
+
+
+
+
+
+<SECTION-FIRST>
+        <!-- IMAGES  -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+
+        <!-- LEFT BIG IMAGE -->
+        <div class="md:col-span-2 relative border border-gray-200">
+        {% if project.image %}
+        <img src="{{ project.image.url }}"
+             class="w-full h-[530px] object-cover cursor-pointer gallery-img"
+             data-index="0">
+        {% endif %}
+    </div>
+
+        <!-- RIGHT SIDE SMALL IMAGES -->
+        <div class="flex flex-col gap-4 hidden md:block">
+
+        {% with images=project.gallery.all %}
+        {% if images|length > 0 %}
+        <div class="relative">
+            <img src="{{ images.0.image.url }}"
+                 class="w-full h-[260px] object-cover cursor-pointer gallery-img"
+                 data-index="1">
+        </div>
+        {% endif %}
+
+        {% if images|length > 1 %}
+        <div class="relative">
+            <img src="{{ images.1.image.url }}"
+                 class="w-full h-[260px] object-cover cursor-pointer gallery-img opacity-90"
+                 data-index="2">
+
+            {% if images|length > 2 %}
+            <div class="absolute inset-0 bg-black/40 flex items-center justify-center
+            text-white text-lg font-medium cursor-pointer view-all-btn">
+                View all images
+            </div>
+
+
+            {% endif %}
+        </div>
+        {% endif %}    
+
+        {% endwith %}
+
+    </div>
+
+    </div>
+
+            <!-- POPUP -->
+                <div id="popup" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999] backdrop-blur-sm transition">
+
+                    <!-- CLOSE BUTTON -->
+                    <button id="closeBtn"
+                        class="absolute top-5 right-5 text-white text-4xl font-light hover:scale-110 transition">
+                        ✕
+                    </button>
+
+                    <!-- PREV -->
+                    <button id="prevBtn"
+                        class="absolute left-6 text-white text-5xl hover:scale-110 transition select-none">
+                        ❮
+                    </button>
+
+                    <!-- NEXT -->
+                    <button id="nextBtn"
+                        class="absolute right-6 text-white text-5xl hover:scale-110 transition select-none">
+                        ❯
+                    </button>
+
+                    <!-- CENTER IMAGE -->
+                    <img id="popupImg" class="max-h-[90vh] max-w-[90vw] rounded-no shadow-2xl transition">
+                </div>
+
+        <br>
+
+    <style>
+    /* small improvements for popup */
+    #popup {
+        animation: fadeIn 0.18s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+    /* make overlay clickable but closeBtn stays clickable */
+    #popup .popup-inner {
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+
+    /* optional: prevent image selection when dragging */
+    #popupImg { user-select: none; -webkit-user-drag: none; }
+    </style>
+
+    <script>
+        (function(){
+        // --- elements ---
+        const imgs = Array.from(document.querySelectorAll("img.gallery-img"));
+
+        
+        const popup = document.getElementById("popup");
+        const popupImg = document.getElementById("popupImg");
+        const closeBtn = document.getElementById("closeBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+        const tabsNav = document.getElementById("tabsNav");
+        const viewAllBtn = document.querySelector(".view-all-btn");
+        if (viewAllBtn) {
+            viewAllBtn.addEventListener("click", () => {
+                openAt(0); // first image se popup open
+            });
+        }
+
+
+        if (!popup || imgs.length === 0) return; // nothing to do
+
+        let current = 0;
+        let scrollBarWidth = 0;
+
+        // utility: lock / unlock scroll (safe)
+        function lockScroll() {
+            // compute scrollbar width to avoid layout jump
+            scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollBarWidth > 0) {
+            document.documentElement.style.paddingRight = scrollBarWidth + 'px';
+            document.body.style.paddingRight = scrollBarWidth + 'px';
+            }
+            // use fixed to avoid double scroll on iOS/mobile
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('popup-open');
+        }
+
+        function unlockScroll() {
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+            document.documentElement.style.paddingRight = '';
+            document.body.style.paddingRight = '';
+            document.body.classList.remove('popup-open');
+        }
+
+        // open popup at index
+        function openAt(index) {
+            current = ((index % imgs.length) + imgs.length) % imgs.length; // safe wrap
+            popupImg.src = imgs[current].src;
+            popup.classList.remove('hidden');
+            popup.classList.add('flex');
+            lockScroll();
+
+            // hide nav if present
+            if (tabsNav) tabsNav.style.display = 'none';
+            // focus for keyboard
+            closeBtn.focus();
+        }
+
+        // close popup
+        function closePopup() {
+            popup.classList.remove('flex');
+            popup.classList.add('hidden');
+            unlockScroll();
+            if (tabsNav) tabsNav.style.display = '';
+        }
+
+        // image click to open
+        imgs.forEach((img, idx) => {
+            img.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAt(idx);
+            });
+        });
+
+        // next / prev handlers
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
+        });
+
+        // close button
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePopup();
+        });
+
+        // click on overlay (but ignore clicks on image or controls)
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) closePopup();
+        });
+
+        // keyboard support: Esc to close, Arrow keys to navigate
+        document.addEventListener('keydown', (e) => {
+            if (popup.classList.contains('hidden')) return;
+
+            if (e.key === 'Escape') {
+            closePopup();
+            } else if (e.key === 'ArrowRight') {
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+            } else if (e.key === 'ArrowLeft') {
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
+            }
+        });
+
+        // defensive: if images change dynamically, update list (optional)
+        // MutationObserver could be added here if needed.
+
+        })();
+    </script>
+
+
+
+   
+</SECTION-FIRST>
+
+
+<THIRD-SECTION id="tabsNav">
+    <div class="w-full border-t border-b bg-white sticky top-[60px] z-50">
+
+
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+        <!-- LEFT ARROW -->
+        <button id="navLeft" class="p-2 border  bg-white shadow-sm text-gray-700">
+        <span class="text-xl">&lt;</span>
+        </button>
+
+        <!-- SCROLLABLE NAV -->
+        <div id="navScroll" class="flex-1 overflow-x-auto mx-4 no-scrollbar">
+        <div class="flex items-center gap-10 whitespace-nowrap text-gray-700 font-medium py-4">
+
+            <a href="#overview" class="nav-link active">Overview</a>
+            <a href="#pricing" class="nav-link">Pricing & Unit Plans</a>
+            <a href="#location" class="nav-link">Location</a>
+            <a href="#video" class="nav-link"> Video</a>
+
+            <a href="#amenities" class="nav-link">Amenities</a>
+            <a href="#floorplan" class="nav-link">Floor Plan</a>
+            <a href="#paymentscheme" class="nav-link">Payment Scheme</a>
+            <a href="#bank_offers" class="nav-link">Bank</a>
+
+            <a href="#emi_calculator" class="nav-link">EMI Calculator</a>
+            <a href="#about_developer" class="nav-link">About Developer</a>
+            <a href="#faqs" class="nav-link">Faq's</a>
+
+
+        </div>
+        </div>
+
+        <!-- RIGHT ARROW -->
+        <button id="navRight" class="p-2 border  bg-white shadow-sm text-gray-700">
+        <span class="text-xl">&gt;</span>
+        </button>
+
+    </div>
+    </div>
+    <script>
+    const navLinks = document.querySelectorAll(".nav-link");
+    const navScroll = document.getElementById("navScroll");
+    const navLeft = document.getElementById("navLeft");
+    const navRight = document.getElementById("navRight");
+
+    // ACTIVE TAB CHANGE
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+        document.querySelector(".nav-link.active")?.classList.remove("active");
+        link.classList.add("active");
+
+        // center the active tab smoothly
+        const linkPos = link.offsetLeft - navScroll.offsetWidth / 2 + link.offsetWidth / 2;
+        navScroll.scrollTo({ left: linkPos, behavior: "smooth" });
+        });
+    });
+
+    // SCROLL BUTTONS
+    navLeft.addEventListener("click", () => {
+        navScroll.scrollBy({ left: -200, behavior: "smooth" });
+    });
+
+    navRight.addEventListener("click", () => {
+        navScroll.scrollBy({ left: 200, behavior: "smooth" });
+    });
+    /* ============================================
+    🔥 AUTO ACTIVE TAB ON SCROLL (Improved Logic)
+        =============================================== */
+        const sections = document.querySelectorAll(
+        "#overview, #configurations, #amenities, #locality, #price, #payment, #bank_offers, #developer"
+        );
+
+        let activeSection = null;
+
+        window.addEventListener("scroll", () => {
+        let scrollPos = window.scrollY + 150; // navbar height adjustment
+
+        sections.forEach(section => {
+            if (
+            scrollPos >= section.offsetTop &&
+            scrollPos < section.offsetTop + section.offsetHeight
+            ) {
+            const id = section.getAttribute("id");
+
+            if (activeSection !== id) {
+                activeSection = id;
+
+                // remove old active
+                document.querySelector(".nav-link.active")?.classList.remove("active");
+
+                // add active to new tab
+                const newActive = document.querySelector(`.nav-link[href="#${id}"]`);
+                if (newActive) {
+                newActive.classList.add("active");
+
+                // auto center tab
+                const linkPos =
+                    newActive.offsetLeft -
+                    navScroll.offsetWidth / 2 +
+                    newActive.offsetWidth / 2;
+
+                navScroll.scrollTo({ left: linkPos, behavior: "smooth" });
+                }
+            }
+            }
+        });
+        });
+
+    </script>
+
+</THIRD-SECTION>
+
+<script>
+
+
+  const tabsNav = document.getElementById("tabsNav");
+
+    // show popup
+    imgs.forEach((img, index) => {
+        img.addEventListener("click", () => {
+            current = index;
+            popupImg.src = img.src;
+            popup.classList.remove("hidden");
+            popup.classList.add("flex");
+            tabsNav.style.display = "none";   // 🔥 HIDE NAV WHEN POPUP OPENS
+        });
+    });
+
+    // close popup
+    document.getElementById("closeBtn").onclick = () => {
+        popup.classList.add("hidden");
+        tabsNav.style.display = "block";      // 🔥 SHOW NAV AGAIN
+    };
+
+</script>
+
+
+
+
+<!-- ===================== OVERVIEW BOX ===================== -->
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="overview">
+    <div class="bg-[#e8eff5] border rounded-t-lg px-5 py-3 flex items-center justify-between">
+        <h2 class="text-xl font-semibold">{{ project.project_name }} Overview</h2>
+
+
+
+         {% if project.rera.first.document %}
+         
+        <a href="{{ project.rera.first.document.url }}"
+           class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded"
+           download>
+            Brochure
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+            </svg>
+        </a>
+        {% endif %}
+
+        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
+            Brochure
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+
+        <!-- GRID CARDS -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <!-- Card 1 -->
+            <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+                <p class="text-green-600 font-semibold text-lg">{{ project.land_parce }}</p>
+                <p class="text-gray-600 text-sm">Land Parcel</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+                <p class="font-semibold text-lg">{{ project.floor }}</p>
+                <p class="text-gray-600 text-sm">Towers</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+                <p class="font-semibold text-lg">{{ project.floor }}</p>
+                <p class="text-gray-600 text-sm">Floors</p>
+            </div>
+
+            <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+                <p class="font-semibold text-lg">
+                    {% for bhk in project.bhk_type %}
+                        {{ bhk|cut:" BHK" }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %} BHK
+                </p>
+                <p class="text-gray-600 text-sm">Config</p>
+            </div>
+
+
+            <!-- Card 5 : RERA Number -->
+            <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+                {% if project.rera.first.registration_no %}
+                    <p class="font-semibold text-lg">
+                        {{ project.rera.first.registration_no }}
+                    </p>
+                {% else %}
+                    <p class="font-semibold text-lg text-gray-400">
+                        NA
+                    </p>
+                {% endif %}
+                <p class="text-gray-600 text-sm">RERA No.</p>
+            </div>
+
+
+            <!-- Card 6 -->
+            <!-- Card 6 : Carpet Area -->
+            <!-- Card 6 : Carpet Area (MIN–MAX) -->
+        <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+            <p class="font-semibold text-lg">
+                {{ project.get_carpet_area_range }}
+            </p>
+            <p class="text-gray-600 text-sm">Carpet Area</p>
+        </div>
+
+
+        <!-- Card 7 : Target Possession -->
+        <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+            <p class="font-semibold text-lg">
+                {{ project.possession_month }} {{ project.possession_year }}
+            </p>
+            <p class="text-gray-600 text-sm">Target Possession</p>
+        </div>
+
+        <!-- Card 8 : RERA Possession -->
+        <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
+            <p class="font-semibold text-lg">
+                {{ project.possession_month }} {{ project.possession_year }}
+            </p>
+            <p class="text-gray-600 text-sm">RERA Possession</p>
+        </div>
+
+        </div>
+
+        <!-- ABOUT TEXT -->
+        <div class="mt-6">
+            <h3 class="font-semibold mb-2">
+                About {{ project.project_name }}
+            </h3>
+
+            {% with welcome=project.welcomes.first %}
+                {% if welcome %}
+
+                    <!-- SHORT TEXT -->
+                    <p class="text-gray-700 text-sm mb-2" id="aboutShort">
+                        {{ welcome.description|linebreaks }}
+                    </p>
+
+                    {% if welcome.read_more %}
+                        <!-- FULL TEXT -->
+                        <p class="text-gray-700 text-sm mb-2 hidden mt-2" id="aboutFull">
+                            {{ welcome.read_more|linebreaks }}
+                        </p>
+
+                        <button id="readMoreBtn" class="text-green-600 font-semibold text-sm">
+                            Read More...
+                        </button>
+                    {% endif %}
+
+                {% else %}
+                    <p class="text-gray-500 text-sm">
+                        About project information will be updated soon.
+                    </p>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+    </div>
+</section>
+
+
+
+
+<script>
+    document.getElementById("readMoreBtn").addEventListener("click", function () {
+        const shortText = document.getElementById("aboutShort");
+        const fullText = document.getElementById("aboutFull");
+
+        if (fullText.classList.contains("hidden")) {
+            fullText.classList.remove("hidden");
+            shortText.classList.add("hidden");
+            this.textContent = "Read Less...";
+        } else {
+            fullText.classList.add("hidden");
+            shortText.classList.remove("hidden");
+            this.textContent = "Read More...";
+        }
+    });
+</script>
+
+<!-- ========================================= -->
+<!-- 🔥 PRICING & UNIT PLANS SECTION -->
+<!-- ========================================= -->
+
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="pricing">
+
+    <!-- Header -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg flex items-center justify-between">
+        <h2 class="text-lg md:text-xl font-semibold">
+            Mahindra Marina 64 Pricing & Unit Plans
+        </h2>
+
+        <button id="openPricePopup" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
+            Price Sheet
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="bg-white border border-t-0 rounded-b-lg">
+
+        <!-- TABS -->
+        <div class="flex gap-6 px-5 pt-4 border-b">
+            <button class="tab-btn active text-green-700 font-semibold pb-2 border-b-2 border-green-700"
+                data-tab="tab-2bhk">
+                2BHK
+            </button>
+            <button class="tab-btn pb-2 text-gray-600" data-tab="tab-3bhk">
+                3BHK
+            </button>
+            <button class="tab-btn pb-2 text-gray-600" data-tab="tab-4bhk">
+                4BHK
+            </button>
+        </div>
+
+        <!-- ================= TAB 1 — 2BHK ================= -->
+        <div id="tab-2bhk" class="tab-content block p-5">
+
+            <div class="overflow-x-auto rounded-lg">
+
+                <table class="w-full border text-sm text-gray-700">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr class="text-center">
+                            <th class="border px-4 py-3">Carpet Area</th>
+                            <th class="border px-4 py-3">Price<br><span class="text-xs"></span></th>
+                            <th class="border px-4 py-3">Balcony<br><span class="text-xs"></span></th>
+                            <th class="border px-4 py-3">Parking</th>
+                            <th class="border px-4 py-3">Unit Plan</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!-- ROW 1 -->
+                        <tr class="text-center">
+                            <td class="border px-4 py-4">761 sqft</td>
+                            <td class="border px-4 py-4">2.75 Cr All In</td>
+                            <td class="border px-4 py-4">
+                                41.00 Lacs
+                                <button class="ml-2 bg-green-600 text-white px-3 py-1 rounded text-xs">EMI ▾</button>
+                            </td>
+                            <td class="border px-4 py-4">1</td>
+                            <td class="border px-4 py-4">
+                                <div class="relative w-28 h-20 mx-auto cursor-pointer">
+                                    <img src="https://via.placeholder.com/300x200?text=Plan"
+                                        class="w-full h-full rounded-lg object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M15 10l4.553-4.553a1 1 0 00-1.414-1.414L13.586 8.586M21 21l-6-6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- ROW 2 -->
+                        <tr class="text-center">
+                            <td class="border px-4 py-4">775 sqft</td>
+                            <td class="border px-4 py-4">2.81 Cr All In</td>
+                            <td class="border px-4 py-4">
+                                42.00 Lacs
+                                <button class="ml-2 bg-green-600 text-white px-3 py-1 rounded text-xs">EMI ▾</button>
+                            </td>
+                            <td class="border px-4 py-4">1</td>
+                            <td class="border px-4 py-4">
+                                <div class="relative w-28 h-20 mx-auto cursor-pointer">
+                                    <img src="https://via.placeholder.com/300x200?text=Plan"
+                                        class="w-full h-full rounded-lg object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M15 10l4.553-4.553a1 1 0 00-1.414-1.414L13.586 8.586M21 21l-6-6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- ================= TAB 2 — 3BHK ================= -->
+        <div id="tab-3bhk" class="tab-content hidden p-5">
+
+            <div class="overflow-x-auto rounded-lg">
+
+                <table class="w-full border text-sm text-gray-700">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr class="text-center">
+                            <th class="border px-4 py-3">Carpet Area</th>
+                            <th class="border px-4 py-3">All Inc. Price<br><span class="text-xs">(Inc. of Taxes & Charges)</span></th>
+                            <th class="border px-4 py-3">Min Downpayment<br><span class="text-xs">(Inc. Taxes)</span></th>
+                            <th class="border px-4 py-3">Parking</th>
+                            <th class="border px-4 py-3">Unit Plan</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!-- ROW 1 -->
+                        <tr class="text-center">
+                            <td class="border px-4 py-4">900 sqft</td>
+                            <td class="border px-4 py-4">3.75 Cr All In</td>
+                            <td class="border px-4 py-4">
+                                41.00 Lacs
+                                <button class="ml-2 bg-green-600 text-white px-3 py-1 rounded text-xs">EMI ▾</button>
+                            </td>
+                            <td class="border px-4 py-4">1</td>
+                            <td class="border px-4 py-4">
+                                <div class="relative w-28 h-20 mx-auto cursor-pointer">
+                                    <img src="https://via.placeholder.com/300x200?text=Plan"
+                                        class="w-full h-full rounded-lg object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M15 10l4.553-4.553a1 1 0 00-1.414-1.414L13.586 8.586M21 21l-6-6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- ROW 2 -->
+                        <tr class="text-center">
+                            <td class="border px-4 py-4">1200 sqft</td>
+                            <td class="border px-4 py-4">4.81 Cr All In</td>
+                            <td class="border px-4 py-4">
+                                42.00 Lacs
+                                <button class="ml-2 bg-green-600 text-white px-3 py-1 rounded text-xs">EMI ▾</button>
+                            </td>
+                            <td class="border px-4 py-4">1</td>
+                            <td class="border px-4 py-4">
+                                <div class="relative w-28 h-20 mx-auto cursor-pointer">
+                                    <img src="https://via.placeholder.com/300x200?text=Plan"
+                                        class="w-full h-full rounded-lg object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-30 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2" d="M15 10l4.553-4.553a1 1 0 00-1.414-1.414L13.586 8.586M21 21l-6-6" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <!-- ================= TAB 3 — 4BHK ================= -->
+        <div id="tab-4bhk" class="tab-content hidden p-5">
+            <p class="text-gray-600 text-center py-10">4BHK Pricing Table Coming Soon...</p>
+        </div>
+
+    </div>
+
+
+    <!-- PRICE SHEET POPUP -->
+    <div id="pricePopup" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[9999] transition duration-300">
+
+        <!-- MODAL BOX -->
+        <div class="bg-white w-96 rounded-2xl shadow-2xl p-7 relative animate-[fadeInScale_.25s_ease]">
+
+            <!-- CLOSE BTN -->
+            <button id="closePricePopup" 
+                class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-gray-800 transition">
+                ✕
+            </button>
+
+            <!-- Heading -->
+            <h2 class="text-2xl font-bold text-gray-900 mb-1 text-center">Enquiry For</h2>
+            <p class="text-green-600 font-semibold mb-6 text-center text-lg" id="projectTitle">
+                Project Name
+            </p>
+
+            <!-- FORM -->
+            <form id="priceForm" class="space-y-4">
+
+                <!-- Input Field -->
+                <div>
+                    <label class="text-gray-700 text-sm font-medium">Your Name</label>
+                    <input type="text" id="pName" placeholder="Enter your name"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:border-green-600 focus:ring-green-200 focus:ring-2 outline-none transition"
+                        required>
+                </div>
+
+                <div>
+                    <label class="text-gray-700 text-sm font-medium">Your Email</label>
+                    <input type="email" id="pEmail" placeholder="Enter your email"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:border-green-600 focus:ring-green-200 focus:ring-2 outline-none transition"
+                        required name="email">
+                </div>
+
+                <div>
+                    <label class="text-gray-700 text-sm font-medium">Phone Number</label>
+                    <input type="text" id="pPhone" placeholder="Enter phone number"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:border-green-600 focus:ring-green-200 focus:ring-2 outline-none transition"
+                        required name="phone">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+                    Download Price Sheet
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- ANIMATION -->
+    <style>
+    @keyframes fadeInScale {
+        0%   { opacity: 0; transform: scale(0.85); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    </style>
+
+
+</section>
+
+
+<!-- ===================== Location BOX ===================== -->
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px] grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6" id="location">
+
+    <!-- ===================== MIDDLE COLUMN ===================== -->
+    <div>
+
+        <!-- LOCATION HEADING -->
+        <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 rounded-t-lg border">Location</h2>
+
+        <div class="border border-t-0 rounded-b-lg p-5 bg-white">
+
+            <!-- MAP -->
+            <div class="border rounded-lg overflow-hidden" style="height: 350px; width: 100%;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.2056162297818!2d72.84950649999999!3d19.1862196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4a7ab8d67e5cd74b%3A0x5c693c8584c9ee0c!2sSigma%20Consultancy!5e0!3m2!1sen!2sin!4v1765095829683!5m2!1sen!2sin"
+                        width="600" height="450" style="border:0;" allowfullscreen loading="lazy"></iframe>
+            </div>
+
+            <br>
+
+            <!-- ADDRESS -->
+            <p class="text-gray-800 font-semibold text-sm mb-3">
+                Nr New Link Rd, Liberty Garden, Malad West, Mumbai
+            </p>
+
+             <ul class="grid grid-cols-1 md:grid-cols-2 gap-y-2 text-sm text-gray-800 pl-5 mb-4 list-disc">
+
+                <li>Malad West Metro Station - 500m</li>
+                <li>DMart - 850m</li>
+
+                <li>Malad Railway Station - 1.2km</li>
+                <li>Inorbit Mall - 1.5km</li>
+
+                <li>Link Road - 600m</li>
+                <li>Schools & Colleges Nearby</li>
+
+            </ul>
+
+
+
+        </div>
+
+        <!-- VIDEOS SECTION -->
+        <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 mt-6 rounded-t-lg border scroll-mt-[130px]">
+            Videos
+        </h2>
+
+        <div class="border border-t-0 rounded-b-lg p-5 bg-white" id="video">
+
+            <p class="text-green-600 font-semibold mb-3">Teaser</p>
+
+            <div class="relative w-full h-56 bg-black rounded-lg overflow-hidden">
+
+                <!-- VIDEO -->
+                <video id="teaserVideo" class="w-full h-full object-cover" preload="metadata">
+                    <source src="https://www.youtube.com/watch?v=VNdB9OrDKn8&t=1s" type="video/mp4">
+                </video>
+
+                <!-- Play Button -->
+                <div id="playBtn"
+                    class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition hover:bg-black/50">
+                    <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2FL%26T_Island_Cove_Elevation--1712469067411-img.webp&w=1080&q=75"
+                        class="w-14 opacity-90" />
+                </div>
+
+                <!-- CONTROLS -->
+                <div id="controls"
+                    class="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-4 py-2 flex justify-between items-center opacity-0 transition">
+                    <button id="pausePlay" class="text-lg">⏵</button>
+                    <button id="fullscreenBtn" class="text-lg">⛶</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div> <!-- ⭐ MIDDLE COLUMN CLOSED (IMPORTANT!) -->
+
+    <!-- ===================== RIGHT COLUMN ===================== -->
+    <div class="space-y-5">
+
+        <!-- CALL ME INSTANTLY -->
+        <div class="bg-gradient-to-br from-blue-900 to-green-600 text-white rounded-2xl p-6 shadow-xl">
+
+            <h3 class="text-2xl font-semibold mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-yellow-300"></i> Call Me Instantly
+            </h3>
+
+            <p class="text-sm opacity-90 mb-5">Our Executive will contact you within seconds!</p>
+
+            <!-- INPUTS -->
+            <div class="space-y-3">
+
+                <!-- NAME -->
+                <div
+                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
+                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" name="name" placeholder="Enter Your Name"
+                        class="flex-1 bg-transparent outline-none text-sm" />
+                </div>
+
+                <!-- EMAIL -->
+                <div
+                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
+                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+                    <input type="email" name="email" placeholder="Enter Your Email"
+                        class="flex-1 bg-transparent outline-none text-sm" />
+                </div>
+
+                <!-- PHONE -->
+                <div
+                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
+                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
+                        <i class="fa-solid fa-phone"></i>
+                    </span>
+                    <input type="text" name="phone" placeholder="Enter Mobile Number"
+                        class="flex-1 bg-transparent outline-none text-sm" />
+                </div>
+
+            </div>
+
+            <!-- BUTTON -->
+            <button
+                class="mt-6 w-full py-3 bg-yellow-300 hover:bg-yellow-400 text-gray-900 font-semibold rounded-xl text-sm shadow-lg transition transform hover:scale-[1.02] active:scale-95">
+                Get Instant Call Back
+            </button>
+
+        </div>
+
+        <!-- BOOK SITE VISIT -->
+        <div class="bg-white rounded-xl border p-5">
+
+            <div class="flex border-b text-sm">
+                <button class="px-3 py-2 font-semibold border-b-2 border-blue-700 text-blue-700">
+                    Book Free Site Visit
+                </button>
+                <button class="px-3 py-2 text-gray-500">Online Presentation</button>
+            </div>
+
+            <!-- Search -->
+            <div class="mt-4">
+                <label class="text-xs text-gray-500">Search projects</label>
+                <div class="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 mt-1">
+                    <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
+                        Mahindra Marina 64 ✕
+                    </span>
+                </div>
+            </div>
+
+            <!-- Calendar -->
+            <div class="mt-4">
+                <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-gray-700 text-sm">12-07-2025 12:29 PM</span>
+                </div>
+            </div>
+
+            <!-- OLA Option -->
+            <div class="mt-4 text-sm">
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="ride" checked />
+                    <img src="https://logovectordl.com/wp-content/uploads/2020/10/ola-logo-vector.png"
+                        class="w-12" />
+                </label>
+                <label class="flex items-center gap-2 mt-2">
+                    <input type="radio" name="ride" />
+                    <span>Not Required</span>
+                </label>
+            </div>
+
+            <ul class="mt-4 text-sm text-gray-700 space-y-1 list-disc pl-4">
+                <li>Free Pick Up & Drop - Book Personal Ola</li>
+                <li>Visit Your Selected 3 Projects in One Tour</li>
+                <li>Just Visit & Decide later</li>
+            </ul>
+
+            <button class="w-full mt-5 bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg font-semibold text-sm">
+                Book Site Visit
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ===================== VIDEO SCRIPT ===================== -->
+<script>
+    const video = document.getElementById("teaserVideo");
+    const playBtn = document.getElementById("playBtn");
+    const controls = document.getElementById("controls");
+    const pausePlay = document.getElementById("pausePlay");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+    playBtn.addEventListener("click", () => {
+        playBtn.style.display = "none";
+        controls.style.opacity = "1";
+        video.play();
+    });
+
+    pausePlay.addEventListener("click", () => {
+        if (video.paused) {
+            video.play();
+            pausePlay.textContent = "⏸";
+        } else {
+            video.pause();
+            pausePlay.textContent = "⏵";
+        }
+    });
+
+    fullscreenBtn.addEventListener("click", () => {
+        if (video.requestFullscreen) video.requestFullscreen();
+    });
+
+    video.addEventListener("pause", () => { pausePlay.textContent = "⏵"; });
+
+    video.addEventListener("ended", () => {
+        playBtn.style.display = "flex";
+        controls.style.opacity = "0";
+    });
+</script>
+
+<!-- ===================== AMENITIES SECTION ===================== -->
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="amenities">
+
+    <!-- HEADER BAR -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
+        <h2 class="text-xl font-semibold">Amenities</h2>
+    </div>
+
+    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+       
+        <!-- EXTERNAL AMENITIES -->
+        <h3 class="text-sm font-semibold text-gray-700 mb-3">External Amenities</h3>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3" id="amenitiesGrid">
+
+            <!-- VISIBLE AMENITIES -->
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Swimming Pool</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Club House</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Play Area</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Pool</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Skating Rink</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Amphitheater</p>
+            </div>
+
+                 <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Swimming Pool</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Club House</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Play Area</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Pool</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Skating Rink</p>
+            </div>
+
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Amphitheater</p>
+            </div>
+
+            <!-- ========= HIDDEN AMENITIES (Initially Hidden) ========= -->
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Yoga Zone</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1057/1057431.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Rock Climbing</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/745/745361.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Cycling Track</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081377.png" class="w-8 opacity-80 mt-1">
+                <p class="label">BBQ Lawn</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/4603/4603911.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Pet Park</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1710/1710737.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Indoor Games</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/6030/6030093.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Yoga Deck</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046804.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Badminton Court</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003985.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Gymnasium</p>
+            </div>
+
+            <!-- SHOW MORE BUTTON -->
+            <div id="showMoreBtn"
+                class="border rounded-lg flex items-center justify-center text-center p-2 h-10 bg-[#e8eff5] text-gray-700 font-semibold cursor-pointer">
+                + 4 More
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===================== JS FOR SHOW MORE ===================== -->
+<script>
+    const btn = document.getElementById("showMoreBtn");
+    const hiddenItems = document.querySelectorAll(".more-item");
+    let expanded = false;
+
+    btn.addEventListener("click", () => {
+        expanded = !expanded;
+
+        hiddenItems.forEach(item => {
+            item.classList.toggle("hidden");
+        });
+
+        btn.textContent = expanded ? "- Show Less" : "+ 4 More";
+    });
+</script>
+
+<!-- ===================== CARD STYLE (Tailwind classes) ===================== -->
+<style>
+    .amenity-card {
+        @apply border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition;
+    }
+    .amenity-card .label {
+        @apply text-xs text-gray-800;
+    }
+</style>
+
+
+<!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
+
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="floorplan">
+
+    <!-- HEADER -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg flex items-center justify-between">
+        <h2 class="text-xl font-semibold">Floor Plan</h2>
+
+        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
+            Plan Kit
+        </button>
+    </div>
+
+    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- ===================== MASTER PLAN ===================== -->
+            <div>
+                <h3 class="font-semibold text-gray-700 mb-3">Master Plan</h3>
+
+                <div class="relative">
+
+                    <!-- SWIPER -->
+                    <div class="swiper masterSwiper border rounded-lg p-2">
+                        <div class="swiper-wrapper">
+
+                            <div class="swiper-slide">
+                                <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2Fmahindra-marina-64_1763796641183-428364518.webp&w=750&q=60"
+                                     class="w-full rounded-lg" />
+                            </div>  
+
+                            <div class="swiper-slide">
+                                <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2Fmahindra-marina-64_1763796650039-877349433.webp&w=750&q=60"
+                                     class="w-full rounded-lg" />
+                            </div>
+
+                            <div class="swiper-slide">
+                                <img src="https://via.placeholder.com/900x600?text=Master+Plan+3"
+                                     class="w-full rounded-lg" />
+                            </div>
+
+                        </div>
+
+                        <!-- ARROWS -->
+                        <div class="swiper-button-prev !left-0"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ===================== FLOOR PLAN ===================== -->
+            <div>
+                <h3 class="font-semibold text-gray-700 mb-3">Floor Plan</h3>
+
+                <div class="relative">
+
+                    <div class="swiper floorSwiper border rounded-lg p-2">
+                        <div class="swiper-wrapper">
+
+                            <div class="swiper-slide">
+                                <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2Fmahindra-marina-64_1763796650039-877349433.webp&w=750&q=60"
+                                     class="w-full rounded-lg" />
+                            </div>
+
+                            <div class="swiper-slide">
+                                <img src="https://via.placeholder.com/900x600?text=Floor+Plan+2"
+                                     class="w-full rounded-lg" />
+                            </div>
+
+                            <div class="swiper-slide">
+                                <img src="https://via.placeholder.com/900x600?text=Floor+Plan+3"
+                                     class="w-full rounded-lg" />
+                            </div>
+
+                        </div>
+
+                        <!-- ARROWS -->
+                        <div class="swiper-button-next !right-0"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+    var masterSwiper = new Swiper(".masterSwiper", {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".masterSwiper .swiper-button-next",
+            prevEl: ".masterSwiper .swiper-button-prev",
+        },
+        loop: true,
+    });
+
+    var floorSwiper = new Swiper(".floorSwiper", {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".floorSwiper .swiper-button-next",
+            prevEl: ".floorSwiper .swiper-button-prev",
+        },
+        loop: true,
+    });
+</script>
+
+
+
+
+<!-- ===================== PAYMENT SCHEME SECTION ===================== -->
+<section class="max-w-7xl mx-auto p-6 scroll-mt-[130px]" id="paymentscheme">
+    <!-- HEADER -->
+    <div class="bg-[#e8eff5] px-6 py-4 border rounded-t-lg flex items-center justify-between">
+        <h2 class="text-xl md:text-2xl font-semibold">Payment Scheme</h2>
+
+        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm md:text-base px-5 py-2.5 rounded-lg">
+            Payment Schedule
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- CONTENT BOX -->
+    <div class="bg-white border border-t-0 rounded-b-lg p-7">
+
+        <!-- ACCORDION -->
+        <div id="paymentAccordion"
+            class="bg-[#f6f9fb] border rounded-xl p-6 cursor-pointer shadow-sm hover:shadow-md transition">
+
+            <div class="flex justify-between items-start gap-4">
+                <div class="flex-1">
+                    <p class="font-semibold text-gray-800 text-lg">
+                        CLP ( Construction Link Plan )
+                    </p>
+
+                    <!-- ANSWER (Animated height box) -->
+                    <div id="accordionContent"
+                        class="overflow-hidden transition-all duration-300 ease-in-out max-h-[500px]">
+
+                        <p class="text-[15px] text-gray-600 mt-3 leading-relaxed">
+                            Regular Standard Slabwise Payment plan as per construction.
+                            Maximum loan possible up to 90%. Payments are linked to actual construction progress.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ICON -->
+                <span id="accordionIcon" class="text-green-600 text-2xl font-bold select-none transition-transform duration-300">
+                    –
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===================== Project approved by ===================== -->
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]">
+
+    <!-- HEADER -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
+        <h2 class="text-lg font-semibold text-[#1b4d6b]">Project approved by</h2>
+    </div>
+
+    <!-- SLIDER CONTAINER -->
+    <div class="bg-white border border-t-0 rounded-b-lg p-16">
+
+        <div class="swiper bankSwiper">
+            <div class="swiper-wrapper">
+
+                <!-- BANK 1 -->
+                <div class="swiper-slide">
+                    <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Union_Bank_of_India_logo.svg"
+                             class="h-10 object-contain">
+                    </div>
+                </div>
+
+                <!-- BANK 2 -->
+                <div class="swiper-slide">
+                    <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5d/Central_Bank_of_India_logo.svg/1200px-Central_Bank_of_India_logo.svg.png"
+                             class="min-w-[150px] h-[70px] object-contain">
+                    </div>
+                </div>
+
+                <!-- BANK 3 -->
+                <div class="swiper-slide">
+                    <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/11/HDFC-Bank-Logo.png"
+                             class="h-10 object-contain">
+                    </div>
+                </div>
+
+                <!-- BANK 4 -->
+                <div class="swiper-slide">
+                    <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/ICICI_Bank_Logo.svg"
+                             class="h-10 object-contain">
+                    </div>
+                </div>
+
+                <!-- BANK 5 -->
+                <div class="swiper-slide">
+                    <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
+                        <img src="https://1000logos.net/wp-content/uploads/2021/04/SBI-logo.png"
+                             class="h-10 object-contain">
+                    </div>
+                </div>
+
+                <!-- BANK 6 -->
+                <div class="swiper-slide">
+                    <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Bank_of_Baroda_logo.svg"
+                             class="h-10 object-contain">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ===================== EMI CALCULATOR ===================== -->
+  <section class="bg-white border-b" id="emi_calculator">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
+    <i class="fa-solid fa-calculator text-gray-700 text-xl"></i>
+    EMI Calculator
+        </h2>
+        <p class="text-sm text-gray-700 mb-4">
+          Estimate your monthly EMI based on loan amount, interest rate and tenure.
+        </p>
+
+        <form id="emiForm" class="space-y-4 text-sm">
+          <div>
+            <label class="block text-gray-600 mb-1">Property Price (₹)</label>
+            <input type="number" id="priceInput" class="w-full border px-3 py-2"
+              placeholder="27000000" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Down Payment (₹)</label>
+            <input type="number" id="downInput" class="w-full border px-3 py-2"
+              placeholder="5000000" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Interest Rate (% p.a.)</label>
+              <input type="number" id="rateInput" class="w-full border px-3 py-2"
+                placeholder="8.5" step="0.1" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Tenure (Years)</label>
+              <input type="number" id="tenureInput" class="w-full border px-3 py-2"
+                placeholder="20" />
+            </div>
+          </div>
+
+          <button type="button" id="emiBtn"
+            class="bg-gray-900 text-white px-4 py-2 text-sm">
+            Calculate EMI
+          </button>
+        </form>
+      </div>
+
+      <div class="border rounded-md p-5 text-sm flex flex-col justify-center">
+        <h3 class="font-semibold mb-3">Estimated EMI</h3>
+        <p class="text-3xl font-semibold mb-2" id="emiResult">₹0 / month</p>
+        <p class="text-xs text-gray-500">
+          This is an approximate calculation for illustration only. For an exact
+          quote, please connect with our home-loan partner.
+        </p>
+      </div>
+    </div>
+  </section>
+
+<script>
+    // ---------------------- EMI CALCULATION LOGIC ----------------------
+    document.getElementById("emiBtn").addEventListener("click", function () {
+    
+    let price = parseFloat(document.getElementById("priceInput").value) || 0;
+    let down = parseFloat(document.getElementById("downInput").value) || 0;
+    let rate = parseFloat(document.getElementById("rateInput").value) || 0;
+    let tenureYears = parseFloat(document.getElementById("tenureInput").value) || 0;
+
+    // Loan Amount
+    let loanAmount = price - down;
+    if (loanAmount <= 0) {
+        document.getElementById("emiResult").innerHTML = "Invalid Inputs";
+        return;
+    }
+
+    // Convert annual rate to monthly
+    let monthlyRate = rate / 12 / 100;
+
+    // Total months
+    let months = tenureYears * 12;
+
+    // EMI Formula
+    let emi =
+        (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+        (Math.pow(1 + monthlyRate, months) - 1);
+
+    if (!emi || emi < 0) {
+        document.getElementById("emiResult").innerHTML = "Invalid Inputs";
+        return;
+    }
+
+    // Format output
+    document.getElementById("emiResult").innerHTML =
+        "₹" + emi.toLocaleString("en-IN", { maximumFractionDigits: 0 }) + " / month";
+    });
+</script>
+
+
+<script>
+    var swiper = new Swiper(".bankSwiper", {
+        slidesPerView: 5,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 1500,
+            disableOnInteraction: false,
+        },
+        breakpoints: {
+            0: { slidesPerView: 2 },
+            480: { slidesPerView: 3 },
+            768: { slidesPerView: 4 },
+            1024: { slidesPerView: 5 }
+        }
+    });
+</script>
+
+
+
+<!-- ===================== About Developer ===================== -->
+
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="about_developer">
+
+    <!-- TOP HEADER BAR -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
+        <h2 class="text-xl font-semibold text-[#1b4d6b]">About Mahindra Lifespace</h2>
+    </div>
+
+    <!-- CONTENT BOX -->
+    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+
+        <!-- ROW: LOGO + LOCATIONS -->
+        <div class="flex flex-col md:flex-row justify-between gap-6">
+
+            <!-- LOGO BOX -->
+            <div>
+                <p class="font-semibold text-gray-700 mb-2">Mahindra Lifespace</p>
+
+                <div class="w-[180px] h-[80px] border rounded-lg shadow-sm flex items-center justify-center bg-white">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Mahindra_Lifespaces_Developers_logo.png"
+                         class="h-14 object-contain" />
+                </div>
+            </div>
+
+            <!-- LOCATIONS -->
+            <div class="flex-1">
+                <p class="font-semibold text-gray-700 mb-2">Locations</p>
+
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Hyderabad</span>
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Bangalore Rural</span>
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Bangalore Urban</span>
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Mumbai City</span>
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Mumbai suburban</span>
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Pune</span>
+                    <span class="px-4 py-1.5 border rounded-lg bg-gray-100 text-sm text-gray-700">Ahmedabad</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STAT ROW -->
+        <div class="flex flex-wrap items-center gap-4 mt-6">
+
+            <div class="px-6 py-2 bg-gray-100 rounded-full text-sm font-medium">
+                Experience: <span class="text-green-600 font-bold">31 years</span>
+            </div>
+
+            <div class="px-6 py-2 bg-gray-100 rounded-full text-sm font-medium">
+                Total Projects: <span class="text-green-600 font-bold">12</span>
+            </div>
+
+            <div class="px-6 py-2 bg-gray-100 rounded-full text-sm font-medium">
+                Happy Families: <span class="text-green-600 font-bold">40K+</span>
+            </div>
+
+        </div>
+
+        <!-- DESCRIPTION -->
+        <p class="text-sm text-gray-700 leading-relaxed mt-6">
+            Mahindra Lifespaces is one of the leading real estate development companies in India. 
+            We have projects across the country and provide thoughtfully designed living spaces. 
+            Projects in Mumbai Metropolitan Region, Pune, Nagpur, Ahmedabad, Delhi NCR,
+        </p>
+
+        <a href="#" class="text-green-600 font-semibold text-sm block mt-2">Read More…</a>
+
+        <!-- BUTTON -->
+        <button class="mt-6 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg">
+            View All Projects Now !
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ===================== Faq's ===================== -->
+<section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="faqs">
+
+    <!-- HEADER -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
+        <h2 class="text-xl font-semibold text-[#1b4d6b]">Frequently Asked Question This Project(Title)</h2>
+    </div>
+
+    <div class="bg-white border border-t-0 rounded-b-lg p-4">
+
+        <!-- FAQ WRAPPER -->
+        <div id="faqContainer" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+
+            <!-- FAQ ITEM TEMPLATE -->
+            <!-- Copy this block to add more -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Can I see the sample flat of Mahindra Marina 64? Is it ready?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, sample flat visits are allowed based on builder availability. Contact us to book a free guided visit.
+                </div>
+            </div>
+
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        When is the expected possession of Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    The project is expected to be delivered by December 2029 as per the current construction schedule.
+                </div>
+            </div>
+
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Is Mahindra Marina 64 RERA registered? What is the RERA number?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, the project is RERA registered with number PR1181012500087.
+                </div>
+            </div>
+
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        What amenities are offered at Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Amenities include pool, gymnasium, clubhouse, skating rink, yoga deck, kids play area & more.
+                </div>
+            </div>
+
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        What is the carpet area of a 2BHK in Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    The carpet area of 2BHK ranges from approx. 761–775 sq.ft.
+                </div>
+            </div>
+
+            <!-- Add more FAQ items like above -->
+
+                            <!-- FAQ 6 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Does Mahindra Marina 64 offer home loan assistance?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, loans are available through all major banks with dedicated assistance from our mortgage experts.
+                </div>
+            </div>
+
+            <!-- FAQ 7 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        What is the booking amount for Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    The standard booking amount is between ₹50,000 to ₹1,00,000 depending on the unit type.
+                </div>
+            </div>
+
+            <!-- FAQ 8 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Can I customize the interior in Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Basic customization may be allowed depending on construction stage. Contact us for detailed options.
+                </div>
+            </div>
+
+            <!-- FAQ 9 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        How many towers and floors does the project have?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    The project consists of multiple high-rise towers with premium elevation designs. Exact tower count varies by phase.
+                </div>
+            </div>
+
+            <!-- FAQ 10 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Is car parking available for residents?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, both open and covered parking options are available depending on the unit type and tower.
+                </div>
+            </div>
+
+            <!-- FAQ 11 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Are there schools, malls & hospitals nearby?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, several reputed schools, shopping malls, and multispeciality hospitals are available within a 2–5 km radius.
+                </div>
+            </div>
+
+            <!-- FAQ 12 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        What are the maintenance charges for the units?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Maintenance charges depend on carpet area and amenities. Final charges will be shared at possession.
+                </div>
+            </div>
+
+            <!-- FAQ 13 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Is there 24×7 security and CCTV surveillance?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, the project offers round-the-clock security, CCTV monitoring and controlled access points.
+                </div>
+            </div>
+
+            <!-- FAQ 14 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Are pets allowed inside the society?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, pets are allowed as per society guidelines, provided they follow hygiene and safety rules.
+                </div>
+            </div>
+
+            <!-- FAQ 15 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Does the builder provide after-sales support?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, dedicated after-sales support is available for residents regarding possession, documentation, and service requests.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+    document.querySelectorAll(".faq-item").forEach((item) => {
+        const q = item.querySelector(".faq-question");
+        const ans = item.querySelector(".faq-answer");
+        const icon = item.querySelector(".faq-icon");
+
+        q.addEventListener("click", () => {
+            const isOpen = !ans.classList.contains("hidden");
+
+            // Close all FAQs
+            document.querySelectorAll(".faq-answer").forEach(a => a.classList.add("hidden"));
+            document.querySelectorAll(".faq-icon").forEach(i => i.style.transform = "rotate(0deg)");
+
+            // Toggle current faq
+            if (!isOpen) {
+                ans.classList.remove("hidden");
+                icon.style.transform = "rotate(180deg)";
+            }
+        });
+    });
+</script>
+
+<!-- ===================== RERA ===================== -->
+
+
+<section class="max-w-7xl mx-auto p-4">
+    <!-- HEADER -->
+    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
+        <h2 class="text-xl font-semibold text-[#1b4d6b]">Mahindra Marina 64 QR Codes</h2>
+    </div>
+
+    <!-- CONTENT BOX -->
+    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+
+        <div class="flex items-start gap-6">
+
+            <!-- QR CODE -->
+            <div class="flex flex-col items-center">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PR1181012500087"
+                     alt="RERA QR Code"
+                     class="w-[130px] h-[130px] border rounded-lg shadow-sm">
+
+                <p class="text-sm text-gray-700 mt-2 font-semibold">PR1181012500087</p>
+            </div>
+
+        </div>
+
+        <!-- NOTE TEXT -->
+        <p class="text-gray-700 text-sm mt-6">
+            Mahindra Marina 64 details are available at 
+            <a href="https://maharera.mahaonline.gov.in" target="_blank"
+               class="text-blue-600 font-semibold underline">
+                https://maharera.mahaonline.gov.in
+            </a>
+            under registered projects.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ===================== Related Projects ===================== -->
+
+<section class="max-w-7xl mx-auto p-4">
+
+    <!-- HEADER -->
+    <div class="bg-[#e8eff5] rounded-t-lg px-5 py-3 border">
+        <h2 class="text-xl font-semibold text-[#1b4d6b]">Explore Related Projects</h2>
+    </div>
+
+    <div class="bg-white border border-t-0 rounded-b-lg p-5">
+
+        <div class="swiper relatedSwiper">
+            <div class="swiper-wrapper">
+
+                <!-- CARD 1 -->
+            <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                
+                <!-- IMAGE -->
+                <div class="relative h-52 w-full">
+                    <img src="https://via.placeholder.com/800x500?text=Royal+Bliss" 
+                         class="w-full h-full object-cover">
+                    
+                    <!-- HEART ICON -->
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow text-gray-700">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                    <!-- 360 / VIDEO ICONS -->
+                    <div class="absolute bottom-3 right-3 flex gap-2">
+                        <button class="bg-white p-2 rounded-full shadow">
+                            <i class="fa-solid fa-vr-cardboard"></i>
+                        </button>
+                        <button class="bg-white p-2 rounded-full shadow">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="p-4">
+
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-semibold">Royal Bliss</h3>
+                        <p class="text-gray-900 font-semibold">
+                            ₹ 2.40 Cr - 5.92 Cr <span class="text-sm text-gray-500">(All inc)</span>
+                        </p>
+                    </div>
+
+                    <!-- Developer + Location -->
+                    <div class="text-sm mt-1 space-y-1">
+                        <p class="text-gray-600 flex items-center gap-1">
+                            <i class="fa-solid fa-building"></i>
+                            <a href="#" class="text-blue-600 underline">Royal Realtors</a>
+                        </p>
+                        <p class="text-gray-600 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot"></i>
+                            Malad West
+                        </p>
+                    </div>
+
+                    <!-- Carpet + Possession -->
+                    <div class="flex justify-between items-center mt-3 text-sm">
+                        <p class="flex items-center gap-2 text-gray-700">
+                            <i class="fa-solid fa-ruler-combined"></i>
+                            755 - 1686 sqft
+                        </p>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 text-xs rounded">
+                            Dec 2027
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- UNIT TABLE -->
+                <div class="border-t text-sm">
+                    <div class="flex justify-between px-4 py-2 bg-gray-50">
+                        <span>2BHK</span>
+                        <span>755 sqft</span>
+                        <span>₹2.40 Cr</span>
+                    </div>
+                    <div class="flex justify-between px-4 py-2">
+                        <span>2BHK</span>
+                        <span>755 sqft</span>
+                        <span>₹2.40 Cr</span>
+                    </div>
+                </div>
+
+                <!-- CTA BUTTONS -->
+                <div class="grid grid-cols-2">
+                    <button class="bg-[#133B5C] text-white py-3 font-medium flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-mobile-screen"></i> Tour
+                    </button>
+                    <button class="bg-green-600 text-white py-3 font-medium flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-comments"></i> Live Chat
+                    </button>
+                </div>
+
+            </div>
+            
+            <!-- PAGINATION DOTS (Optional) -->
+            <div class="swiper-pagination !relative mt-4"></div>
+
+            <!-- NAVIGATION ARROWS -->
+            <div class="swiper-button-prev text-[#1b4d6b]"></div>
+            <div class="swiper-button-next text-[#1b4d6b]"></div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+var swiper = new Swiper(".relatedSwiper", {
+    slidesPerView: 1.2,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+        delay: 2000,
+        disableOnInteraction: false,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    breakpoints: {
+        640: { slidesPerView: 1.5 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+    }
+});
+</script>
+
+<!-- ========================== FOOTER ========================== -->
+<footer class="bg-[#1a1f25] text-gray-300 mt-10 pt-10 border-t border-gray-700">
+
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+        <!-- ================= COMPANY INFO ================= -->
+        <div>
+            <h3 class="text-lg font-semibold text-white mb-3">Cloud Rohu Realty</h3>
+            <p class="text-sm leading-relaxed mb-4">
+                We offer verified property details, expert guidance, site visits, and
+                RERA-approved project information to help you make smart real estate decisions.
+            </p>
+
+            <p class="text-sm">
+                <span class="font-semibold">Phone:</span> +91 9898034466<br>
+                <span class="font-semibold">Email:</span> info@cloudrohu.com
+            </p>
+
+            <div class="flex gap-3 mt-4">
+                <a href="#" class="w-9 h-9 flex items-center justify-center bg-gray-700 rounded-full hover:bg-gray-600">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="w-4">
+                </a>
+                <a href="#" class="w-9 h-9 flex items-center justify-center bg-gray-700 rounded-full hover:bg-gray-600">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" class="w-4">
+                </a>
+                <a href="#" class="w-9 h-9 flex items-center justify-center bg-gray-700 rounded-full hover:bg-gray-600">
+                    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" class="w-4">
+                </a>
+            </div>
+        </div>
+
+        <!-- ================= QUICK LINKS ================= -->
+        <div>
+            <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
+
+            <ul class="space-y-2 text-sm">
+                <li><a href="#" class="hover:text-white">Home</a></li>
+                <li><a href="#" class="hover:text-white">About Us</a></li>
+                <li><a href="#" class="hover:text-white">Projects</a></li>
+                <li><a href="#" class="hover:text-white">Price Trends</a></li>
+                <li><a href="#" class="hover:text-white">Contact</a></li>
+                <li><a href="#" class="hover:text-white">Terms & Conditions</a></li>
+                <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+            </ul>
+        </div>
+
+        <!-- ================= PROJECT LINKS ================= -->
+        <div>
+            <h3 class="text-lg font-semibold text-white mb-3">Our Projects</h3>
+
+            <ul class="space-y-2 text-sm">
+                <li><a href="#" class="hover:text-white">Hubtown Harmony</a></li>
+                <li><a href="#" class="hover:text-white">Hubtown Seasons</a></li>
+                <li><a href="#" class="hover:text-white">Sunbeam Heights</a></li>
+                <li><a href="#" class="hover:text-white">Transcon Triumph</a></li>
+                <li><a href="#" class="hover:text-white">Bachraj Landmark</a></li>
+                <li><a href="#" class="hover:text-white">Mahindra Marina</a></li>
+            </ul>
+        </div>
+
+        <!-- ================= RERA BOX ================= -->
+        <div class="bg-[#232930] p-5 rounded-lg border border-gray-700">
+            <h3 class="text-lg font-semibold text-white mb-2">RERA Information</h3>
+
+            <p class="text-sm mb-3">RERA Project No: <span class="font-semibold">P51800079155</span></p>
+
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=P51800079155"
+                 class="w-32 h-32 mx-auto rounded border mb-3" alt="RERA QR">
+
+            <p class="text-xs text-gray-400 text-center leading-relaxed">
+                Scan the QR to verify the project on MAHARERA website.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ================= COPYRIGHT STRIP ================= -->
+    <div class="bg-[#111418] text-gray-400 text-center text-sm py-4 mt-10">
+        © 2025 Cloud Rohu Realty. All Rights Reserved.  
+        <br class="sm:hidden">
+        <span class="text-gray-500">Trusted Real Estate Advisory Firm in Mumbai.</span>
+    </div>
+
+</footer>
+
+<!-- ========================================= -->
+<!-- 🔥 SIMPLE TAB SWITCHER -->
+<!-- ========================================= -->
+<script>
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabs = document.querySelectorAll(".tab-content");
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            tabBtns.forEach(b => {
+                b.classList.remove("active", "text-green-700", "border-b-2", "border-green-700");
+                b.classList.add("text-gray-600");
+            });
+
+            btn.classList.add("active", "text-green-700", "border-b-2", "border-green-700");
+            btn.classList.remove("text-gray-600");
+
+            const target = btn.getAttribute("data-tab");
+
+            tabs.forEach(tab => tab.classList.add("hidden"));
+            document.getElementById(target).classList.remove("hidden");
+            document.getElementById(target).classList.add("block");
+        });
+    });
+</script>
+
+<!-- ===================================== -->
+<!-- JS FOR OPEN / CLOSE -->
+<!-- ===================================== -->
+
+<script>
+    const box = document.getElementById("paymentAccordion");
+    const desc = document.querySelector(".accordion-desc");
+    const icon = document.getElementById("accordionIcon");
+
+    let open = true; // default opened (same as screenshot)
+
+    box.addEventListener("click", () => {
+        open = !open;
+
+        if (open) {
+            desc.classList.remove("hidden");
+            icon.textContent = "—";
+        } else {
+            desc.classList.add("hidden");
+            icon.textContent = "+";
+        }
+    });
+</script>
+
+<script>
+const openBtn = document.getElementById("openPricePopup");
+const closeBtn = document.getElementById("closePricePopup");
+const popup = document.getElementById("pricePopup");
+const priceForm = document.getElementById("priceForm");
+
+// OPEN POPUP
+openBtn.addEventListener("click", () => {
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+    document.body.style.overflow = "hidden";
+});
+
+// CLOSE POPUP
+closeBtn.addEventListener("click", () => {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "auto";
+});
+
+// FORM SUBMIT
+priceForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // Yaha backend ko send karna ho to AJAX bhi laga sakte hain
+    // Abhi direct file download karwa rahe hain:
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = "static/pdf/price-sheet.pdf";  // <<< YOUR FILE PATH
+    downloadLink.download = "Price-Sheet.pdf";
+    downloadLink.click();
+
+    // Close popup after download
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "auto";
+
+    // Clear form
+    priceForm.reset();
+});
+</script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+<script src="assets/js/project_details.js"></script>
+</body>
+</html>
+
+
+
+
+
+

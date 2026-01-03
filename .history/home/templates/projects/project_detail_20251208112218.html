@@ -1,0 +1,1363 @@
+{% load static %}
+<meta charset="utf-8">
+    <title>{{rs.title}}</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="{{rs.keywords}}">    
+        
+    <link rel="icon" href="{{rs.icon.url}}"  sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{{rs.description}}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-lightbox/0.2.12/slick-lightbox.css">
+    <link rel="stylesheet" href="{%  static '' %}projects/assets/css/gallery.css">
+    <link href="{%  static '' %}projects/assets/css/style.css" rel="stylesheet">
+    <link href="{%  static '' %}projects/assets/css/theme.css" rel="stylesheet">
+    <!-- Google Tag Manager -->
+    <!-- Global site tag (gtag.js) - Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-{{rs.googletagmanager}}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-{{rs.googletagmanager}}');
+</script>
+
+</head>
+ 
+<style>
+
+        .navbar-nav.flex-row .nav-item {
+        border-left: 1px solid #ddd;
+        padding: 0 7px;
+        display: flex;
+        align-items: center;
+        }
+        @media (max-width: 991px) {
+        .navbar-nav.flex-row .nav-item {
+            padding: 8px 10px;
+            font-size: 14px;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+        }
+
+        .nav-link span {
+            display: inline !important;
+        }
+        }
+
+        /* Remove border from first item */
+        .navbar-nav.flex-row .nav-item:first-child {
+        border-left: none;
+        }
+
+        /* Style nav-link */
+        .navbar-nav.flex-row .nav-link {
+        color: black;
+        text-decoration: none;
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        }
+
+        /* Optional: hover underline effect */
+        .navbar-nav.flex-row .nav-link:hover {
+        text-decoration: underline;
+        color: #000;
+        }
+
+        #navbarNav {
+        display: none;
+        }
+
+        #navbarNav.show {
+        display: block;
+        }
+        @media (max-width: 991px) {
+        #navbarNav {
+            display: none;
+        }
+        #navbarNav.show {
+            display: block;
+        }
+
+        /* Optional: menu items stacked vertically */
+        #navbarNav ul {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 10px;
+        }
+        }
+        @media (max-width: 991px) {
+        #navbarNav {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        #navbarNav.show {
+            max-height: 500px; /* adjust height based on how tall your menu is */
+        }
+
+        /* Optional: vertical stacking */
+        #navbarNav ul {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 10px 0;
+        }
+
+        #navbarNav ul li {
+            padding-left: 3px;
+            margin-left: 2px;
+            
+        }
+        }
+        #navbarNav ul li:hover{
+            text-decoration: underline;
+            color: blue;
+            cursor: pointer;
+            
+        }
+
+
+        .nav-link.active i {
+        color: #d4af37 !important;
+        }
+
+
+
+        .nav-link {
+        position: relative;
+        text-decoration: none;
+        color: rgb(255, 255, 255); /* optional - set your default color */
+        border-radius: 10px;
+        }
+
+        .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color:#b38b00; /* underline color */
+        transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+        width: 100%;
+        }
+        .nav-link i {
+        margin-right: 3px;
+        }
+
+</style>
+
+
+
+<body class="lodha-yellow">
+<nav class="navbar navbar-light bg-white fixed-top shadow-sm w-100" style="height: 72px; overflow-x: visible;">
+  <div class="container-fluid px-4">
+
+    <!-- ✅ Logo Section -->
+    <a class="navbar-brand" href="/" style="flex-shrink: 0;">
+      {% with active.headers.last as header %}
+        {% if header and header.logo %}
+          <img src="{{ header.logo.url }}" alt="Header Logo" style="height: 60px; padding: 1px;" width="160">
+        {% elif rs and rs.logo %}
+          <img src="{{ rs.logo.url }}" alt="Site Logo" style="height: 60px; padding: 1px;" width="160">
+        {% else %}
+          <img src="{% static 'projects/assets/images/default-placeholder.jpg' %}" alt="Default Logo" style="height: 60px; padding: 1px;" width="160">
+        {% endif %}
+      {% endwith %}
+    </a>
+
+    <!-- ✅ Toggler (visible on mobile & tablet) -->
+    <button class="navbar-toggler d-md-block d-lg-none" type="button"
+      data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+      aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- ✅ Desktop Menu -->
+    <div class="d-none d-lg-flex ms-auto align-items-center" style="overflow: visible; flex-wrap: nowrap;">
+      <ul class="navbar-nav flex-row gap-4 align-items-center" style="white-space: nowrap;">
+        <li class="nav-item"><a class="nav-link" href="{{ rs.get_absolute_url }}"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ rs.get_absolute_url }}#pricing"><i class="fa-solid fa-indian-rupee-sign"></i> Price</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ rs.get_absolute_url }}#sitefloorplan"><i class="fa-solid fa-sitemap"></i> Site &amp; Floor Plan</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ rs.get_absolute_url }}#amenities"><i class="fa-solid fa-wifi"></i> Amenities</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ rs.get_absolute_url }}#gallery"><i class="fa-solid fa-images"></i> Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ rs.get_absolute_url }}#location"><i class="fa-solid fa-location-dot"></i> Location</a></li>
+        <li class="nav-item"><a class="nav-link" href="#virtual-tour-section"><i class="fa-brands fa-youtube"></i> Virtual Site Visit</a></li>
+      </ul>
+    </div>
+
+    <!-- ✅ Mobile Offcanvas Menu -->
+    <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        {% with active.headers.last as header %}
+          {% if header and header.logo %}
+            <img src="{{ header.logo.url }}" alt="Header Logo" style="height: 60px; padding: 1px;" width="160">
+          {% elif rs and rs.logo %}
+            <img src="{{ rs.logo.url }}" alt="Site Logo" style="height: 60px; padding: 1px;" width="160">
+          {% else %}
+            <img src="{% static 'projects/assets/images/default-placeholder.jpg' %}" alt="Default Logo" style="height: 60px; padding: 1px;" width="160">
+          {% endif %}
+        {% endwith %}
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+
+      <div class="offcanvas-body">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#highlights"><i class="fa-solid fa-star"></i> Highlights</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pricing"><i class="fa-solid fa-indian-rupee-sign"></i> Price</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sitefloorplan"><i class="fa-solid fa-sitemap"></i> Site &amp; Floor Plan</a></li>
+          <li class="nav-item"><a class="nav-link" href="#amenities"><i class="fa-solid fa-wifi"></i> Amenities</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery"><i class="fa-solid fa-images"></i> Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#location"><i class="fa-solid fa-location-dot"></i> Location</a></li>
+          <li class="nav-item"><a class="nav-link" href="#virtual-tour-section"><i class="fa-brands fa-youtube"></i> Virtual Site Visit</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<br>
+<br>
+<br>
+
+
+
+<style>
+@media (max-width: 768px) {
+  .mobile-img {
+    height: 300px !important;
+  }
+}
+</style>
+
+<style>
+  .virtual-tour-section {
+    width: 100%;
+
+    background-size: cover;
+    
+    background-repeat: no-repeat;
+    padding: 120px 20px;
+    text-align: center;
+    color: white;
+  }
+
+  .virtual-tour-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 60px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .virtual-tour-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 6px black;
+  }
+
+  .virtual-tour-subtitle {
+    font-size: 22px;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 4px black;
+  }
+
+  .virtual-tour-play-button {
+    width: 90px;
+    height: 90px;
+    background: white;
+    border-radius: 50%;
+    color: black;
+    font-size: 45px;
+    line-height: 90px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    transition: transform 0.2s;
+  }
+
+  .virtual-tour-play-button:hover {
+    transform: scale(1.1);
+  }
+
+  .virtual-tour-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+  }
+
+  .virtual-tour-modal iframe {
+    width: 80%;
+    height: 450px;
+    margin: 5% auto;
+    display: block;
+    border: none;
+  }
+
+  .virtual-tour-close {
+    position: absolute;
+    top: 20px;
+    left: 30px; /* ⬅️ LEFT SIDE */
+    font-size: 35px;
+    color: white;
+    cursor: pointer;
+    z-index: 10000;
+  }
+
+  @media (max-width: 768px) {
+    .virtual-tour-title {
+      font-size: 30px;
+    }
+
+    .virtual-tour-subtitle {
+      font-size: 18px;
+    }
+
+    .virtual-tour-play-button {
+      width: 65px;
+      height: 65px;
+      font-size: 30px;
+      line-height: 65px;
+    }
+
+    .virtual-tour-modal iframe {
+      width: 95%;
+      height: 300px;
+    }
+  }
+  .virtual-tour-section {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 20px;
+  text-align: center;
+  color: white;
+}
+
+.background-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* image ko poora container cover karwana */
+  z-index: 0;
+  pointer-events: none; /* taaki click us image pe na ho */
+}
+
+.virtual-tour-overlay {
+  position: relative;
+  z-index: 1; /* overlay image ke upar dikhe */
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 60px 20px;
+  border-radius: 10px;
+  display: inline-block;
+  max-width: 800px;
+  margin: auto;
+}
+
+</style>
+
+<style>
+    .map-container iframe {
+        width: 100% !important;
+        height: 450px;
+        border: 0;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .map-container iframe {
+            height: 300px;
+        }
+    }
+</style>
+
+<style>
+    .why-invest-section {
+  background-color: #f9f9f9;
+  padding: 40px 20px;
+  border-radius: 16px;
+  max-width: 1200px;
+  margin: auto;
+    }
+
+    .why-invest-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+    }
+
+    .invest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    }
+
+    .invest-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .invest-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .invest-card h4 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #222;
+    }
+
+    .invest-card p {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
+    }
+
+
+
+</style>
+
+<!-- 🏙️ Top Section -->
+<section id="home">
+  <div class="container-fluid">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+
+      {% if active.sliders.all %}
+  <!-- ✅ Show Project Sliders -->
+  <div class="carousel-indicators">
+    {% for i in active.sliders.all %}
+    <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="{{ forloop.counter0 }}"
+            class="{% if forloop.first %}active{% endif %}"
+            aria-current="{% if forloop.first %}true{% endif %}"
+            aria-label="Slide {{ forloop.counter }}">
+    </button>
+    {% endfor %}
+  </div>
+
+  <div class="carousel-inner">
+    {% for i in active.sliders.all %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <img src="{{ i.image.url }}" alt="Project Slide {{ forloop.counter }}"
+           class="d-block w-100 mobile-img" style="height: 650px;">
+    </div>
+    {% endfor %}
+  </div>
+
+{% else %}
+  <!-- ✅ Fallback: Show Global Search BG if No Project Sliders -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      {% if rs and rs.search_bg %}
+        <img src="{{ rs.search_bg.url }}" alt="Default Banner"
+             class="d-block w-100 mobile-img" style="height: 650px;">
+      {% else %}
+        <img src="{% static 'projects/assets/images/default-placeholder.jpg' %}"
+             alt="Default Placeholder" class="d-block w-100 mobile-img"
+             style="height: 650px;">
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+
+      <!-- ✅ Carousel Controls -->
+      <button class="carousel-control-prev" type="button"
+              data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button class="carousel-control-next" type="button"
+              data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+
+      <!-- ✅ Project Info Overlay -->
+      <div class="project-details">
+        <p class="text-center on-rera">{{ active.construction_status }}</p>
+        <h1 class="text-center mb-1" style="font-weight:600; text-transform:uppercase;">
+          {{ active.project_name }}
+        </h1>
+        <h6 class="text-center mb-2" style="color:#353535;">By {{ active.developer }}</h6>
+        <h6 class="text-center mb-2" style="font-size:15px; color:#6e6e6e;">
+          At {{ active.locality }} - {{ active.city }}
+        </h6>
+
+        <div class="card-d card-d-custom"
+             style="width:100%; text-align:center; background-color:#EEE; border-radius:15px;">
+          <div>
+            <span class="heading2">Land Parcel</span>
+            <span class="heading1">{{ active.land_parce }}</span>
+          </div>
+          <div>
+            <span class="heading2">Floors</span>
+            <span class="heading1">{{ active.floor }}</span>
+          </div>
+          <div>
+            <span class="heading2">Possession</span>
+            <span class="heading1">{{ active.possession }}</span>
+          </div>
+        </div>
+
+        <div class="offerBox animatedtext">
+          <div class="innerBox">
+            {% for offer in active.BookingOffer.all %}
+              <p class="mb-0">◆ {{ offer.title }}</p>
+            {% empty %}
+              <p class="mb-0">No booking offers available.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <p class="offer-info-text text-center mb-0">{{ active.luxurious }}</p>
+        <div class="price-text">
+          <span class="color-imp">₹</span>
+          <span class="price-sub-text">{{ active.priceing }}</span>
+        </div>
+
+        <button id="request-brochure-button" type="button"
+                class="custom-btn data-id-btn non-rera"
+                data-bs-target="#enquire-modal" data-bs-toggle="modal"
+                data-bs-whatever="Enquire Now" data-id="Brochure">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="mob-form d-sm-block d-md-none d-lg-none hidden">
+                    <div class="call-back-section text-center pt-3 pb-3" style="border-bottom: 1px solid #DDD;">
+                        <h3 class="mb-0">Pre-Register here for Best Offers</h3>
+                    </div>
+
+                    <div class="form-section p-4">
+                        <form class="text-center" name="Pre-Register-sidemodal" action="/submit-form/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter Your Name here..." name="name" required>
+                        <span class="error">Name field is required</span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="number" id="mobile" class="form-control" required placeholder="Phone Number" name="mobile" oninput="limitDigits(this, 10)">
+                        <span class="error">Mobile field is required</span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="email" id="email" class="form-control" required placeholder="Email" name="email">
+                        <span class="error">Email field is required</span>
+                    </div>
+                    <div>
+                        <input type="hidden" name="form_name" id="form_name2" class="form-control form_name" value="Pre-Register">
+                        <input type="hidden" id="website_url2" class="website_url" name="website_url">
+                    </div>
+                    <div class="form-group acceptance mb-3" style="font-size: 10px;"><label class="form-check-label text-start">
+							<input type="checkbox" checked class="form-check-input" required>
+							<span class="text on-rera">I Consent to The Processing of Provided Data According To <a href="{% url "privacy-policy" %}" style="color:#007bff"> Privacy Policy | </a> <a href="terms-conditions.html" style="color:#007bff;"> Terms &amp; Conditions</a>, I Authorize Prop Solutions 4 U Pvt. Ltd. and its representatives to Call, SMS, Email or WhatsApp Me About Its Products and Offers. This Consent Overrides Any Registration For DNC/NDNC. </span>
+							<span class="text non-rera">Please be informed that this website is not intended to facilitate any sales transactions. I understand and acknowledge that the project I am interested in hasn't yet secured RERA clearance. The primary purpose of this website is to generate interest and gather information. By providing my data, I consent to its use in accordance with the <a href="Privacy-Policy.html" style="color:#007bff"> Privacy Policy | </a> <a href="terms-conditions.html" style="color:#007bff;"> Terms &amp; Conditions</a></span>
+						</label>
+                    </div>
+                     <!-- CAPTCHA -->
+                    <label class="form-label fw-bold" id="captcha-question-{{ rs.id }}"></label>
+                    <input type="number" class="form-control mb-2" id="captcha-answer-{{ rs.id }}" placeholder="Enter CAPTCHA Answer" required>
+                    <input type="hidden" id="captcha-correct-{{ rs.id }}">
+
+                    <button id="right-panel-preregister-button" class="btn preRegisterBtn data-id-btn on-rera" data-id="Pre-Register" onclick="submitForm(event, 'Pre-Register-sidemodal')">Pre-Register Now</button>
+
+                </form>
+                    </div>
+                </div>
+
+ <!-- xxxxxxxxxxxx Overview section xxxxxxxxxxxx -->
+                <section class="sec1" id="about_us">
+                    <div class="container">
+                        <div class="row">
+                        <div class="col-xl-7 col-lg-7 col-sm-12">
+                            <div class="overview-data">
+                                <h1>Welcome To {{ active.project_name }}</h1>
+                                {% for welcome in active.welcomes.all %}
+                                    <p>{{ welcome.description }}</p>
+                                    {% if welcome.read_more %}
+                                        <p class="overview-info">             
+                                            <span class="moreText" style="display: none;">
+                                                {{ welcome.read_more }}
+                                            </span>
+                                        </p>
+                                        <button class="readMoreBtn custom-btn" onclick="toggleReadMore(this)">Read More</button>
+                                    {% endif %}
+                                {% empty %}
+                                    <p>No description available.</p>
+                                {% endfor %}
+
+                                <br><br>
+                                <button id="request-brochure-button" type="button" class="custom-btn data-id-btn on-rera"
+                                        data-bs-target="#enquire-modal" data-bs-toggle="modal"
+                                        data-bs-whatever="Enquire Now" data-id="Brochure">
+                                    <i class="fa-solid fa-download"></i>&nbsp;&nbsp;Request Brochure
+                                </button>
+                            </div>
+                            </div>
+                        <div class="col-xl-5 col-lg-5 col-sm-12 text-center ps-0 pe-0">
+                            {% if active.image %}
+                                <img src="{{ active.image.url }}" width="100%" class="data-id-btn" data-id="Project Video" alt="{{ active.project_name }}">
+                            {% else %}
+                                <img src="{% static 'images/no-images.jpg' %}" width="100%" alt="No Image Available">
+                            {% endif %}
+                        </div>
+                        </div>
+                    </div>
+      <!-- xxxxxxxxxxxx Overview section End xxxxxxxxxxxx -->
+                </section>                
+               
+
+<section class="sec2" id="highlights">               
+                <h1 class="section-title">{{active.project_name}} - Highlights </h1>
+                    <div class="col-xl-12 col-lg-12 col-sm-12 text-dark amenities-info mt-3 ps-2 pe-2">
+                        <div id="exTab1" class="fuild-container">
+                            
+                            <div class="tab-content clearfix">
+                                <div class="iconBox"> <i class="fa-solid fa-check-double"></i> </div>
+                                    <ul>
+                                        {% for usps in active.usps.all %}
+                                        <li><p>{{usps.point}}</p></li>
+                                        {% endfor %}
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+                
+            <!-- xxxxxxxxxxxx floor plan xxxxxxxxxxxx -->
+            <section class="sec1" id="pricing">
+                <div class="container sec-pd sec-price">
+                    <div class="row gx-md-5">
+                        <div class="col-12">
+                            
+                            <h1 class="section-title on-rera">{{active.project_name}} - Area & Pricing</h1>
+                            
+                            <div class="">
+                                <table class="table table-borderless table-striped table-pricing text-center">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Area</th>
+                                            <th scope="col">Price (All-Incl)</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for configurations in active.configurations.all %}
+
+                                        <tr>
+                                            <td class="price">{{configurations.bhk_type}}</td>
+                                            <td>{{configurations.area}}</td>
+                                            <td class="price"><span style="font-family: sans-serif;">₹</span>{{configurations.price}}</td>
+                                            <td> <a href="javascript:void(0);" class="btn text-white my-1 enquiryBtn1 pricing-btn-1 custom-btn data-id-btn on-rera" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Costing Details">Complete Costing Details</a> </td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- xxxxxxxxxxxx floor plan end xxxxxxxxxxxx -->
+            <section class="sec2" id="sitefloorplan">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 layout-plan text-center">
+                            <div>
+                                <h1 class="section-title on-rera">Master Plan Layout</h1>
+                            </div>
+                            <img src="{%  static '' %}projects/assets/images/floor-plan/MasterPlan.webp" alt="" class="img-fluid">
+                            <div class="btn_box text-center"> <a href="#" class="btn mt-4 custom-btn data-id-btn on-rera mx-auto" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Master Layout Plan"> Request Master Layout Plan </a>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 layout-plan text-center">
+                            <div>
+                                <h1 class="section-title on-rera">Unit Plan Layout</h1>
+                            </div>
+                            <img src="{%  static '' %}projects/assets/images/floor-plan/UnitPlan.webp" alt="" class="img-fluid">
+                            <div class="btn_box text-center"> <a href="#" class="btn mt-4 custom-btn data-id-btn on-rera mx-auto" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Unit Layout Plan"> Request Unit Layout Plans </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="sec1" id="amenities">
+                <div class="container">
+                    <h1 class="section-title on-rera">Luxurious Amenities</h1>
+                    <div class="slick-wrapper">
+                        <div class="inline-flex align-items-center">
+                            <div id="slick1">
+                                {% for amenity in active.amenities.all %}
+                                <div class="slide-item">
+                                    <img src="{{ amenity.amenities.icon.url }}" style="height: 200px;" alt="">
+                                    <p>{{ amenity.amenities.title }}</p>
+                                </div>
+                               
+                                {% endfor %}                        
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <br>
+                        <button id="request-amenities-button" type="button" class="btn custom-btn data-id-btn non-rera" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Amenities">Express Your Interest</button>
+                    </div>
+                </div>
+            </section>
+            <!-- xxxxxxxxxxxx Amenities section end end xxxxxxxxxxxx -->
+            <!-- xxxxxxxxxxxx Gallery section xxxxxxxxxxxx -->
+            <section class="sec2" id="gallery">
+                <div class="container wow fadeInUp">
+                    <!-- data-wow-delay="0.1s" -->
+                    <h1 class="section-title">Project Gallery</h1>
+
+                    <div class="content-gallery">
+                        <div class="gallery js-gallery">
+                            {% for img in active.gallery.all %}
+                                <div class="gallery-item">
+                                    <div class="gallery-img-holder js-gallery-popup">
+                                        <img src="{{ img.image.url }}" style="height: 175px;" alt="" class="gallery-img">
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No images available in gallery.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <!-- xxxxxxxxxxxx Gallery section end xxxxxxxxxxxx -->
+            <section class="sec1" id="location">
+                <div class="container" >
+                    <h1 class="section-title">Location Advantage</h1>
+
+                    <div class="row mt-2 px-0 mx-0"> <!-- Remove padding -->
+                        {% for locations in active.locations.all %}
+                        <div class="map-container w-100">
+                            {{ locations.google_map_iframe|safe }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row pt-30 mb-3">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 text-dark mt-3 amenities-img">
+                            <!-- location-img-->
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-sm-12 text-dark amenities-info mt-3 ps-2 pe-2">
+                            <div id="exTab1" class="fuild-container">
+                                <nav class="nav nav-pills">
+                                    <a class="nav-link active" data-bs-toggle="pill" href="#Connectivity" role="tab" aria-selected="false">
+                                        <h6 class="subtitle inventory">Connectivity</h6>
+                                    </a>
+                                    <!--<a class="nav-link" data-bs-toggle="pill" href="#education-hub" role="tab" aria-selected="false">-->
+                                    <!--	<h6 class="subtitle inventory">Education Hub</h6>-->
+                                    <!--</a>-->
+                                    <!--<a class="nav-link" data-bs-toggle="pill" href="#HealthCare" role="tab" aria-selected="false">-->
+                                    <!--	<h6 class="subtitle inventory">Healthcare</h6>-->
+                                    <!--</a>-->
+                                    <!--<a class="nav-link " data-bs-toggle="pill" href="#techpark" role="tab">-->
+                                    <!--	<h6 class="subtitle inventory">Tech Parks</h6>-->
+                                    <!--</a>-->
+                                    <!--<a class="nav-link " data-bs-toggle="pill" href="#mall" role="tab">-->
+                                    <!--	<h6 class="subtitle inventory">Malls/ Hotels/ Shopping centers</h6>-->
+                                    <!--</a>-->
+                                </nav>
+                                <div class="tab-content clearfix">
+                                    <div class="tab-pane fade active show" id="Connectivity">
+                                        <ul>
+                                            {% for configs in active.configs.all %}
+                                            <li>{{configs.title}}</li>
+                                            {% endfor %}
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button id="request-location-button" type="button" class="btn mt-2 custom-btn data-id-btn on-rera mx-auto d-block" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Location Map">Request Location Details</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- xxxxxxxxxxxx Connectivity section end xxxxxxxxxxxx -->
+
+<section class="virtual-tour-section" id="virtual-tour-section">
+  <div class="virtual-tour-section" style="height: 500px; position: relative;">
+    {% with active.headers.last as header %}
+      {% if header and header.virtual_site_visit_bg %}
+        <!-- ✅ Project-specific Virtual BG -->
+        <img class="background-img"
+             src="{{ header.virtual_site_visit_bg.url }}"
+             alt="{{ active.project_name }} Virtual Site Visit" />
+      {% elif rs and rs.testmonial_bg %}
+        <!-- ✅ Fallback: Global Testimonial BG -->
+        <img class="background-img"
+             src="{{ rs.testmonial_bg.url }}"
+             alt="Global Testimonial Background" />
+      {% else %}
+        <!-- ✅ Final fallback: Placeholder -->
+        <img class="background-img"
+             src="{% static 'projects/assets/images/default-placeholder.jpg' %}"
+             alt="Default Background" />
+      {% endif %}
+    {% endwith %}
+
+    <!-- ✅ Overlay content -->
+    <div class="virtual-tour-overlay">
+      <div class="virtual-tour-title">VIRTUAL SITE VISIT</div>
+      <div class="virtual-tour-subtitle">
+        <h1>{{ active.project_name }}</h1>
+      </div>
+      <div class="virtual-tour-play-button"
+           data-bs-toggle="modal"
+           data-bs-target="#enquire-modal">▶</div>
+    </div>
+  </div>
+</section>
+
+<!-- xxxxxxxxxxxx Contact section xxxxxxxxxxxx -->
+<section id="contact">
+  <div class="container-fluid full-width"></div>
+  <div class="container">
+    <div class="contact-inner">
+      <div class="container contact-data">
+        <div class="row">
+
+          <!-- ✅ Left Side Image -->
+          <div class="col-lx-6 col-lg-6 col-sm-12 image-carousel1 ps-0 pe-0">
+            {% with active.headers.last as header %}
+              {% if header and header.schedule_a_site_visit %}
+                <!-- 1️⃣ Project-specific image -->
+                <img class="background-img" src="{{ header.schedule_a_site_visit.url }}" alt="Schedule a Site Visit Image" />
+              {% elif active.image %}
+                <!-- 2️⃣ Project's main image -->
+                <img class="background-img" src="{{ active.image.url }}" alt="{{ active.project_name }}" />
+              {% elif rs and rs.testimonial_bg %}
+                <!-- 3️⃣ Global fallback -->
+                <img class="background-img" src="{{ rs.testimonial_bg.url }}" alt="Default Site Visit Image" />
+              {% else %}
+                <!-- 4️⃣ Default placeholder -->
+                <img class="background-img" src="{% static 'projects/assets/images/default-placeholder.jpg' %}" alt="Placeholder" />
+              {% endif %}
+            {% endwith %}
+          </div>
+
+          <!-- ✅ Contact Form -->
+          <div class="col-lx-6 col-lg-6 col-sm-12 form-data">
+            <h2 class="text-left ms-4 mt-4 mb-0" style="font-size: 24px;">Schedule a Site Visit</h2>
+            <div class="form">
+              <form name="schedule-site" action="{% url 'submit_enquiry' active.id %}" method="post" onsubmit="return validateCaptchaContactForm()">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-lg-12 col-sm-12 forms-input-fields">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="name" class="form-control" required placeholder="Name*">
+                  </div>
+
+                  <div class="col-lg-12 col-sm-12 forms-input-fields">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="text" name="phone" class="form-control" required placeholder="Mobile*">
+                  </div>
+
+                  <div class="col-lg-12 col-sm-12 forms-input-fields">
+                    <i class="fa fa-envelope"></i>
+                    <input type="email" name="email" class="form-control" required placeholder="Email*">
+                  </div>
+
+                  <div class="col-lg-12 col-sm-12 forms-input-fields">
+                    <i class="fa fa-message"></i>
+                    <textarea name="message" class="form-control" rows="4" required placeholder="Enter Your Message*"></textarea>
+                  </div>
+
+                  <input type="hidden" name="form_name" value="Contact Site Visit">
+                  <input type="hidden" name="website_url" id="website_url3" class="website_url" value="{{ request.build_absolute_uri }}">
+
+                  <div class="col-lg-12 col-sm-12 forms-input-fields">
+                    <label class="form-label fw-bold">Solve: <span id="captcha-question-contact"></span></label>
+                    <input type="number" class="form-control mb-2" id="captcha-answer-contact" placeholder="Enter CAPTCHA Answer" required>
+                    <input type="hidden" id="captcha-correct-contact">
+                  </div>
+
+                  <div class="form-group acceptance mb-2" style="font-size: 10px;">
+                    <label class="form-check-label text-start">
+                      <input type="checkbox" checked class="form-check-input" required>
+                      <span class="text on-rera">I Consent to The Processing of Provided Data According To <a href="{% url 'privacy-policy' %}">Privacy Policy</a></span>
+                    </label>
+                  </div>
+
+                  <button type="submit" class="btn ms-2 custom-btn btn-hover text-white">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- ✅ Right Side Image (Same logic) -->
+          <div class="col-lx-6 col-lg-6 col-sm-12 ps-0 pe-0 image-carousel m-0">
+            {% with active.headers.last as header %}
+              {% if header and header.schedule_a_site_visit %}
+                <img src="{{ header.schedule_a_site_visit.url }}" class="img-fluid" alt="Site Visit" />
+              {% elif active.image %}
+                <img src="{{ active.image.url }}" class="img-fluid" alt="{{ active.project_name }}" />
+              {% elif rs and rs.testimonial_bg %}
+                <img src="{{ rs.testimonial_bg.url }}" class="img-fluid" alt="Default Site Visit" />
+              {% else %}
+                <img src="{% static 'projects/assets/images/default-placeholder.jpg' %}" class="img-fluid" alt="Placeholder" />
+              {% endif %}
+            {% endwith %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+            <section class="sec1" id="welcometo">
+                {% for rera in active.rera.all %}
+                <div class="container">                    
+                    <div class="overview-data">                    
+                    <h1>{{ active.project_name }}</h1>
+                    <p>{{ rera.details }}</p>
+                    <p class="overview-info">        
+                    </div>
+                </div>
+                
+                <div class="container" style="padding: 30px;">  
+
+                <span class="d-block section-heading-sub1 text-capitalize">RERA Information</span>
+                <div class="row">
+                    <div class="col-md-3">
+                        <bn>
+                        <div class="rera-box">
+                            <div class="rera-img">
+                                <img src="{{rera.qr_image.url}}" loading="lazy" style="max-width: 100%; height: 100px; display: inline-block;" alt="" />
+                            </div>
+                            <div class="rera-details">
+                                <p>{{active.project_name}} - <b>{{rera.registration_no}}</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="pro-rera text-center-mob">{{rera.details}}</span>
+                <p></p>
+                {% endfor %}
+                </div>
+            </section>
+            <!-- xxxxxxxxxxxx Overview section End xxxxxxxxxxxx -->
+
+        <section style="text-align:justify;background:#f7f7f7 !important;" class="section shadow-sm lazyload" id="developer">
+            <small>
+            <style>
+            .newlist { list-style: none; line-height: 25px; padding-left: 22px; }
+            .newlist li:before { content: '✓'; font-weight: 800;  margin-right: 10px;  font-size: 13px;  margin-left: -22px; }
+            </style>
+            <div class="container" style="padding-left: 50px;">
+                {% for rs in reraaditional %}
+                <ul class="newlist" style="padding-top: 20px;">
+                    <li>{{rs.project_registered}} </li>
+                    <li>{{rs.Government_RERA_Authorised_Advertiser}}.</li>
+                    <li>{{rs.RERA_Project_Registration_No}}</li>
+                    <li><b>Site Address:</b> {{rs.Site_Address}}</li>
+                    <li><b>Contact Us:</b>{{rs.Contact_Us}}</li>
+                    
+                </ul>
+
+                <b>Disclaimer:</b>
+                {{rs.Disclaimer}}
+                <hr>
+                {% endfor %}
+                
+            </div>
+	
+                <div style="padding: 20px;">
+                    <b>Disclaimer:</b>
+                    We are an authorised marketing partner for this project. Provided content is given by respective owners and this website and content is for information purpose only and it does not constitute any offer to avail for any services. Prices mentioned are subject to change without prior notice and properties mentioned are subject to availability. You can expect a call, SMS or emails on details registered with us.<hr>
+                    <p style="text-align:center;">Copyright &copy; 2025 | <a aria-label="About Terms & Conditions" href="terms-conditions.php">Terms & Conditions</a> | <a aria-label="About Privacy Policy" href="{% url "privacy-policy" %}">Privacy Policy</a> | <a aria-label="About Cookies Policy" href="cookies-policy.php">Cookies Policy</a> </p>
+                    </small>
+                </div>
+        </section>
+
+        <!-- xxxxxxxxxxxx Contact section end xxxxxxxxxxxxxx -->
+        <a id="discovery" target="_blank" class="whatsaapBtn d-none d-lg-block on-rera" aria-label="WhatsApp" href="https://api.whatsapp.com/send?phone=91{{rs.whatsapp}}&text=Hey There, I would like to explore further details About {% for rs in bookingopen %} {{rs.project_name}}  By {{rs.by}} At {{rs.at}} {% endfor %} Please Share Details.">
+            <span>
+                <img src="{%  static '' %}assets/images/icons/whatsapp.webp" width="32" alt=" ">
+            </span>
+        </a>
+
+
+    
+        
+    
+  </div>
+</section>
+
+        <section>
+                    <div class="footer-enquiryBtn d-flex d-sm-none">
+                        <a class="monCall data-id-btn" id="mobPhone" href="tel:+91{{rs.phone}}"><em class="fa fa-phone"></em> Call</a>
+                        <a id="discovery_mobile" target="_blank" class="monCall whatsappBtn data-id-btn on-rera" href="https://api.whatsapp.com/send?phone=91{{rs.whatsapp}}&text=Hey There, I would like to explore further details About {% for rs in bookingopen %} {{rs.project_name}}  By {{rs.by}} At {{rs.at}} {% endfor %} Maharashtra. Please Share Details."><i class="fa fa-brands fa-whatsapp"></i> WhatsApp</a>
+                        <a class="monCall data-id-btn on-rera" id="mobPhone" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Enquire Now">Enquire Now</a> <a class="monCall data-id-btn non-rera" id="mobPhone"
+                            data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Enquire Now">Express Your Interest</a>
+                    </div>
+        </section>
+            </div>
+        </main>
+
+    </div>
+    <!--end main container-->
+
+
+<!-- Popup Modal for Enquiry Form End -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- gallery JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-lightbox/0.2.12/slick-lightbox.min.js"></script>
+    <script src="{%  static '' %}projects/assets/js/custom.js"></script>
+    <script src="{%  static '' %}projects/assets/js/meta_name.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.js-gallery').slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                arrows: true,
+                fade: false,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                adaptiveHeight: true,
+                prevArrow: '<span class="gallery-arrow mod-prev"><i class="fas fa-arrow-left"></i></span>',
+                nextArrow: '<span class="gallery-arrow mod-next"><i class="fas fa-arrow-right"></i></span>',
+                responsive: [{
+                        breakpoint: 1024,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '0px',
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 980,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '0px',
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            centerMode: false,
+                            centerPadding: '0px',
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+            $('.js-gallery').slickLightbox({
+                src: 'src',
+                itemSelector: '.js-gallery-popup img',
+                background: 'rgba(0, 0, 0, .7)'
+            });
+
+            $('#slick1').slick({
+                rows: 2,
+                dots: false,
+                arrows: true,
+                prevArrow: '<span class="amenities-arrow mod-prev"><i class="fas fa-arrow-left"></i></span>',
+                nextArrow: '<span class="amenities-arrow mod-next"><i class="fas fa-arrow-right"></i></span>',
+                infinite: true,
+                speed: 300,
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                responsive: [{
+                        breakpoint: 1024,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '0px',
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 980,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '0px',
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        row: 1,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '0px',
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+
+            });
+
+        });
+        $(document).ready(function() {
+    $(".moreBtn").click(function() {
+        var button = $(this);
+        var target = button.data('target');
+        var isReadMore = button.html().includes('Read more');
+        var newHtml = isReadMore ? 'Read less <i class="fa fa-chevron-up"></i>' : 'Read more <i class="fa fa-chevron-down"></i>';
+        button.html(newHtml);
+        $(".moreText[data-hit='more" + target + "']").slideToggle(500);
+    });
+});
+
+    </script>
+
+    <!-- JavaScript for interactivity -->
+
+<script>
+  const toggleBtn = document.getElementById("menu-toggle");
+  const nav = document.getElementById("navbarNav");
+
+  toggleBtn.addEventListener("click", () => {
+    nav.classList.toggle("show");
+  });
+</script>
+
+
+<!-- Add this script -->
+<script>
+  function toggleReadMore(btn) {
+    const moreText = btn.previousElementSibling.querySelector(".moreText");
+    if (moreText.style.display === "inline" || moreText.style.display === "") {
+      moreText.style.display = "none";
+      btn.textContent = "Read More";
+    } else {
+      moreText.style.display = "inline";
+      btn.textContent = "Read Less";
+    }
+  }
+
+
+</script>
+<!-- ✅ Limit digits in phone field -->
+<script>
+  function limitDigits(element, maxLength) {
+    if (element.value.length > maxLength) {
+      element.value = element.value.slice(0, maxLength);
+    }
+  }
+</script>
+
+<!-- ✅ Highlight active nav item while scrolling -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - 120;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+      }
+    });
+  });
+});
+</script>
+
+<!-- ✅ CAPTCHA: Enquire Now Modal -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const q = document.getElementById("captcha-question");
+  const c = document.getElementById("captcha-correct");
+  if (q && c) {
+    const n1 = Math.floor(Math.random() * 10) + 1;
+    const n2 = Math.floor(Math.random() * 10) + 1;
+    q.innerText = `${n1} + ${n2} = ?`;
+    c.value = n1 + n2;
+  }
+});
+
+function validateCaptcha() {
+  const ans = parseInt(document.getElementById("captcha-answer").value);
+  const correct = parseInt(document.getElementById("captcha-correct").value);
+  if (ans !== correct) {
+    alert("❌ CAPTCHA incorrect. Please try again.");
+    return false;
+  }
+  return true;
+}
+</script>
+
+<!-- ✅ CAPTCHA: Contact Form -->
+<script>
+function generateCaptchaContact() {
+  const n1 = Math.floor(Math.random() * 10) + 1;
+  const n2 = Math.floor(Math.random() * 10) + 1;
+  document.getElementById("captcha-question-contact").innerText = `${n1} + ${n2}`;
+  document.getElementById("captcha-correct-contact").value = n1 + n2;
+}
+function validateCaptchaContactForm() {
+  const ans = parseInt(document.getElementById("captcha-answer-contact").value);
+  const correct = parseInt(document.getElementById("captcha-correct-contact").value);
+  if (ans !== correct) {
+    alert("❌ Incorrect CAPTCHA. Please try again.");
+    return false;
+  }
+  return true;
+}
+document.addEventListener("DOMContentLoaded", generateCaptchaContact);
+</script>
+
+<!-- ✅ CAPTCHA: Pre-Register Form (for Mobile View) -->
+<script>
+function generateCaptchaOfferForm() {
+  const n1 = Math.floor(Math.random() * 10) + 1;
+  const n2 = Math.floor(Math.random() * 10) + 1;
+  document.getElementById("captcha-question-offer").innerText = `${n1} + ${n2}`;
+  document.getElementById("captcha-correct-offer").value = n1 + n2;
+}
+function validateCaptchaOfferForm() {
+  const ans = parseInt(document.getElementById("captcha-answer-offer").value);
+  const correct = parseInt(document.getElementById("captcha-correct-offer").value);
+  if (ans !== correct) {
+    alert("❌ Incorrect CAPTCHA. Please try again.");
+    return false;
+  }
+  return true;
+}
+document.addEventListener("DOMContentLoaded", generateCaptchaOfferForm);
+</script>
+
+<!-- ✅ AUTO ENQUIRE NOW MODAL (only once per project, slow delay + user interaction trigger) -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const modalEl = document.getElementById("enquire-modal");
+  if (!modalEl) return;
+
+  const modal = new bootstrap.Modal(modalEl);
+  const projectId = "{{ active.id|default:'0' }}";
+  const modalKey = `enquireModalShown_${projectId}`;
+  const modalShown = localStorage.getItem(modalKey);
+
+  let hasInteracted = false;
+
+  // Detect user interaction
+  ['scroll', 'mousemove', 'click', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, () => hasInteracted = true, { once: true });
+  });
+
+  // ✅ Show only once per project, 8 seconds after load, only if user hasn't interacted yet
+  if (!modalShown) {
+    setTimeout(() => {
+      if (!hasInteracted) {
+        modal.show();
+        localStorage.setItem(modalKey, "true");
+      }
+    }, 8000); // ⏰ Delay increased to 8s
+  }
+
+  // ✅ Open manually when user clicks any Enquire button
+  document.querySelectorAll('[data-bs-target="#enquire-modal"]').forEach(btn => {
+    btn.addEventListener("click", () => modal.show());
+  });
+
+  // ✅ Update modal title dynamically when triggered
+  modalEl.addEventListener("show.bs.modal", function (event) {
+    const button = event.relatedTarget;
+    const recipient = button ? button.getAttribute("data-bs-whatever") : "Enquire Now";
+    const modalTitle = modalEl.querySelector(".modal-title");
+    if (modalTitle) modalTitle.textContent = recipient;
+  });
+});
+</script>
+
+<!-- ✅ Google Conversion Tracking -->
+<script>
+window.addEventListener('load', function() {
+  if (window.location.href.includes('/thank-you/')) {
+    gtag('event', 'conversion', { 'send_to': 'AW-17120889442/gSutCL-HkdAaEOKU8OM_' });
+  }
+  if (window.location.pathname == '/') {
+    gtag('event', 'conversion', { 'send_to': 'AW-17120889442/cilvCJrgkNAaEOKU8OM_' });
+  }
+});
+</script>
+
+<!-- ✅ Modal Entry Animation -->
+<style>
+.modal.fade .modal-dialog {
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+  transform: translateY(-30px);
+  opacity: 0;
+}
+.modal.show .modal-dialog {
+  transform: translateY(0);
+  opacity: 1;
+}
+.modal-backdrop.show {
+  backdrop-filter: blur(3px);
+}
+</style>
+
+
+
+</body>
+

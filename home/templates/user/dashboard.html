@@ -1,0 +1,48 @@
+{% extends 'base.html' %} 
+
+{% block title %}My User Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Welcome to Your Dashboard, {{ user.username|capfirst }}!</h1>
+    <hr>
+    
+    <h2>My Property Inquiries</h2>
+
+    {% if inquiries %}
+        <table border="1" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th>Property Title</th>
+                    <th>Date Sent</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inquiry in inquiries %}
+                <tr>
+                    <td><a href="{% url 'property_detail' inquiry.property.id %}">{{ inquiry.property.title }}</a></td>
+                    <td>{{ inquiry.inquiry_date|date:"M d, Y" }}</td>
+                    
+                    {% if inquiry.is_contacted %}
+                        <td style="color: green;">Contacted</td>
+                    {% else %}
+                        <td style="color: orange;">Pending</td>
+                    {% endif %}
+                    
+                    <td>
+                        <button onclick="alert('Message: {{ inquiry.message }} \nPhone: {{ inquiry.phone }}')">View Message</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have not submitted any property inquiries yet.</p>
+    {% endif %}
+
+    <p style="margin-top: 20px;">
+        <a href="{% url 'logout' %}">Click here to Logout</a>
+    </p>
+
+{% endblock %}

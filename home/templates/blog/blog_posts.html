@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+
+{% block title %}Real Estate Blog & News{% endblock %}
+
+{% block content %}
+    <h1>Latest from Our Blog</h1>
+    <hr>
+
+    <div class="blog-grid">
+    {% for post in posts %}
+        <div class="blog-card" style="border: 1px solid #ddd; margin-bottom: 20px; padding: 15px;">
+            {% if post.photo %}<img src="{{ post.photo.url }}" style="max-width: 100%; height: auto;">{% endif %}
+            <h2><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h2>
+            <p>By {{ post.author.username }} on {{ post.publish_date|date:"F d, Y" }}</p>
+            <p>{{ post.content|striptags|truncatechars:150 }}</p> </div>
+    {% empty %}
+        <p>No blog posts found yet.</p>
+    {% endfor %}
+    </div>
+
+{% endblock %}

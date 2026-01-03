@@ -1,0 +1,33 @@
+# utility/compress_mixin.py
+from PIL import Image
+import io
+import sys
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+class ImageCompressionMixin:
+    def compress_image(self, image_field):
+        img = Image.open(image_field)
+        img = img.convert('RGB')  # JPEG/WEBP compatible
+
+        output = io.BytesIO()
+        # WebP recommended for max compression
+        img.save(output, format='WEBP', quality=70)
+        output.seek(0)
+
+        return InMemoryUploadedFile(
+            output,
+            'ImageField',
+            f"{image_field.name.split('.')[0]}.webp",
+            'image/webp',
+            sys.getsizeof(output),
+            None
+        )
+
+    def save(self, *args, **kwargs):
+        for field in self._meta.fields:
+            if field.get_internal_type() == 'ImageField':
+                image = getattr(self, field.name)
+                if image and not str(image).endswith('.webp'):
+                    compressed = self.compress_image(image)
+                    setattr(self, field.name, compressed)
+        super().save(*args, **kwargs)

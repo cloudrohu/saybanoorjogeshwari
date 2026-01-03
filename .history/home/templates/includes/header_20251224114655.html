@@ -1,0 +1,337 @@
+{% load static %}
+
+<style>
+.whatsapp-float {
+    position: fixed;
+    width: 60px; /* Adjust size as needed */
+    height: 60px; /* Adjust size as needed */
+    right: 20px; /* Distance from the right edge */
+    transform: translateY(-50%); /* Pulls the button up by half its height to perfectly center it */
+    background-color: #25d366; /* WhatsApp brand color */
+    color: #FFF;
+    border-radius: 50%; /* Makes the button round */
+    text-align: center;
+    font-size: 30px; /* Icon size */
+    box-shadow: 2px 2px 3px #999;
+    z-index: 100; /* Ensures it stays on top of other elements */
+    display: flex; /* Helps in centering the icon inside the button */
+    align-items: center; /* Vertically centers the icon */
+    justify-content: center; /* Horizontally centers the icon */
+}
+
+.my-float {
+    /* No additional styling needed here due to flexbox centering in the parent */
+}
+
+/* Optional: Add a hover effect */
+.whatsapp-float:hover {
+    opacity: 0.8;
+}
+
+/* Optional: Media query for mobile responsiveness (adjust as needed) */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 80px;
+        height: 80px;
+        right: 15px;
+        font-size: 24px;
+    }
+}
+</style>
+
+
+<!-- ====================== -->
+<!-- DESKTOP VIEW -->
+<!-- ====================== -->
+<div class="hidden md:block">
+  <header class="w-full backdrop-blur-md"
+    style="background-color: {{ settings_obj.header_footer_color }}; color: {{ settings_obj.text_color }};">
+
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+
+      <!-- LEFT: LOGO -->
+      <a href="/" class="flex items-center">
+        {% if settings_obj.logo %}
+        <img src="{{ settings_obj.logo.url }}"
+             alt="{{ settings_obj.site_name|default:'settings_obj.title' }}"
+             class="h-14 w-auto object-contain">
+        {% else %}
+        <span class="font-bold text-2xl">{{ settings_obj.site_name|default:'RealEstatePro' }}</span>
+        {% endif %}
+      </a>
+
+
+      <!-- CENTER: NAV MENU -->
+      <nav class="flex items-center gap-8 text-lg font-medium">
+
+        <!-- HOME -->
+        <a href="/"
+          class="relative group transition duration-300
+          {% if request.path == '/' %}font-semibold{% endif %}"
+          style="color: {{ settings_obj.text_color }};">
+          Home
+          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
+          transition-all duration-300 {% if request.path == '/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
+          </span>
+        </a>
+
+        <!-- FAQ -->
+        <a href="{% url 'faq' %}"
+          class="relative group transition duration-300
+          {% if request.path == '/faq/' %}font-semibold{% endif %}"
+          style="color: {{ settings_obj.text_color }};">
+          FAQ's
+          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
+          transition-all duration-300 {% if request.path == '/faq/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
+          </span>
+        </a>
+
+        <!-- BLOGS -->
+        <a href="/blogs/"
+          class="relative group transition duration-300
+          {% if request.path == '/blogs/' %}font-semibold{% endif %}"
+          style="color: {{ settings_obj.text_color }};">
+          Blogs
+          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
+          transition-all duration-300 {% if request.path == '/blogs/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
+          </span>
+        </a>
+
+        <!-- ABOUT -->
+        <a href="{% url 'about' %}"
+          class="relative group transition duration-300
+          {% if request.path == '/about/' %}font-semibold{% endif %}"
+          style="color: {{ settings_obj.text_color }};">
+          About
+          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
+          transition-all duration-300 {% if request.path == '/about/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
+          </span>
+        </a>
+
+        <!-- SERVICES -->
+        <a href="/services/"
+          class="relative group transition duration-300
+          {% if request.path == '/services/' %}font-semibold{% endif %}"
+          style="color: {{ settings_obj.text_color }};">
+          Services
+          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
+          transition-all duration-300 {% if request.path == '/services/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
+          </span>
+        </a>
+
+        <!-- CONTACT -->
+        <a href="{% url 'contact' %}"
+          class="relative group transition duration-300
+          {% if request.path == '/contact/' %}font-semibold{% endif %}"
+          style="color: {{ settings_obj.text_color }};">
+          Contact
+          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
+          transition-all duration-300 {% if request.path == '/contact/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
+          </span>
+        </a>
+
+      </nav>
+
+
+      <!-- RIGHT: BUTTONS -->
+      <div class="flex items-center gap-4">
+
+        <!-- SELL / RENT BUTTON -->
+        <a href="#">
+            <button
+              class="px-5 py-2.5 font-semibold rounded-xl
+              bg-[{{ settings_obj.button_color }}] text-white
+              shadow-lg hover:scale-105 transition-all duration-300">
+              Login / Register
+            </button>
+        </a>
+
+      </div>
+
+    </div>
+  </header>
+</div>
+
+
+
+<a id="myElement" href="https://api.whatsapp.com/send?phone={{ settings_obj.whatsapp }}&text=Hello" class="whatsapp-float bottom-20" target="_blank" rel="noopener noreferrer">
+    <!-- WhatsApp SVG Icon (for clean, scalable display) -->
+     <i class="fa-brands fa-whatsapp text-5xl p-2"></i>
+</a>
+
+
+<!-- ====================== -->
+<!-- MOBILE VIEW -->
+<!-- ====================== -->
+<div class="md:hidden text-white">
+  <div class="md:hidden text-white">
+  <header class="flex items-center justify-between px-4 py-2 bg-[{{settings_obj.header_footer_color}}]">
+  <!-- LEFT SECTION -->
+  <div class="flex items-center gap-2">
+    <!-- Menu Icon -->
+    <button id="menuBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-white">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+
+   
+    <!-- City Dropdown -->
+    <div class="relative ml-2">
+      <select
+        class="bg-[{{settings_obj.header_footer_color   }}] text-white text-sm font-medium focus:outline-none appearance-none cursor-pointer pr-5"
+        style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'white\' height=\'12\' viewBox=\'0 0 24 24\' width=\'12\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right center;">
+        
+        {% for city in cities %}
+          <option {% if city.name == current_city %}selected{% endif %}>
+            {{ city.name }}
+          </option>
+        {% empty %}
+          <option selected>Mumbai</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+   <!-- Logo -->
+    {% if settings_obj.logo %}
+      <img src="{{ settings_obj.logo.url }}" alt="logo" class="h-8 w-16 ml-1">
+    {% else %}
+      <span class="font-semibold text-lg ml-1">RealEstatePro</span>
+    {% endif %}
+
+ 
+</header>
+
+</div>
+
+
+  <!-- Slide Menu -->
+  <div id="mobileMenu"
+    class="fixed top-0 right-0 w-3/4 h-full bg-[#000428] text-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="flex justify-between items-center px-4 py-3 border-b border-white/20">
+      <h2 class="font-bold text-lg">Menu</h2>
+      <button id="closeMenu" class="text-gray-300 hover:text-white text-2xl">&times;</button>
+    </div>
+
+    <nav class="flex flex-col gap-4 px-6 mt-6 text-base font-medium">
+      <a href="/" class="hover:text-[{{ settings_obj.text_color }}] transition">Home</a>
+      <a href="{% url "faq" %}" class="hover:text-[{{ settings_obj.text_color }}] transition">FAQ's</a>
+      <a href="#" class="hover:text-[{{ settings_obj.text_color }}] transition">Blogs</a>
+      <a href="{% url "about" %}" class="hover:text-[{{ settings_obj.text_color }}] transition">About Us</a>
+      <a href="#" class="hover:text-[{{ settings_obj.text_color }}] transition">Services</a>
+      <a href="{% url "contact" %}" class="hover:text-[{{ settings_obj.text_color }}] transition">Contact Us</a>
+
+    </nav>
+
+    <div class="absolute bottom-8 w-full px-6">
+      <button
+        class="w-full bg-[Tomato] text-black py-2 rounded-lg font-semibold mb-3 hover:bg-white transition">Sell / Rent Property</button>
+        <!-- FLOATING CHAT BUTTON -->
+          <button id="chatToggle"
+          class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition z-50">
+          💬
+        </button>
+
+        <!-- CHAT WINDOW -->
+        <div id="chatWindow"
+          class="hidden fixed bottom-20 right-6 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+
+          <!-- Header -->
+          <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
+            <h3 class="font-semibold">Live Chat</h3>
+            <button id="chatClose" class="text-white text-xl">&times;</button>
+          </div>
+
+          <!-- Messages Area -->
+          <div class="p-4 h-64 overflow-y-auto bg-gray-50 text-sm" id="chatMessages">
+            <p class="text-gray-500 text-center">Start the conversation...</p>
+          </div>
+
+          <!-- Input -->
+          <div class="border-t p-3 flex items-center gap-2">
+            <input id="chatInput" type="text" placeholder="Type a message..."
+              class="w-full border px-3 py-2 rounded-lg text-sm focus:outline-none">
+            <button id="sendBtn" class="bg-blue-600 text-white px-3 py-2 rounded-lg">Send</button>
+          </div>
+        </div>
+
+        <script>
+          const chatToggle = document.getElementById("chatToggle");
+          const chatWindow = document.getElementById("chatWindow");
+          const chatClose = document.getElementById("chatClose");
+          const sendBtn = document.getElementById("sendBtn");
+          const chatInput = document.getElementById("chatInput");
+          const chatMessages = document.getElementById("chatMessages");
+
+          // Open / Close Chat
+          chatToggle.onclick = () => chatWindow.classList.toggle("hidden");
+          chatClose.onclick = () => chatWindow.classList.add("hidden");
+
+          // Send message
+          sendBtn.onclick = () => {
+            let text = chatInput.value.trim();
+            if (!text) return;
+
+            let msg = document.createElement("p");
+            msg.className = "bg-blue-100 p-2 rounded-lg mb-2";
+            msg.innerText = text;
+            chatMessages.appendChild(msg);
+
+            chatInput.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          };
+        </script>
+
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay"
+    class="fixed inset-0 bg-black/60 hidden z-40 transition-opacity duration-300"></div>
+</div>
+
+<!-- ====================== -->
+<!-- SCRIPT -->
+<!-- ====================== -->
+<script>
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const closeMenu = document.getElementById("closeMenu");
+  const overlay = document.getElementById("overlay");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.remove("translate-x-full");
+    overlay.classList.remove("hidden");
+  });
+
+  closeMenu.addEventListener("click", () => {
+    mobileMenu.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
+  });
+
+  overlay.addEventListener("click", () => {
+    mobileMenu.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
+  });
+  const myElement = document.getElementById('myElement');
+  let position = 0;
+  let direction = 1; // 1 for down, -1 for up
+
+  function floatAnimation() {
+    // Move the element up and down
+    position += direction * 0.5; // Adjust speed
+    if (position >= 20 || position <= 0) {
+    direction *= -1; // Reverse direction at limits
+  }
+
+   myElement.style.transform = `translateY(${position}px)`;
+
+    // Call the function again on the next frame
+      requestAnimationFrame(floatAnimation);
+    }
+
+    // Start the animation when the script loads
+    floatAnimation();
+</script>

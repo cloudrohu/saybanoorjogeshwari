@@ -1,0 +1,1114 @@
+{% load static %}
+{% load humanize %}
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<section class="bg-[#f8fafc] py-16 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Section Title -->
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-orange-400 uppercase tracking-wide">
+        Featured Projects
+      </h2>
+      <p class="text-gray-300 mt-1 text-sm md:text-base">
+        Explore our best and most popular real estate projects
+      </p>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="relative">
+      <div class="swiper mySwiper px-8"> <!-- Added padding so arrows stay outside cards -->
+        <div class="swiper-wrapper">
+
+          {% for rs in project_featured %}
+          <div class="swiper-slide">
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200">
+
+              <!-- Image Section -->
+              <div class="relative h-60 w-full overflow-hidden">
+                {% if rs.image %}
+                  <img src="{{ rs.image.url }}" alt="{{ rs.project_name }}  "
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-200">
+                {% else %}
+                  <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image"
+                    class="w-full h-full object-cover">
+                {% endif %}
+
+                <!-- Property Type Tag -->
+                <span class="absolute top-3 left-3 bg-orange-500 text-white text-[12px] font-semibold px-3 py-1 rounded-full shadow">
+                  {{ rs.propert_type }}
+                </span>
+
+                <!-- Construction Status -->
+                <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[11px] font-medium px-3 py-1 rounded-full">
+                  {{ rs.construction_status }}
+                </span>
+
+                <!-- Hover Icons -->
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center gap-4 opacity-0 hover:opacity-100 transition duration-300">
+                  <a href="{{ rs.get_absolute_url }}" class="bg-white p-3 rounded-full shadow hover:bg-orange-500 hover:text-white transition">
+                    <i class="fas fa-link"></i>
+                  </a>
+                  <a href="{{ rs.get_absolute_url }}" class="bg-white p-3 rounded-full shadow hover:bg-orange-500 hover:text-white transition">
+                    <i class="fas fa-video"></i>
+                  </a>
+                </div>
+                
+              </div>
+
+              <!-- Content -->
+              <div class="p-3 space-y-2">
+                <h3 class="text-lg font-semibold text-gray-800 hover:text-orange-600 transition leading-snug">
+                  {{ rs.project_name }}
+                </h3>
+                <p class="text-sm text-gray-600 flex items-center gap-1 leading-relaxed">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ rs.locality }}
+                </p>
+
+                <!-- Configuration Details -->
+                <div class="pt-2 space-y-1">
+                  {% for line in rs.get_configuration_details.splitlines %}
+                    <p class="text-orange-600 font-medium text-[13px] leading-snug">{{ line }}</p>
+                  {% endfor %}
+                </div>
+
+              
+              </div>
+
+              <!-- Footer Button -->
+              <div class="bg-orange-500 text-center py-2 hover:bg-orange-600 transition">
+                <a href="{{ rs.get_absolute_url }}" class="text-white font-semibold uppercase tracking-wide text-[14px]">
+                  See Details
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {% empty %}
+          <p class="col-span-3 text-center text-gray-500">No featured projects available at the moment.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <br>
+      <!-- Swiper Pagination & Arrows -->
+      <div class="swiper-pagination mt-6"></div>
+      <div class="swiper-button-prev !text-orange-500 !left-0 -translate-x-8 scale-90"></div>
+      <div class="swiper-button-next !text-orange-500 !right-0 translate-x-8 scale-90"></div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- SwiperJS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 3000, // Auto slide every 3 seconds
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true, // pause on hover
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      640: { slidesPerView: 1.2 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+</script>
+
+
+   
+
+
+<!-- NEW LAUCH PROJECTS -->
+<section class="py-12" data-aos="fade-up">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    
+    <!-- Title -->
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-8 text-orange-600 uppercase">
+      NEW LAUNCH PROJECTS
+    </h2>
+
+    <!-- Tabs -->
+    <div class="flex flex-wrap justify-center mb-8 gap-3">
+      <button data-tab="residential" class="tab-btn active px-6 py-2 rounded-full font-semibold shadow transition">
+        Residential
+      </button>
+      <button data-tab="commercial" class="tab-btn bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-orange-200 transition">
+        Commercial
+      </button>
+    </div>
+
+    <!-- residential TAB -->
+    <!-- RESIDENTIAL TAB -->
+<div id="residential" class="tab-content">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+      {% for project in new_launch_residential %}
+      <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+
+        <div class="relative">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
+          {% else %}
+            <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
+          {% endif %}
+
+          <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
+            NEW LAUNCH
+          </span>
+
+          <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
+            Residential
+          </span>
+        </div>
+
+        <div class="p-4">
+          <p class="text-lg font-bold text-gray-700">
+            {{ project.project_name }}
+          </p>
+
+          <p class="text-orange-600 font-semibold mt-1">
+            {{ project.get_configuration_details|linebreaksbr }}
+          </p>
+
+          <p class="text-sm text-gray-600 mt-1">
+            <i class="fas fa-map-marker-alt text-orange-500"></i>
+            {{ project.locality.name }}, {{ project.city.name }}
+          </p>
+        </div>
+
+        <div class="bg-orange-500 text-center">
+          <a href="{{ project.get_absolute_url }}"
+             class="block text-white font-bold w-full py-3 uppercase">
+            See Details
+          </a>
+        </div>
+      </div>
+      {% empty %}
+        <p class="text-center text-gray-500">No Residential New Launch Projects</p>
+      {% endfor %}
+
+    </div>
+
+    
+  </div>
+</div>
+
+
+    <!-- RENT TAB -->
+    <!-- COMMERCIAL TAB -->
+<div id="commercial" class="tab-content hidden">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+      {% for project in new_launch_commercial %}
+      <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+
+        <div class="relative">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
+          {% else %}
+            <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
+          {% endif %}
+
+          <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
+            NEW LAUNCH
+          </span>
+
+          <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
+            Commercial
+          </span>
+        </div>
+
+        <div class="p-4">
+          <p class="text-lg font-bold text-gray-700">
+            {{ project.project_name }}
+          </p>
+
+          <p class="text-orange-600 font-semibold mt-1">
+            {{ project.get_configuration_details|linebreaksbr }}
+          </p>
+
+          <p class="text-sm text-gray-600 mt-1">
+            <i class="fas fa-map-marker-alt text-orange-500"></i>
+            {{ project.locality.name }}, {{ project.city.name }}
+          </p>
+        </div>
+
+        <div class="bg-orange-500 text-center">
+          <a href="{{ project.get_absolute_url }}"
+             class="block text-white font-bold w-full py-3 uppercase">
+            See Details
+          </a>
+        </div>
+      </div>
+      {% empty %}
+        <p class="text-center text-gray-500">No Commercial New Launch Projects</p>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</section>
+
+
+<!-- POSSESSION START SECTION -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 items-center">
+
+    <!-- LEFT TEXT SECTION -->
+    <div class="md:col-span-1">
+      <h2 class="text-4xl font-extrabold text-yellow-600 leading-tight">
+        Possession Status
+      </h2>
+      <p class="text-gray-700 mt-2">
+        Project According to Possession Status in Mumbai
+      </p>
+
+      <button class="mt-6 bg-[#002D62] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[#001A3C] transition">
+        View All
+      </button>
+    </div>
+
+    <!-- RIGHT SIDE CARDS -->
+    <div class="md:col-span-3 grid md:grid-cols-3 gap-6">
+
+      <!-- CARD 1 - READY TO MOVE -->
+      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <!-- Text -->
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">Ready to Move</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            975 Projects
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD 2 - DER EARLY POSSESSION -->
+      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/439416/pexels-photo-439416.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">EARLY POSSESSION</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            3904 Projects
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD 3 - NEW LAUNCH -->
+      <div class="Find Your Dream Property
+relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">New Launch</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            512 Projects
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- POSSESSION END SECTION -->
+
+
+
+<!-- Swiper JS -->
+<script>
+  // Swiper Init
+  function initSwiper() {
+    document.querySelectorAll(".mySwiper").forEach(swiperEl => {
+      new Swiper(swiperEl, {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: {
+          el: swiperEl.querySelector(".swiper-pagination"),
+          clickable: true,
+        },
+        navigation: {
+          nextEl: swiperEl.querySelector(".swiper-button-next"),
+          prevEl: swiperEl.querySelector(".swiper-button-prev"),
+        },
+        breakpoints: {
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        },
+      });
+    });
+  }
+  initSwiper();
+
+  // Tabs functionality
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      this.classList.add("active");
+
+      document.querySelectorAll(".tab-content").forEach(tab => tab.classList.add("hidden"));
+      document.getElementById(this.dataset.tab).classList.remove("hidden");
+    });
+  });
+</script>
+<hr>
+<!-- 🌟 WHY CHOOSE US -->
+<section class="py-14 bg-white" id="why-choose">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+
+    <!-- IMAGE SIDE -->
+    <div class="relative group" data-aos="zoom-in-right">
+
+      <div class="absolute -inset-2 bg-orange-500/10 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition"></div>
+
+      <img src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
+           class="relative w-full h-[450px] object-cover rounded-3xl shadow-xl transition group-hover:scale-[1.01]"
+           alt="Why Choose">
+
+      <div class="absolute inset-0 rounded-3xl border border-white/20 pointer-events-none"></div>
+    </div>
+
+    <!-- TEXT SIDE WITH INTERNAL SCROLL -->
+    <div data-aos="fade-left">
+
+      <h2 class="text-3xl font-bold text-orange-600 mb-4">
+        Why Choose Us
+      </h2>
+
+      <!-- SCROLL CONTAINER -->
+      <div class="max-h-[350px] overflow-y-auto pr-3 custom-scroll space-y-4 text-gray-800 text-[15px] leading-relaxed">
+
+        {% for item in why_choose_items %}
+        <div class="flex gap-3">
+
+          <span class="text-green-600 text-xl leading-none">
+            {% if item.icon %} {{ item.icon }} {% else %} ✔ {% endif %}
+          </span>
+
+          <span class="font-medium">
+            {{ item.title }}
+            {% if item.subtitle %}
+            <span class="text-gray-600 font-normal"> — {{ item.subtitle }}</span>
+            {% endif %}
+          </span>
+
+        </div>
+        {% empty %}
+
+        <div class="flex gap-3">
+          <span class="text-green-600 text-xl leading-none">✔</span>
+          <span class="font-medium">15+ Years of Experience</span>
+        </div>
+
+        <div class="flex gap-3">
+          <span class="text-green-600 text-xl leading-none">✔</span>
+          <span class="font-medium">Verified Properties Only</span>
+        </div>
+
+        {% endfor %}
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== FULL WIDTH SECTION ======================= -->
+<section class="w-full py-12 text-white bg-cover bg-center relative" 
+style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
+
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 text-center">
+
+    <h2 class="text-3xl md:text-4xl font-semibold mb-14 uppercase">
+      How We Work
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10 relative">
+
+      <div class="hidden md:block absolute top-[38px] left-0 right-0 h-[2px] bg-white/30"></div>
+
+      <!-- ITEM 1 -->
+      <div class="group flex flex-col items-center text-center">
+        <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center
+                    transition group-hover:bg-orange-500 group-hover:scale-110">
+          <i class="fa-solid fa-building text-2xl"></i>
+        </div>
+
+        <h3 class="mt-4 font-semibold">Search & Shortlisting</h3>
+        <p class="mt-2 text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+          Lacs of verified listings from 500+ developers
+        </p>
+
+        <button class="common-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#commonModal"
+          data-modal-title="Get In Touch">
+          Get In Touch
+        </button>
+      </div>
+
+      <!-- ITEM 2 -->
+      <div class="group flex flex-col items-center text-center">
+        <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center
+                    transition group-hover:bg-orange-500 group-hover:scale-110">
+          <i class="fa-solid fa-car text-2xl"></i>
+        </div>
+
+        <h3 class="mt-4 font-semibold">Site Visit</h3>
+        <p class="mt-2 text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+          Guided site visits with experts
+        </p>
+
+        <button class="common-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#commonModal"
+          data-modal-title="Book Site Visit">
+          Book Site Visit
+        </button>
+      </div>
+
+      <!-- ITEM 3 -->
+      <div class="group flex flex-col items-center text-center">
+        <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center
+                    transition group-hover:bg-orange-500 group-hover:scale-110">
+          <i class="fa-solid fa-sack-dollar text-2xl"></i>
+        </div>
+
+        <h3 class="mt-4 font-semibold">Home Loan Assistance</h3>
+        <p class="mt-2 text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+          Loan guidance from top banks
+        </p>
+
+        <button class="common-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#commonModal"
+          data-modal-title="Home Loan Assistance">
+          Apply Home Loan
+        </button>
+      </div>
+
+      <!-- ITEM 4 -->
+      <div class="group flex flex-col items-center text-center">
+        <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center
+                    transition group-hover:bg-orange-500 group-hover:scale-110">
+          <i class="fa-solid fa-file-lines text-2xl"></i>
+        </div>
+
+        <h3 class="mt-4 font-semibold">Legal Advice</h3>
+        <p class="mt-2 text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+          Legal and documentation support
+        </p>
+
+        <button class="common-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#commonModal"
+          data-modal-title="Legal Advice">
+          Get In Touch
+        </button>
+      </div>
+
+      <!-- ITEM 5 -->
+      <div class="group flex flex-col items-center text-center">
+        <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center
+                    transition group-hover:bg-orange-500 group-hover:scale-110">
+          <i class="fa-solid fa-key text-2xl"></i>
+        </div>
+
+        <h3 class="mt-4 font-semibold">Unit Booking</h3>
+        <p class="mt-2 text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition">
+          Assistance till final possession
+        </p>
+
+        <button class="common-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#commonModal"
+          data-modal-title="Unit Booking">
+          Get In Touch
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+  
+
+<!-- Blog Section Start -->
+<section id="blog" class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+
+    <!-- Section Header -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-3">
+      Latest from Our Blog
+    </h2>
+    <p class="text-gray-600 mb-10">
+      Property tips, market news & expert guides
+    </p>
+
+    <!-- 🔥 BLOG GRID (4 Columns Desktop) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Blog Card -->
+      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
+        <img src="https://via.placeholder.com/600x400"
+             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
+             alt="">
+        <div class="p-4 text-left">
+          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
+          <h3 class="text-lg font-bold text-gray-800 mt-1">
+            Mumbai Property Market Update
+          </h3>
+          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
+            Latest insights on prices, demand & upcoming hotspots in Mumbai.
+          </p>
+          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
+            Read More →
+          </a>
+        </div>
+      </div>
+
+      <!-- Duplicate cards (2,3,4) -->
+         <!-- Blog Card -->
+      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
+        <img src="https://via.placeholder.com/600x400"
+             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
+             alt="">
+        <div class="p-4 text-left">
+          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
+          <h3 class="text-lg font-bold text-gray-800 mt-1">
+            Mumbai Property Market Update
+          </h3>
+          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
+            Latest insights on prices, demand & upcoming hotspots in Mumbai.
+          </p>
+          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
+            Read More →
+          </a>
+        </div>
+      </div>  <!-- Blog Card -->
+      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
+        <img src="https://via.placeholder.com/600x400"
+             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
+             alt="">
+        <div class="p-4 text-left">
+          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
+          <h3 class="text-lg font-bold text-gray-800 mt-1">
+            Mumbai Property Market Update
+          </h3>
+          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
+            Latest insights on prices, demand & upcoming hotspots in Mumbai.
+          </p>
+          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
+            Read More →
+          </a>
+        </div>
+      </div>  <!-- Blog Card -->
+      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
+        <img src="https://via.placeholder.com/600x400"
+             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
+             alt="">
+        <div class="p-4 text-left">
+          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
+          <h3 class="text-lg font-bold text-gray-800 mt-1">
+            Mumbai Property Market Update
+          </h3>
+          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
+            Latest insights on prices, demand & upcoming hotspots in Mumbai.
+          </p>
+          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
+            Read More →
+          </a>
+        </div>
+      </div>
+      <!-- Copy same card 3 more times -->
+      
+    </div>
+
+    <!-- View All -->
+    <a href="/blogs"
+       class="inline-block mt-10 text-blue-600 font-semibold hover:underline">
+      View All Blogs
+    </a>
+
+  </div>
+</section>
+<!-- Blog Section End -->
+
+
+
+<br>
+<!-- STATS COUNTER -->
+<section class="relative text-white py-20 bg-gradient-to-r from-orange-600 to-orange-500 overflow-hidden">
+  <div class="absolute inset-0 bg-[url('/static/assets/images/pattern.svg')] opacity-10 animate-floatPattern"></div>
+  <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center relative z-10">
+
+    {% for rs in impactmetric %}
+    <!-- Single stat -->
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-6 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in">
+      <i class="{{rs.icon}} text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
+      <h3 class="text-4xl font-bold" id="projects-delivered">{{ rs.value }}+</h3>
+      <p class="mt-2 text-lg">{{rs.title}}</p>
+    </div>
+
+    {% endfor %}
+
+  </div>
+</section>
+
+
+
+
+<!-- 🏦 HOME LOAN PARTNERS SLIDER -->
+<section class="py-20 bg-white" id="home-loan-partners">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+
+    <h2 class="text-3xl md:text-4xl font-bold text-orange-600 mb-3">
+      Home Loan Partners
+    </h2>
+    <p class="text-gray-600 max-w-2xl mx-auto mb-12">
+      We are associated with India’s most trusted banks to help you
+      get the best home loan deals.
+    </p>
+
+    <!-- Swiper -->
+    <div class="swiper loanPartnerSwiper">
+      <div class="swiper-wrapper">
+
+        <!-- PARTNER CARD -->
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/sbi.png' %}" alt="SBI Home Loan">
+            <p>SBI Home Loan</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/hdfc.png' %}" alt="HDFC Home Loan">
+            <p>HDFC Home Loan</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/icici.png' %}" alt="ICICI Home Loan">
+            <p>ICICI Home Loan</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/axis.png' %}" alt="Axis Bank Home Loan">
+            <p>Axis Bank</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/lic.png' %}" alt="LIC Housing Finance">
+            <p>LIC Housing Finance</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/pnb.png' %}" alt="PNB Housing Finance">
+            <p>PNB Housing</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  var loanPartnerSwiper = new Swiper(".loanPartnerSwiper", {
+    slidesPerView: 2,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    breakpoints: {
+      640: { slidesPerView: 3 },
+      768: { slidesPerView: 4 },
+      1024: { slidesPerView: 5 },
+    },
+  });
+</script>
+
+<!-- 🏢 FEATURED DEVELOPERS -->
+<section class="py-16 bg-gray-100" id="developers">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+
+    <h2 class="text-3xl font-bold text-orange-600 mb-12">
+      Featured Developers
+    </h2>
+
+    {% if featured_developers %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
+
+      {% for dev in featured_developers %}
+      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl 
+                  bg-gradient-to-br from-orange-500 to-pink-600 
+                  shadow-lg hover:shadow-xl transition-all duration-300 group"
+           data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:70 }}">
+
+        <!-- INNER CARD -->
+        <div class="bg-white rounded-2xl p-6 group-hover:bg-gray-50 transition duration-300 flex flex-col items-center">
+
+          <!-- LOGO -->
+          {% if dev.logo %}
+          <a href="{{ dev.get_absolute_url }}" class="block">
+            <img src="{{ dev.logo.url }}"
+                 alt="{{ dev.title }}"
+                 class="h-16 w-auto object-contain mx-auto transition-all duration-300
+                        group-hover:scale-110 group-hover:opacity-100" />
+          </a>
+          {% endif %}
+
+          <h3 class="mt-4 text-gray-800 font-semibold text-sm group-hover:text-orange-600 transition">
+            {{ dev.title }}
+          </h3>
+
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <!-- DEFAULT SAMPLE CARDS -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
+
+      {% for i in "1234" %}
+      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl 
+                  bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg">
+
+        <div class="bg-white rounded-2xl p-6 flex flex-col items-center">
+          <img src="https://dummyimage.com/200x100/aaa/fff&text=Logo"
+               class="h-16 object-contain mx-auto" />
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    {% endif %}
+  </div>
+</section>
+
+<!-- LOCALITY -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Heading -->
+    <h2 class="text-4xl font-bold text-gray-900 mb-2">Popular Location</h2>
+    <p class="text-gray-600 mb-10">
+      Explore prime locations and key real estate destinations in Mumbai
+    </p>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {% for rs in featured_locality %}
+      <!-- Card -->
+      <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-md transition">
+        <div class="bg-gray-100 p-3 rounded-xl">
+          <i class="fa-solid fa-location-dot text-red-500 text-xl"></i>
+        </div>
+        <h3 class="font-semibold text-lg text-gray-800">{{rs.name}}</h3>
+      </div>
+      {% endfor %}     
+    </div>
+  </div>
+</section>
+
+<!-- 💬 TESTIMONIALS -->
+<section class="py-16 bg-gray-100" id="testimonial">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold text-orange-600 mb-10">Testimonials</h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      {% for t in testimonials %}
+      <div class="bg-white shadow rounded p-2" data-aos="fade-up">
+        {% if t.image %}
+        <img src="{{ t.image.url }}" class="w-16 h-16 rounded-full mx-auto mb-3" />
+        {% endif %}
+        <p class="text-gray-700 italic">"{{ t.message }}"</p>
+        <h3 class="mt-3 font-bold">{{ t.name }}</h3>
+        {% if t.designation %}<p class="text-sm text-gray-500">{{ t.designation }}</p>{% endif %}
+        <p class="text-yellow-400 mt-2">{% for i in "12345"|slice:":t.rating" %}⭐{% endfor %}</p>
+      </div>
+      {% empty %}
+      <p>No testimonials available.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+
+<!-- LEFT DETAILS + RIGHT FORM CONTACT SECTION -->
+<section id="contact" class="py-14 bg-orange-50">
+    <h2 class="text-3xl font-bold text-orange-600 mb-4 text-center">Get In Touch</h2>
+      <p class="text-gray-600 mb-6 text-center">We are here to assist you with any queries.</p>
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
+
+    <!-- LEFT SIDE DETAILS -->
+    <div class="mt-6 rounded-lg overflow-hidden shadow-md border border-gray-100">
+        {% if contact_content and contact_content.map_iframe %}
+          {{ contact_content.map_iframe|safe }}
+        {% elif settings_obj and settings_obj.google_map %}
+          {{ settings_obj.google_map|safe }}
+        {% else %}
+          <div class="p-6 text-center text-sm text-gray-500">Map not available.</div>
+        {% endif %}
+      </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="bg-white p-8 rounded-xl shadow-md border border-orange-100">
+
+      <h3 class="text-xl font-semibold text-orange-600 mb-5">Send Us a Message</h3>
+
+      <form class="space-y-4">
+
+        <input type="text" placeholder="Your Name"
+               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 outline-none">
+
+        <input type="email" placeholder="Your Email"
+               class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 outline-none">
+
+        <textarea rows="4" placeholder="Your Message"
+                  class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"></textarea>
+
+        <button class="w-full bg-orange-600 text-white py-3 rounded-lg font-semibold hover:bg-orange-700 transition">
+          Send Message
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ❓ FAQ -->
+<section class="py-20 bg-gray-100" id="faq">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h2 class="text-4xl font-bold text-orange-600 mb-12 text-center">
+      Frequently Asked Questions
+    </h2>
+
+    <!-- FAQ Grid -->
+    <div id="faqContainer" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+
+    <!-- Buttons -->
+    <div class="text-center mt-10 space-x-4">
+      <button id="loadMoreBtn"
+        class="px-6 py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-700 transition">
+        Load More
+      </button>
+
+      <button id="showLessBtn"
+        class="px-3 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition hidden">
+        Show Less   
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Hidden FAQ Data -->
+<div id="faqData" class="hidden">
+  {% for faq in faqs %}
+  <div class="faq-item">
+    <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+
+      <details class="group cursor-pointer">
+        <summary class="flex justify-between items-center font-semibold text-lg text-gray-900">
+          {{ faq.question }}
+          <i class="fas fa-chevron-down text-gray-600 transition-transform duration-300 group-open:rotate-180"></i>
+        </summary>
+
+        <p class="mt-4 text-gray-700 leading-7">
+          {{ faq.answer|safe }}
+        </p>
+      </details>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+  
+
+<!-- POPUS START -->
+<div class="modal fade" id="commonModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-xl">
+
+      <div class="modal-header">
+        <h5 class="modal-title text-lg font-semibold" id="modalTitle">
+          Get In Touch
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form class="space-y-3">
+          <input type="text" placeholder="Your Name" class="w-full border px-3 py-2 rounded">
+          <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
+          <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
+
+          <button class="w-full bg-orange-500 text-white py-2 rounded">
+            Submit
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- POPUS END -->
+
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+  });
+</script>
+<!-- Animate on Scroll -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({ duration: 1000, once: true });</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("commonModal");
+  const title = document.getElementById("modalTitle");
+
+  modal.addEventListener("show.bs.modal", function (event) {
+    const btn = event.relatedTarget;
+    title.innerText = btn.getAttribute("data-modal-title");
+  });
+});
+</script>
+
+
+<style>
+.common-btn{
+  margin-top:12px;
+  padding:8px 16px;
+  border:1px solid white;
+  border-radius:6px;
+  font-size:14px;
+  opacity:1;
+  transition:0.3s;
+}
+@media(min-width:768px){
+  .common-btn{opacity:0}
+  .group:hover .common-btn{opacity:1}
+}
+.common-btn:hover{
+  background:white;
+  color:black;
+}
+</style>
+
+<style>
+.partner-card{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:28px 20px;
+  height:140px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  transition:0.35s ease;
+}
+
+.partner-card img{
+  height:42px;
+  object-fit:contain;
+  transition:0.35s ease;
+}
+
+.partner-card p{
+  font-size:14px;
+  font-weight:600;
+  color:#1f2937;
+  transition:0.35s ease;
+}
+
+/* HOVER EFFECT */
+.partner-card:hover{
+  background:#000;
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+.partner-card:hover img{
+  filter:brightness(0) invert(1);
+}
+
+.partner-card:hover p{
+  color:#fff;
+}
+</style>
+<!-- NEW LAUNCH SECTION -->

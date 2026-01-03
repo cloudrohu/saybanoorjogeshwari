@@ -1,0 +1,1008 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+<style>
+    /* Auto sliding gallery */
+  .slider-animation {
+      display: flex;
+      animation: slide 12s infinite linear;
+  }
+  .slider-animation img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+  }
+
+  @keyframes slide {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(0); }
+
+      25% { transform: translateX(-100%); }
+      45% { transform: translateX(-100%); }
+
+      50% { transform: translateX(-200%); }
+      70% { transform: translateX(-200%); }
+
+      75% { transform: translateX(-300%); }
+      100% { transform: translateX(-300%); }
+  }
+</style>
+
+{% block content %}
+
+
+
+<!-- Main Container -->
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+
+  <!-- Left Side - Property List -->
+  <div class="lg:col-span-2 space-y-6">
+
+    <!-- Header -->
+      <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+        <!-- List Button -->
+        <button id="listViewBtn" class="bg-orange-500 text-white p-2 rounded">
+          <i class="fas fa-list"></i>
+        </button>
+
+        <!-- Grid Button -->
+        <button id="gridViewBtn" class="bg-gray-200 text-gray-700 p-2 rounded">
+          <i class="fas fa-th"></i>
+        </button>
+
+        <span class="font-semibold text-orange-600">Properties</span>
+      </div>
+
+
+    <!-- Property Filters Start -->
+     <filter-section>
+
+      <div class="bg-white shadow rounded p-4 flex flex-wrap gap-4 items-center lg:hidden">
+
+        <!-- Location -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>All Locations</option>
+          <option>Mira Road</option>
+          <option>Andheri</option>
+          <option>Borivali</option>
+        </select>
+
+        <!-- Property Type -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>Property Type</option>
+          <option>Apartment</option>
+          <option>Plot</option>
+          <option>Villa</option>
+          <option>Builder Floor</option>
+        </select>
+
+        <!-- BHK -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>BHK</option>
+          <option>1 RK</option>
+          <option>1 BHK</option>
+          <option>1.5 BHK</option>
+          <option>2 BHK</option>
+          <option>2.5 BHK</option>
+          <option>3 BHK</option>
+          <option>3.5 BHK</option>
+        </select>
+
+        <!-- Price -->
+        <div class="flex gap-2">
+          <input type="text" placeholder="Min Price" class="border px-3 py-2 rounded text-sm w-28">
+          <input type="text" placeholder="Max Price" class="border px-3 py-2 rounded text-sm w-28">
+        </div>
+
+        <!-- Brokerage -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>Brokerage Charges</option>
+          <option>No Brokerage</option>
+          <option>With Brokerage</option>
+        </select>
+
+        <!-- Carpet Area -->
+        <div class="flex gap-2">
+          <input type="text" placeholder="Min (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+          <input type="text" placeholder="Max (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+        </div>
+
+        <!-- More Filters Button -->
+        <button id="moreFiltersBtn"
+          class="text-orange-600 font-semibold underline text-sm ml-auto">More Filters</button>
+
+        <!-- Submit -->
+        <button
+          class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 text-sm font-semibold">
+          Filter
+        </button>
+      </div>
+
+      <!-- More Filters Panel -->
+      <div id="moreFiltersPanel" class="hidden bg-white shadow rounded p-4 mt-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+          <select class="border px-3 py-2 rounded">
+            <option>Posted By</option>
+            <option>Owner</option>
+            <option>Dealer</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Sale Type</option>
+            <option>New</option>
+            <option>Resale</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Property Status</option>
+            <option>Ready to Move</option>
+            <option>Under Construction</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Possession From</option>
+            <option>2024</option>
+            <option>2025</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Property Age</option>
+            <option>0-5 Years</option>
+            <option>5-10 Years</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Bathrooms</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3+</option>
+          </select>
+          <label class="flex items-center gap-2">
+            <input type="checkbox"> Parking
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox"> Live-in Tour / Video
+          </label>
+        </div>
+
+        <!-- Bottom Buttons -->
+        <div class="flex justify-between items-center mt-4">
+          <button id="closeFilters" class="text-sm text-blue-600">Clear Filters & Close</button>
+          <button class="bg-orange-500 px-4 py-2 rounded text-white font-semibold">
+            Show Properties
+          </button>
+        </div>
+      </div>
+
+        <!-- JS -->
+        <script>
+          document.getElementById("moreFiltersBtn").addEventListener("click", () => {
+            document.getElementById("moreFiltersPanel").classList.toggle("hidden");
+          });
+          document.getElementById("closeFilters").addEventListener("click", () => {
+            document.getElementById("moreFiltersPanel").classList.add("hidden");
+          });
+        </script>
+     </filter-section>
+    <!-- Property Filters End -->
+    
+
+
+      <!-- ✅ List View -->
+      <div id="listView" class="space-y-6">
+        {% for project in projects %}
+
+          <div class="flex flex-col sm:flex-row bg-white  shadow border p-3 hover:border-orange-500 hover:shadow-xl transition-all ">
+
+            <a href="{{ project.get_absolute_url }}">
+            <!-- Project Image -->
+            {% if project.image %}
+              <img src="{{ project.image.url }}" 
+                  class="w-full sm:w-64 h-48 object-cover mt-0"
+                  style="height: 250px;" 
+                  alt="{{ project.project_name }}" class="h-80">
+            {% else %}
+              <img src="{% static 'images/no-images.jpg' %}" 
+                  class="w-full sm:w-64 h-48 object-cover"
+                  style="height: 250px;" 
+                  alt="No Image">
+            {% endif %}
+
+            </a>
+            <!-- Right Section -->
+            <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
+
+                  <!-- Title + Price + Location -->
+            <div class="flex flex-col gap-1">
+
+              <a href="{{ project.get_absolute_url }}">
+                <!-- Row 1: Project Name + Price -->
+                <div class="flex items-start justify-between gap-4">
+                  <h2 class="text-xl font-semibold text-gray-900 leading-tight">
+                    {{ project.project_name }}
+                  </h2>
+
+
+                  <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
+                    {{ project.get_price_range }}
+                  </span>
+
+                </div>
+
+                  <!-- Row 2: Location -->
+                  <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
+                    <i class="fas fa-map-marker-alt text-orange-500"></i>
+                    <span>{{ project.locality }}</span>
+                  </p>
+
+              </a>
+
+            </div>
+
+
+              <!-- Badges -->
+              <div class="flex flex-wrap gap-2 text-xs text-gray-700 mb-[10px]">
+                <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100">Possession {{ project.possession_month|default:"N/A" }}--{{ project.possession_year|default:"N/A" }}</span>
+              </div>
+
+              
+
+              <!-- Divider -->
+              <div class="border-t border-gray-200"></div>
+
+              <!-- ================= BHK TABS ================= -->
+              <div class="border-b mb-2">
+                <div class="flex gap-4 text-sm font-medium text-gray-600">
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2 border-green-600 text-green-600"
+                    data-target="bhk-2">
+                    2 BHK
+                  </button>
+
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600"
+                    data-target="bhk-3">
+                    3 BHK
+                  </button>
+
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600"
+                    data-target="bhk-4">
+                    4 BHK
+                  </button>
+                </div>
+              </div>
+
+
+              <!-- ================= 2 BHK ================= -->
+             <div class="bhk-panel" data-panel="bhk-2">
+                <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+
+                  <table class="w-full text-sm border-collapse">
+                    <thead class="bg-gray-100 sticky top-0">
+                      <tr class="text-center font-semibold">
+                        <th class="px-1 py-1 border">Carpet Area</th>
+                        <th class="px-1 py-1 border">Price</th>
+                        <th class="px-1 py-1 border">Parking</th>
+                        <th class="px-1 py-1 border">Balcony</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-center">
+                      <tr>
+                        <td class="px-1 py-1 border">500 sqft</td>
+                        <td class="px-1 py-1 border">₹8,500,000</td>
+                        <td class="px-1 py-1 border">No</td>
+                        <td class="px-1 py-1 border">1</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+
+
+              <!-- ================= 3 BHK ================= -->
+            <div class="bhk-panel hidden" data-panel="bhk-3">
+              <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+
+                <table class="w-full text-sm border-collapse">
+                  <thead class="bg-gray-100 sticky top-0">
+                    <tr class="text-center font-semibold">
+                      <th class="px-1 py-1 border">Carpet Area</th>
+                      <th class="px-1 py-1 border">Price</th>
+                      <th class="px-1 py-1 border">Parking</th>
+                      <th class="px-1 py-1 border">Balcony</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <tr>
+                      <td class="px-1 py-1 border">1200 sqft</td>
+                      <td class="px-1 py-1 border">₹14,500,000</td>
+                      <td class="px-1 py-1 border">Yes</td>
+                      <td class="px-1 py-1 border">2</td>
+                    </tr>
+                    <tr>
+                      <td class="px-1 py-1 border">1250 sqft</td>
+                      <td class="px-1 py-1 border">₹15,200,000</td>
+                      <td class="px-1 py-1 border">Yes</td>
+                      <td class="px-1 py-1 border">2</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+
+              <!-- ================= 4 BHK ================= -->
+                <div class="bhk-panel hidden" data-panel="bhk-4">
+                  <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+
+                    <table class="w-full text-sm border-collapse">
+                      <thead class="bg-gray-100 sticky top-0">
+                        <tr class="text-center font-semibold">
+                          <th class="px-1 py-1 border">Carpet Area</th>
+                          <th class="px-1 py-1 border">Price</th>
+                          <th class="px-1 py-1 border">Parking</th>
+                          <th class="px-1 py-1 border">Balcony</th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-center">
+                        <tr>
+                          <td class="px-1 py-1 border">1600 sqft</td>
+                          <td class="px-1 py-1 border">₹22,000,000</td>
+                          <td class="px-1 py-1 border">Yes</td>
+                          <td class="px-1 py-1 border">3</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+
+
+              <!-- ================= JS ================= -->
+              <script>
+                  document.addEventListener("click", function (e) {
+
+                    const tab = e.target.closest(".bhk-tab");
+                    if (!tab) return;
+
+                    // current card scope
+                    const card = tab.closest(".sm\\:ml-5, .flex-1, .space-y-2") || tab.closest("div");
+
+                    // reset tabs
+                    card.querySelectorAll(".bhk-tab").forEach(t => {
+                      t.classList.remove("border-green-600", "text-green-600");
+                      t.classList.add("border-transparent", "text-gray-600");
+                    });
+
+                    // reset panels
+                    card.querySelectorAll(".bhk-panel").forEach(p => {
+                      p.classList.add("hidden");
+                    });
+
+                    // activate current
+                    tab.classList.add("border-green-600", "text-green-600");
+                    tab.classList.remove("border-transparent", "text-gray-600");
+
+                    const target = tab.dataset.target;
+                    card.querySelector(`[data-panel="${target}"]`).classList.remove("hidden");
+
+                  });
+                  </script>
+
+
+
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
+
+                  <!-- Developer -->
+                  <div class="flex items-center gap-2">
+                    <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                      <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                          alt="Lodha Group"
+                          class="h-full w-full object-cover">
+                    </span>
+                    <span class="text-blue-600 text-sm font-medium">
+                      By Lodha Group
+                    </span>
+                  </div>
+
+                  <!-- CTA BUTTONS -->
+                  <div class="flex gap-3 md:justify-end">
+
+                        <!-- View Details -->
+                        <a href="{{ project.get_absolute_url }}"
+                          class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                  px-4 py-2 bg-orange-500 text-white text-sm font-semibold
+                                  rounded-3xl hover:bg-orange-600 transition">
+                          View Details
+                          <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+
+                        <!-- Contact Us -->
+                        <a href="javascript:void(0)"
+                          data-project="{{ project.project_name }}"
+                          data-project-id="{{ project.id }}"
+                          class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                  px-4 py-2 border border-orange-500 text-orange-600
+                                  text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                          Contact Us
+                        </a>
+
+                  </div>
+                </div>
+            </div>
+          </div>
+        
+
+        {% empty %}
+        <div class="text-center text-gray-500 py-10">No projects found.</div>
+        {% endfor %}
+      </div>
+
+
+    <!-- ✅ Grid View -->
+    <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+
+      {% for project in projects %}
+      <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+
+        <!-- Project Image -->
+        {% if project.image %}
+          <img src="{{ project.image.url }}"
+              class="w-full h-48 object-cover rounded"
+              alt="{{ project.project_name }}"
+              style="height: 250px;">
+        {% else %}
+          <img src="{% static 'images/no-images.jpg' %}"
+              class="w-full h-48 object-cover rounded"
+              alt="No Image"
+              style="height: 250px;">
+        {% endif %}
+
+        <!-- Content -->
+        <div class="mt-4 space-y-2">
+
+          <!-- Title + Location -->
+          <div>
+            <!-- Row 1: Project Name + Price -->
+            <div class="flex items-start justify-between gap-4">
+              <h2 class="text-xl font-semibold text-gray-900 leading-tight">
+                {{ project.project_name }}
+              </h2>
+
+
+              <span class="text-lg font-semibold text-gray-900 whitespace-nowrap">
+                {{ project.get_price_range }}
+              </span>
+
+            </div>
+            <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
+              <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i>
+              <span class="line-clamp-1">{{ project.locality }}, {{ project.city }}</span>
+            </p>
+          </div>
+
+          <!-- Status / Type / Land (Badges) -->
+          <div class="flex flex-wrap gap-2 text-xs text-gray-700">
+            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+              {{ project.construction_status }}
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+              {{ project.propert_type.name }}
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+              Land Parcel: {{ project.land_parce|default:"N/A" }}
+            </span>
+          </div>
+
+      
+
+          <!-- Divider -->
+          <div class="border-t border-gray-100 pt-3 mt-1"></div>
+
+              <div class="border rounded-xl bg-white shadow-sm text-sm">
+
+                  <!-- HEADER -->
+                  <div class="grid grid-cols-3 px-4 py-2 bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase">
+                    <span>BHK</span>
+                    <span>Area (Sq.ft)</span>
+                    <span class="text-right">Price</span>
+                  </div>
+
+                  <!-- SCROLLABLE BODY -->
+                  <div class="max-h-[120px] overflow-y-auto divide-y">
+
+                    <!-- Row -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 3.6 Cr</span>
+                    </div>
+
+                    <!-- Row -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 2.9 Cr</span>
+                    </div>
+
+                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                  </div>
+            </div>
+
+
+              <div class="grid grid-cols-1  gap-3 mt-2.5 items-center">
+
+                <!-- Developer -->
+                <div class="flex items-center gap-2">
+                  <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                    <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                        alt="Lodha Group"
+                        class="h-full w-full object-cover">
+                  </span>
+                  <span class="text-blue-600 text-sm font-medium">
+                    By Lodha Group
+                  </span>
+                </div>
+
+                <!-- CTA BUTTONS -->
+                <div class="flex gap-3 md:justify-end">
+
+                  <!-- View Details -->
+                  <a href="{{ project.get_absolute_url }}"
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                            px-4 py-2 bg-orange-500 text-white text-sm font-semibold
+                            rounded-3xl hover:bg-orange-600 transition">
+                    View Details
+                    <i class="fas fa-arrow-right text-xs"></i>
+                  </a>
+
+                  <!-- Contact Us -->
+                  <a href="javascript:void(0)"
+                    id="openContactPopup"
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                            px-4 py-2 border border-orange-500 text-orange-600
+                            text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                    Contact Us
+                  </a>
+
+                </div>
+          </div>
+
+      
+
+        </div>
+      </div>
+
+      {% empty %}
+        <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
+      {% endfor %}
+    </div>
+
+
+
+    <!-- Pagination Section -->
+    {% if projects.has_other_pages %}
+    <nav class="flex justify-center mt-10">
+      <ul class="flex items-center gap-2 text-gray-700">
+
+        {% if projects.has_previous %}
+          <li>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
+          </li>
+        {% else %}
+          <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
+        {% endif %}
+
+        {% for num in projects.paginator.page_range %}
+          {% if num == projects.number %}
+            <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
+          {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+            <li>
+              <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
+                class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if projects.has_next %}
+          <li>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
+          </li>
+        {% else %}
+          <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
+        {% endif %}
+
+      </ul>
+    </nav>
+    {% endif %}
+
+
+    <!-- ✅ JS Toggle -->
+    <script>
+    const listViewBtn = document.getElementById("listViewBtn");
+    const gridViewBtn = document.getElementById("gridViewBtn");
+    const listView = document.getElementById("listView");
+    const gridView = document.getElementById("gridView");
+
+    listViewBtn.addEventListener("click", () => {
+      listView.classList.remove("hidden");
+      gridView.classList.add("hidden");
+
+      listViewBtn.classList.add("bg-orange-500", "text-white");
+      listViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+      gridViewBtn.classList.remove("bg-orange-500", "text-white");
+      gridViewBtn.classList.add("bg-gray-200", "text-gray-700");
+    });
+
+    gridViewBtn.addEventListener("click", () => {
+      gridView.classList.remove("hidden");
+      listView.classList.add("hidden");
+
+      gridViewBtn.classList.add("bg-orange-500", "text-white");
+      gridViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+      
+      listViewBtn.classList.remove("bg-orange-500", "text-white");
+      listViewBtn.classList.add("bg-gray-200", "text-gray-700");
+    });
+    </script>
+
+
+
+
+
+  </div>
+
+
+
+
+
+    <!-- ================= RIGHT SIDEBAR ================= -->
+      <aside class="space-y-6 lg:sticky lg:top-24">
+
+        <form method="get" id="filterForm"
+              class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+
+          <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
+            Advanced Search
+          </h3>
+
+          <!-- Category -->
+          <select name="category" class="w-full border px-3 py-2 rounded-lg text-sm">
+            <option value="">Residential</option>
+            <option value="commercial"
+              {% if selected.category == "commercial" %}selected{% endif %}>
+              Commercial
+            </option>
+          </select>
+
+          <!-- Property Type -->
+          <select name="property_type" class="w-full border px-3 py-2 rounded-lg text-sm">
+            <option value="">Property Type</option>
+            <option value="apartment" {% if selected.property_type == "apartment" %}selected{% endif %}>Apartment</option>
+            <option value="villa">Villa</option>
+            <option value="plot">Plot</option>
+          </select>
+
+          <!-- City -->
+          <select name="city" class="w-full border rounded px-3 py-2">
+            <option value="">Select City</option>
+            {% for city in cities %}
+              <option value="{{ city.id }}"
+                {% if selected.city == city.id|stringformat:"s" %}selected{% endif %}>
+                {{ city.name }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <!-- Location Keyword -->
+          <input type="text" name="location"
+            value="{{ selected.location }}"
+            placeholder="Search by Project / Locality"
+            class="w-full border px-3 py-2 rounded-lg text-sm">
+
+          <!-- BHK -->
+          <select name="bhk" class="w-full border px-3 py-2 rounded-lg text-sm">
+            <option value="">BHK</option>
+            <option value="1">1 BHK</option>
+            <option value="2" {% if selected.bhk == "2" %}selected{% endif %}>2 BHK</option>
+            <option value="3">3 BHK</option>
+          </select>
+
+          <!-- Budget -->
+          <div class="grid grid-cols-2 gap-3">
+            <input type="number" name="min_price"
+              value="{{ selected.min_price }}"
+              placeholder="Min Budget"
+              class="border px-3 py-2 rounded-lg">
+
+            <input type="number" name="max_price"
+              value="{{ selected.max_price }}"
+              placeholder="Max Budget"
+              class="border px-3 py-2 rounded-lg">
+          </div>
+
+          <!-- Carpet Area -->
+          <label class="text-xs font-medium text-gray-600">
+            Minimum Carpet Area (Sq.ft)
+          </label>
+          <input type="range" name="area" min="0" max="5000"
+            value="{{ selected.area|default:0 }}"
+            class="w-full accent-orange-500">
+
+          <button
+            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl">
+            Search Properties
+          </button>
+
+        </form>
+      </aside>
+    <!-- ================= END RIGHT SIDEBAR ================= -->
+
+
+
+</div>
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+<!-- ================= CONTACT POPUP ================= -->
+<div id="contactPopup"
+     class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-3">
+
+  <div class="relative w-full max-w-sm rounded-xl shadow-2xl bg-white overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-white">
+      <h3 class="text-base font-semibold">Enquiry For</h3>
+      <p id="enquiryProjectName" class="text-xs opacity-90 mt-0.5">
+        Project Name
+      </p>
+    </div>
+
+    <!-- CLOSE -->
+    <button id="closeContactPopup"
+            class="absolute top-3 right-3 text-white text-lg">
+      ✕
+    </button>
+
+    <!-- FORM -->
+    <form method="post" id="enquiryForm"
+          class="p-4 space-y-3 text-sm bg-white">
+      {% csrf_token %}
+
+      <!-- Honeypot -->
+      <input type="text" name="company" class="hidden">
+
+      <!-- reCAPTCHA token -->
+      <input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
+
+      <input type="hidden" name="project_id" id="projectIdInput">
+
+      <!-- NAME -->
+      <div>
+        <label class="font-medium text-gray-600">Full Name</label>
+        <input type="text" name="name" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- EMAIL -->
+      <div>
+        <label class="font-medium text-gray-600">Email</label>
+        <input type="email" name="email"
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label class="font-medium text-gray-600">Mobile</label>
+        <input type="tel" name="phone" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- MESSAGE -->
+      <div>
+        <label class="font-medium text-gray-600">Message</label>
+        <textarea name="message" rows="2"
+                  class="mt-1 w-full border rounded-md px-3 py-2"></textarea>
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit"
+              class="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold">
+        Submit Enquiry
+      </button>
+
+      <p class="text-[11px] text-center text-gray-400">
+        🔒 100% Privacy Protected
+      </p>
+    </form>
+
+  </div>
+</div>
+<!-- ================= END POPUP ================= -->
+
+<style>
+  /* ===== TABS ===== */
+  .bhk-tabs {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .bhk-tab {
+    padding: 10px 0;
+    color: #4b5563;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    background: none;
+    outline: none;
+  }
+
+  .bhk-tab.active {
+    color: #16a34a;
+    border-color: #16a34a;
+  }
+
+  /* ===== TABLE ===== */
+  .bhk-scroll {
+    max-height: 220px;          /* ⬅ zyada rows pe scroll */
+    overflow-y: auto;
+  }
+
+  .bhk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .bhk-table th {
+    background: #f7f7f7;
+    padding: 10px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    font-weight: 600;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+  }
+
+  .bhk-table td {
+    padding: 12px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+  }
+
+  /* ===== SCROLLBAR (OPTIONAL CLEAN) ===== */
+  .bhk-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .bhk-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const popup = document.getElementById("contactPopup");
+  const closeBtn = document.getElementById("closeContactPopup");
+  const projectNameText = document.getElementById("enquiryProjectName");
+  const projectIdInput = document.getElementById("projectIdInput");
+  const enquiryForm = document.getElementById("enquiryForm");
+
+  document.querySelectorAll(".openContactPopup").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const projectName = this.dataset.project;
+      const projectId = this.dataset.projectId;
+
+      projectNameText.textContent = projectName;
+      projectIdInput.value = projectId;
+
+      enquiryForm.action = `/projects/submit-enquiry/${projectId}/`;
+
+      popup.classList.remove("hidden");
+      popup.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeBtn.addEventListener("click", closePopup);
+
+  popup.addEventListener("click", e => {
+    if (e.target === popup) closePopup();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closePopup();
+  });
+
+  function closePopup() {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+});
+</script>
+
+<script>
+function openBHK(e, id) {
+  document.querySelectorAll('.bhk-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.bhk-tab').forEach(el => el.classList.remove('active'));
+
+  document.getElementById(id).classList.remove('hidden');
+  e.target.classList.add('active');
+}
+</script>
+
+<script>
+document.getElementById("city").addEventListener("change", function () {
+  fetch(`/ajax/load-localities/?city_id=${this.value}`)
+    .then(res => res.json())
+    .then(data => {
+      let locality = document.getElementById("locality");
+      locality.innerHTML = '<option value="">Select Locality</option>';
+      data.forEach(l => {
+        locality.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+      });
+    });
+});
+</script>
+
+
+
+{% endblock %}
+

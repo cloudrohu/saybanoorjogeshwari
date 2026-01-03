@@ -1,0 +1,52 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+<style>
+  /* Auto sliding gallery */
+.slider-animation {
+    display: flex;
+    animation: slide 12s infinite linear;
+}
+.slider-animation img {
+    width: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(0); }
+
+    25% { transform: translateX(-100%); }
+    45% { transform: translateX(-100%); }
+
+    50% { transform: translateX(-200%); }
+    70% { transform: translateX(-200%); }
+
+    75% { transform: translateX(-300%); }
+    100% { transform: translateX(-300%); }
+}
+</style>
+
+{% block content %}
+
+
+
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+
+{% endblock %}
+
+

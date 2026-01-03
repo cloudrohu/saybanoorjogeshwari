@@ -1,0 +1,20 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+
+
+{% block content %}
+
+{% include 'includes/search_bar.html' %}
+
+{% include 'home/content.html' %}
+
+
+
+
+{% endblock %}
+
+

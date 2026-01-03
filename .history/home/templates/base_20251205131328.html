@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate Responsive Header</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>{% block title %}Real Estate Portal{% endblock %}</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+{% include 'includes/header.html' %}
+
+
+  <!-- ✅ Navbar Include -->
+
+  <!-- 🧱 Page Content -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+
+  <!-- FOOTER START -->
+<footer class="pt-20 mt-10"
+        style="color: {{ settings_obj.text_color}}; background-color: {{ settings_obj.header_footer_color}};">
+
+  <!-- Animated Divider Line -->
+  <div class="w-full h-[3px] overflow-hidden mb-10">
+      <div class="h-full w-full bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 animate-[slide_6s_linear_infinite]"></div>
+  </div>
+
+  <style>
+      @keyframes slide {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+      }
+  </style>
+
+  <!-- CTA BAR -->
+  <div class="max-w-7xl mx-auto mb-12 px-6">
+      <div class="bg-gradient-to-r from-purple-600 to-orange-500 p-[2px] rounded-xl">
+          <div class="bg-black/40 backdrop-blur-xl rounded-xl p-6 flex flex-col md:flex-row items-center justify-between">
+
+              <h2 class="text-xl font-semibold text-white tracking-wide">
+                  Talk to our Real Estate Expert 👨‍💼
+              </h2>
+
+              <a href="tel:{{ settings_obj.phone }}"
+                 class="mt-4 md:mt-0 bg-white text-black font-bold px-6 py-3 rounded-lg shadow-lg hover:bg-gray-200 transition">
+                 Call Now: {{ settings_obj.phone }}
+              </a>
+          </div>
+      </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
+
+      <!-- LEFT: Logo + About + Gradient Card -->
+      <div class="p-[2px] rounded-2xl bg-gradient-to-br from-orange-500 to-purple-700">
+          <div class="bg-white/10 backdrop-blur-xl p-6 rounded-2xl">
+
+              <!-- LOGO (Left side like before) -->
+              <img src="{{ settings_obj.logo.url }}" class="h-16 object-contain mb-4">
+
+              <p class="text-sm leading-6">
+                  We specialize in premium real estate solutions including Residential,
+                  Commercial & Investment properties.
+              </p>
+          </div>
+      </div>
+
+      <!-- Contact (SIMPLE VERSION) -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-4">CONTACT US</h3>
+
+        <p class="flex items-start gap-2 mb-3">
+          <i class="fas fa-map-marker-alt text-orange-400 mt-1"></i>
+          {{ settings_obj.address }}
+        </p>
+
+        <p class="flex items-center gap-2 mb-3">
+          <i class="fas fa-envelope text-orange-400"></i>
+          {{ settings_obj.email }}
+        </p>
+
+        <p class="flex items-center gap-2 mb-3">
+          <i class="fas fa-phone-alt text-orange-400"></i>
+          {{ settings_obj.phone }}
+        </p>
+
+        <!-- RERA added here (Simple style) -->
+        <p class="mt-4 text-sm">
+          <span class="font-semibold text-orange-400">MahaRERA Agent No: </span>
+          {{ settings_obj.maharera_no }}
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div class="text-sm">
+        <h3 class="text-white font-bold text-lg mb-4">QUICK LINKS</h3>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:text-orange-400">Home</a></li>
+          <li><a href="/about" class="hover:text-orange-400">About Us</a></li>
+          <li><a href="/contact" class="hover:text-orange-400">Contact Us</a></li>
+          <li><a href="/services" class="hover:text-orange-400">Services</a></li>
+          <li><a href="/privacy" class="hover:text-orange-400">Privacy Policy</a></li>
+          <li><a href="/terms" class="hover:text-orange-400">Terms & Conditions</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-4">FOLLOW US</h3>
+        <p class="text-sm">Stay updated with our latest projects & offers.</p>
+
+        <div class="flex gap-4 mt-4 text-2xl">
+          <a href="{{ settings_obj.facebook_link }}" class="text-gray-300 hover:text-orange-400"><i class="fab fa-facebook"></i></a>
+          <a href="{{ settings_obj.twitter_link }}" class="text-gray-300 hover:text-orange-400"><i class="fab fa-twitter"></i></a>
+          <a href="{{ settings_obj.instagram_link }}" class="text-gray-300 hover:text-orange-400"><i class="fab fa-instagram"></i></a>
+          <a href="{{ settings_obj.linkedin_link }}" class="text-gray-300 hover:text-orange-400"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-gray-700 mt-10 py-6 text-center text-sm text-gray-300">
+    © {{ settings_obj.copy_right }} {{ settings_obj.site_name }} — All Rights Reserved.
+  </div>
+
+</footer>
+<!-- FOOTER END -->
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
