@@ -1,201 +1,221 @@
 {% load static %}
 
-<style>
-.whatsapp-float {
-    position: fixed;
-    width: 60px; /* Adjust size as needed */
-    height: 60px; /* Adjust size as needed */
-    right: 20px; /* Distance from the right edge */
-    transform: translateY(-50%); /* Pulls the button up by half its height to perfectly center it */
-    background-color: #25d366; /* WhatsApp brand color */
-    color: #FFF;
-    border-radius: 50%; /* Makes the button round */
-    text-align: center;
-    font-size: 30px; /* Icon size */
-    box-shadow: 2px 2px 3px #999;
-    z-index: 100; /* Ensures it stays on top of other elements */
-    display: flex; /* Helps in centering the icon inside the button */
-    align-items: center; /* Vertically centers the icon */
-    justify-content: center; /* Horizontally centers the icon */
-}
 
-.my-float {
-    /* No additional styling needed here due to flexbox centering in the parent */
-}
+<header class="w-full bg-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
 
-/* Optional: Add a hover effect */
-.whatsapp-float:hover {
-    opacity: 0.8;
-}
-
-/* Optional: Media query for mobile responsiveness (adjust as needed) */
-@media (max-width: 768px) {
-    .whatsapp-float {
-        width: 80px;
-        height: 80px;
-        right: 15px;
-        font-size: 24px;
-    }
-}
-</style>
-
-
-<!-- ====================== -->
-<!-- DESKTOP VIEW -->
-<!-- ====================== -->
-<header class="hidden lg:block sticky top-0 z-50"
-  style="background: {{ settings_obj.header_footer_color }}; color: {{ settings_obj.text_color }}">
-
-  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-
-    <!-- LOGO -->
-    <a href="/" class="flex items-center gap-2">
-      {% if settings_obj.logo %}
-        <img src="{{ settings_obj.logo.url }}"
-             alt="{{ settings_obj.site_name }}"
-             class="h-14 object-contain">
-      {% else %}
-        <span class="text-2xl font-bold">{{ settings_obj.site_name }}</span>
-      {% endif %}
+    <!-- LEFT : PROJECT NAME -->
+     <a href="/">
+       <div class="text-gray-800">
+      <span><img class="h-20" src="{{settings_obj.logo.url}}" alt=""></span>
+    </div>
     </a>
 
-    <!-- NAVIGATION -->
-    <nav class="flex items-center gap-8 font-medium text-base">
-      <a href="/" class="hover:opacity-80 {% if request.path == '/' %}font-semibold{% endif %}">Home</a>
-      <a href="{% url 'about' %}" class="hover:opacity-80">About</a>
-      <a href="/projects/" class="hover:opacity-80">Projects</a>
-      <a href="/blogs/" class="hover:opacity-80">Blogs</a>
-      <a href="{% url 'faq' %}" class="hover:opacity-80">FAQ</a>
-      <a href="{% url 'contact' %}" class="hover:opacity-80">Contact</a>
+     <!-- CENTER : MENU WITH | -->
+    <nav class="hidden md:flex items-center text-sm font-medium text-gray-700">
+
+      <a href="/" class="px-3 hover:text-orange-500">Home</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url "about" %}" class="px-3 hover:text-orange-500">About</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'all_configurations' %}" class="px-3 hover:text-orange-500">Configuration</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'amenities' %}" class="px-3 hover:text-orange-500">Amenities</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'contact' %}" class="px-3 hover:text-orange-500">Contact</a>
+
     </nav>
 
-    <!-- CTA -->
+    <!-- RIGHT : CTA BUTTONS -->
     <div class="flex items-center gap-3">
 
-      <!-- Call -->
-      <a href="tel:{{ settings_obj.phone }}"
-        class="px-4 py-2 rounded-lg border border-white/30 hover:bg-white/10 transition">
-        📞 Call Now
+      <!-- Call Now -->
+      <a href="tel:+{{settings_obj.phone}}"
+         class="hidden sm:flex items-center gap-2 border border-gray-300
+                px-4 py-2 text-sm font-medium text-gray-700 hover:border-orange-500 rounded-md hover:text-orange-500">
+        <i class="fa-solid fa-phone"></i>
+        Call Now  
       </a>
 
       <!-- WhatsApp -->
-      <a href="https://wa.me/{{ settings_obj.whatsapp_number }}"
-         target="_blank"
-         class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+      <a href="https://wa.me/{{settings_obj.whatsapp}}"
+         class="flex items-center gap-2 bg-green-500 hover:bg-green-600
+                text-white px-4 py-2 text-sm font-semibold">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        WhatsApp
+      </a>
+
+     <!-- Mobile Menu Icon -->
+    <button onclick="openMobileMenu()" class="md:hidden text-xl text-gray-700">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ================= MOBILE MENU DRAWER ================= -->
+<div id="mobileMenu"
+     class="fixed inset-0 bg-black/50 z-50 hidden">
+
+  <!-- Drawer -->
+  <div class="absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-xl
+              transform translate-x-full transition-transform duration-300"
+       id="drawerPanel">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4 border-b">
+      <img src="https://saybanoorjogeswari.com/wp-content/uploads/2025/07/saybajogeshwari-logo.webp"
+           class="h-14" alt="">
+      <button onclick="closeMobileMenu()" class="text-xl text-gray-600">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Nav Links -->
+    <nav class="flex flex-col text-sm font-medium text-gray-700 divide-y">
+
+      <a href="/" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Home
+      </a>
+
+      <a href="{% url 'about' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        About
+      </a>
+
+      <a href="{% url 'all_configurations' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Configuration
+      </a>
+
+      <a href="{% url 'amenities' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Amenities
+      </a>
+
+      <a href="{% url 'contact' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Contact
+      </a>
+
+    </nav>
+
+    <!-- CTA Buttons -->
+    <div class="px-5 py-5 space-y-3 border-t">
+
+      <a href="tel:+{{settings_obj.phone}}"
+         class="flex items-center justify-center gap-2 border border-gray-300
+                py-3 text-sm font-semibold rounded-md hover:border-orange-500 hover:text-orange-500">
+        <i class="fa-solid fa-phone"></i>
+        Call Now
+      </a>
+
+      <a href="https://wa.me/{{settings_obj.whatsapp}}"
+         class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600
+                text-white py-3 text-sm font-semibold rounded-md">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
         WhatsApp
       </a>
 
     </div>
 
   </div>
-</header>
-
-
-
-
-
-<!-- ====================== -->
-<!-- MOBILE VIEW -->
-<!-- ====================== -->
-<div class="md:hidden text-white">
-  <div class="md:hidden text-white">
-  <header class="flex items-center justify-between px-4 py-2 bg-[{{settings_obj.header_footer_color}}]">
-  <!-- LEFT SECTION -->
-  <div class="flex items-center gap-2">
-    <!-- Menu Icon -->
-    <button id="menuBtn">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-white">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
-      </svg>
-    </button>
-
-   
-    <!-- City Dropdown -->
-    <div class="relative ml-2">
-      <select
-        class="bg-[{{settings_obj.header_footer_color   }}] text-white text-sm font-medium focus:outline-none appearance-none cursor-pointer pr-5"
-        style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'white\' height=\'12\' viewBox=\'0 0 24 24\' width=\'12\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right center;">
-        
-        {% for city in cities %}
-          <option {% if city.name == current_city %}selected{% endif %}>
-            {{ city.name }}
-          </option>
-        {% empty %}
-          <option selected>Mumbai</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-
-   <!-- Logo -->
-    {% if settings_obj.logo %}
-      <img src="{{ settings_obj.logo.url }}" alt="logo" class="h-8 w-16 ml-1">
-    {% else %}
-      <span class="font-semibold text-lg ml-1">RealEstatePro</span>
-    {% endif %}
-
- 
-</header>
-
 </div>
 
 
-  <!-- Slide Menu -->
-  <div id="mobileMenu"
-    class="fixed top-0 right-0 w-3/4 h-full bg-[#000428] text-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
-    <div class="flex justify-between items-center px-4 py-3 border-b border-white/20">
-      <h2 class="font-bold text-lg">Menu</h2>
-      <button id="closeMenu" class="text-gray-300 hover:text-white text-2xl">&times;</button>
+<!-- ================= MOBILE MENU DRAWER ================= -->
+<div id="mobileMenu" class="fixed inset-0 bg-black/60 z-50 hidden">
+
+  <!-- Drawer -->
+  <div id="drawerPanel"
+       class="absolute right-0 top-0 h-full w-[88%] max-w-sm bg-white
+              shadow-2xl transform translate-x-full transition-transform duration-300">
+
+    <!-- TOP -->
+    <div class="flex items-center justify-between px-5 py-4 border-b">
+      <img src="https://saybanoorjogeswari.com/wp-content/uploads/2025/07/saybajogeshwari-logo.webp"
+           class="h-14" alt="">
+      <button onclick="closeMobileMenu()" class="text-2xl text-gray-600">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
 
-    <nav class="flex flex-col gap-4 px-6 mt-6 text-base font-medium">
-      <a href="/" class="hover:text-[{{ settings_obj.text_color }}] transition">Home</a>
-      <a href="{% url "faq" %}" class="hover:text-[{{ settings_obj.text_color }}] transition">FAQ's</a>
-      <a href="#" class="hover:text-[{{ settings_obj.text_color }}] transition">Blogs</a>
-      <a href="{% url "about" %}" class="hover:text-[{{ settings_obj.text_color }}] transition">About Us</a>
-      <a href="#" class="hover:text-[{{ settings_obj.text_color }}] transition">Services</a>
-      <a href="{% url "contact" %}" class="hover:text-[{{ settings_obj.text_color }}] transition">Contact Us</a>
+    <!-- NAV -->
+    <nav class="px-4 py-4 space-y-2 text-sm font-medium text-gray-700">
+
+      <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-house text-orange-500"></i>
+        Home
+      </a>
+
+      <a href="{% url 'about' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-circle-info text-orange-500"></i>
+        About Project
+      </a>
+
+      <a href="{% url 'all_configurations' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-building text-orange-500"></i>
+        Configuration
+      </a>
+
+      <a href="{% url 'amenities' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-star text-orange-500"></i>
+        Amenities
+      </a>
+
+      <a href="{% url 'contact' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-envelope text-orange-500"></i>
+        Contact
+      </a>
 
     </nav>
 
-    <div class="absolute bottom-8 w-full px-6">
-      <button
-        class="w-full bg-[Tomato] text-black py-2 rounded-lg font-semibold mb-3 hover:bg-white transition">Sell / Rent Property</button>
-        <!-- FLOATING CHAT BUTTON -->
-          <button id="chatToggle"
-          class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition z-50">
-          💬
-        </button>
+    <!-- CTA -->
+    <div class="px-5 py-5 border-t space-y-3">
 
-        <!-- CHAT WINDOW -->
-        <div id="chatWindow"
-          class="hidden fixed bottom-20 right-6 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+      <a href="tel:+{{settings_obj.phone}}"
+         class="flex items-center justify-center gap-2 w-full
+                border border-gray-300 rounded-lg py-3
+                text-sm font-semibold hover:border-orange-500 hover:text-orange-500">
+        <i class="fa-solid fa-phone"></i>
+        Call Now
+      </a>
 
-          <!-- Header -->
-          <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
-            <h3 class="font-semibold">Live Chat</h3>
-            <button id="chatClose" class="text-white text-xl">&times;</button>
-          </div>
-
-          <!-- Messages Area -->
-          <div class="p-4 h-64 overflow-y-auto bg-gray-50 text-sm" id="chatMessages">
-            <p class="text-gray-500 text-center">Start the conversation...</p>
-          </div>
-
-          <!-- Input -->
-          <div class="border-t p-3 flex items-center gap-2">
-            <input id="chatInput" type="text" placeholder="Type a message..."
-              class="w-full border px-3 py-2 rounded-lg text-sm focus:outline-none">
-            <button id="sendBtn" class="bg-blue-600 text-white px-3 py-2 rounded-lg">Send</button>
-          </div>
-        </div>
-
+      <a href="https://wa.me/{{settings_obj.whatsapp}}"
+         class="flex items-center justify-center gap-2 w-full
+                bg-green-500 hover:bg-green-600
+                text-white rounded-lg py-3 text-sm font-semibold">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        WhatsApp
+      </a>
 
     </div>
-  </div>
 
-  <!-- Overlay -->
-  <div id="overlay"
-    class="fixed inset-0 bg-black/60 hidden z-40 transition-opacity duration-300"></div>
+  </div>
 </div>
+
+
+<script>
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('drawerPanel').classList.remove('translate-x-full');
+    }, 10);
+  }
+
+  function closeMobileMenu() {
+    document.getElementById('drawerPanel').classList.add('translate-x-full');
+    setTimeout(() => {
+      document.getElementById('mobileMenu').classList.add('hidden');
+    }, 300);
+  }
+</script>
