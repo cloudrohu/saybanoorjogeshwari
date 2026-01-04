@@ -67,6 +67,17 @@
 </head>
 <body>
 
+  <style>
+.faq-content {
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.faq-btn i {
+  transition: transform 0.3s ease;
+}
+</style>
+
 {% include 'includes/header.html' %}
 
 {% block content %}{% endblock %}
@@ -212,30 +223,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
 
 <script>
-document.querySelectorAll(".phone-input").forEach(input => {
-  const iti = window.intlTelInput(input, {
-    initialCountry: "auto",
-    separateDialCode: true,
-    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
-    geoIpLookup: cb => fetch("https://ipapi.co/json").then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb("IN"))
+  document.querySelectorAll(".phone-input").forEach(input => {
+    const iti = window.intlTelInput(input, {
+      initialCountry: "auto",
+      separateDialCode: true,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
+      geoIpLookup: cb => fetch("https://ipapi.co/json").then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb("IN"))
+    });
   });
-});
 </script>
 
 <script>
-function openVisitModal(){
-  document.getElementById("visitModal").classList.remove("hidden");
-}
-function closeVisitModal(){
-  document.getElementById("visitModal").classList.add("hidden");
-}
+  function openVisitModal(){
+    document.getElementById("visitModal").classList.remove("hidden");
+  }
+  function closeVisitModal(){
+    document.getElementById("visitModal").classList.add("hidden");
+  }
 
-function openPriceModal(){
-  document.getElementById("priceModal").classList.remove("hidden");
-}
-function closePriceModal(){
-  document.getElementById("priceModal").classList.add("hidden");
-}
+  function openPriceModal(){
+    document.getElementById("priceModal").classList.remove("hidden");
+  }
+  function closePriceModal(){
+    document.getElementById("priceModal").classList.add("hidden");
+  }
 </script>
 
 
@@ -346,6 +357,69 @@ document.addEventListener("input", function (e) {
   }
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const faqButtons = document.querySelectorAll(".faq-btn");
+
+  faqButtons.forEach(btn => {
+
+    const content = btn.nextElementSibling;
+    const icon = btn.querySelector("i");
+
+    // Accessibility
+    btn.setAttribute("aria-expanded", "false");
+    content.setAttribute("aria-hidden", "true");
+
+    btn.addEventListener("click", () => {
+
+      const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+      // Close all others (Accordion behavior)
+      faqButtons.forEach(otherBtn => {
+        if (otherBtn !== btn) {
+          closeFAQ(otherBtn);
+        }
+      });
+
+      // Toggle current
+      isOpen ? closeFAQ(btn) : openFAQ(btn);
+    });
+
+    function openFAQ(button) {
+      const panel = button.nextElementSibling;
+      const iconEl = button.querySelector("i");
+
+      panel.classList.remove("hidden");
+      panel.style.maxHeight = panel.scrollHeight + "px";
+
+      iconEl.classList.remove("fa-plus");
+      iconEl.classList.add("fa-minus", "rotate-180");
+
+      button.setAttribute("aria-expanded", "true");
+      panel.setAttribute("aria-hidden", "false");
+    }
+
+    function closeFAQ(button) {
+      const panel = button.nextElementSibling;
+      const iconEl = button.querySelector("i");
+
+      panel.style.maxHeight = null;
+      setTimeout(() => panel.classList.add("hidden"), 200);
+
+      iconEl.classList.add("fa-plus");
+      iconEl.classList.remove("fa-minus", "rotate-180");
+
+      button.setAttribute("aria-expanded", "false");
+      panel.setAttribute("aria-hidden", "true");
+    }
+
+  });
+
+});
+</script>
+
 
 <footer class="bg-gray-600 text-gray-400 text-xs bottom-0 w-full mt-10">
   <div class="max-w-7xl mx-auto px-4 py-3">
