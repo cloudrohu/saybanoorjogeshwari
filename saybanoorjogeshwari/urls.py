@@ -19,6 +19,7 @@ sitemaps = {
     'properties': PropertySitemap,
     'projects': ProjectSitemap, 
     'blog': BlogSitemap,
+    
 }
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
     path('blog/', include('blog.urls')),
+    path("response/", include("response.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 

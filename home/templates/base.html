@@ -2,566 +2,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{{ settings_obj.meta_title }}{% endblock %}</title>
+<meta name="description" content="{{ settings_obj.meta_title }}">
+<meta name="keywords" content="">
+<link rel="icon" href="{{ settings_obj.favicon.url }}" type="image/png">
+<link rel="apple-touch-icon" href="{{ settings_obj.favicon.url }}">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <style>
+  .iti--separate-dial-code .iti__selected-dial-code {
+    margin-left: 8px;
+  }/* ===============================
+    INTL TEL INPUT – CLEAN FIX
+  ================================ */
+
+  /* wrapper full width */
   .iti {
     width: 100%;
   }
-  .iti__tel-input {
-    width: 100%;
-  }
-</style>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ settings_obj.site_name }}</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>{% block title %}{{ settings_obj.meta_title }}{% endblock %}</title>
-  <meta name="description" content="{{ settings_obj.meta_title }}">
-  <meta name="keywords" content="">
-  <link rel="icon" href="{{ settings_obj.favicon.url }}" type="image/png">
-  <link rel="apple-touch-icon" href="{{ settings_obj.favicon.url }}">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <script src="https://www.google.com/recaptcha/api.js?render=6LdgIDUsAAAAABGkx3xhZfup6EXvsaZh5RQ5Q61"></script>
-  <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
+  /* actual input */
+  .iti input,
+  .iti input[type=tel] {
+    width: 100%;
+    height: 44px;              /* 🔥 fix height */
+    padding-left: 90px !important; /* 🔥 space for flag + code */
+    padding-right: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db; /* gray-300 */
+    outline: none;
+  }
+
+  /* flag container */
+  .iti__flag-container {
+    left: 8px;
+  }
+
+  /* country code box */
+  .iti__selected-flag {
+    height: 100%;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* dropdown arrow */
+  .iti__arrow {
+    margin-left: 6px;
+  }
+
+  /* focus */
+  .iti input:focus {
+    border-color: #fb923c; /* orange-400 */
+    box-shadow: 0 0 0 2px rgba(251,146,60,0.3);
+  }
+
+</style>
 </head>
 <body>
+
 {% include 'includes/header.html' %}
 
-
-  <!-- ✅ Navbar Include -->
-
-  <!-- 🧱 Page Content -->
-  <main>
-    {% block content %}
-    
-    {% endblock %}
-  </main>
-
-  
+{% block content %}{% endblock %}
 
 {% include 'includes/footer.html' %}
 
 
-
-
-
-<!-- ================= FLOOR PLAN MODAL ================= -->
-<div id="planRequestModal"
-     class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
+<div id="planRequestModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
 
   <div class="bg-white w-[92%] max-w-md p-6 relative shadow-2xl">
 
-    <!-- CLOSE -->
-    <button onclick="closePlanRequestModal()"
-      class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center
-             bg-gray-100 hover:bg-gray-200">
+    <button onclick="closePlanRequestModal()" class="absolute top-4 right-4 bg-gray-100 w-8 h-8 flex items-center justify-center">
       <i class="fa-solid fa-xmark"></i>
     </button>
 
-    <!-- HEADER (SAME STYLE AS CONFIG) -->
     <div class="mb-6 pb-3 border-b-2 border-orange-400">
-      <h3 class="text-lg font-bold text-gray-800">
-        Request Floor Plan
-      </h3>
-      <p class="text-sm text-gray-500">
-        For <span id="planTitle"
-                 class="font-semibold text-orange-600"></span>
-      </p>
+      <h3 class="text-lg font-bold text-gray-800">Request Floor Plan</h3>
+      <p class="text-sm text-gray-500">For <span id="planTitle" class="font-semibold text-orange-600"></span></p>
     </div>
 
-    <!-- FORM (LOGIC SAME) -->
     <form onsubmit="return submitPlanRequest()" class="space-y-4">
 
-      <!-- NAME -->
-      <div>
-        <label class="text-xs text-gray-500 mb-1 block">Full Name</label>
-        <div class="relative">
-          <i class="fa-solid fa-user absolute left-3 top-3 text-gray-400"></i>
-          <input type="text" required placeholder="Enter full name"
-            class="w-full border
-                   pl-10 pr-3 py-2 text-sm
-                   focus:ring-2 focus:ring-orange-400 outline-none">
-        </div>
-      </div>
+      <input type="text" required placeholder="Full Name" class="w-full border px-3 py-2 text-sm">
+      <input type="email" required placeholder="Email" class="w-full border px-3 py-2 text-sm">
 
-      <!-- EMAIL -->
-      <div>
-        <label class="text-xs text-gray-500 mb-1 block">Email</label>
-        <div class="relative">
-          <i class="fa-solid fa-envelope absolute left-3 top-3 text-gray-400"></i>
-          <input type="email" required placeholder="Enter email address"
-            class="w-full border
-                   pl-10 pr-3 py-2 text-sm
-                   focus:ring-2 focus:ring-orange-400 outline-none">
-        </div>
-      </div>
+      <input type="tel" required placeholder="Mobile Number"
+        class="phone-input w-full border px-3 py-2 text-sm">
 
-      <!-- PHONE -->
-      <div>
-        <label class="text-xs text-gray-500 mb-1 block">Phone Number</label>
-        <div class="relative">
-          <i class="fa-solid fa-phone absolute left-3 top-3 text-gray-400"></i>
-          <input type="tel" id="phone" required placeholder="Mobile number"
-            class="w-full border
-                   pl-10 pr-3 py-2 text-sm
-                   focus:ring-2 focus:ring-orange-400 outline-none">
-        </div>
-      </div>
-
-      <!-- SUBMIT -->
-      <button type="submit"
-        class="w-full bg-orange-500 text-white py-3 font-medium
-               hover:bg-orange-600 transition">
-        <i class="fa-solid fa-paper-plane mr-1"></i>
-        Submit & View Plan
-      </button>
+      <button type="submit" class="w-full bg-orange-500 text-white py-3">Submit & View Plan</button>
 
     </form>
 
   </div>
 </div>
 
-<div id="planRequestModal"
-     class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
-
-  <div class="bg-white w-[92%] max-w-md -2xl p-6 relative">
-
-    <button onclick="closePlanRequestModal()"
-            class="absolute top-4 right-4 text-gray-400 text-xl">✕</button>
-
-    <h3 class="text-lg font-bold text-gray-800 mb-1">Request Floor Plan</h3>
-    <p class="text-sm text-gray-500 mb-4">
-      <span id="planTitle" class="text-orange-600 font-medium"></span>
-    </p>
-
-    <form onsubmit="return submitPlanRequest()" class="space-y-4">
-      <input type="text" required placeholder="Full Name" class="w-full border -lg px-3 py-2 text-sm">
-      <input type="email" required placeholder="Email" class="w-full border -lg px-3 py-2 text-sm">
-      <input type="tel" required placeholder="Phone Number" class="w-full border -lg px-3 py-2 text-sm">
-
-      <button type="submit"
-              class="w-full bg-orange-500 text-white py-3 -lg hover:bg-orange-600">
-        Submit & View Plan
-      </button>
-    </form>
-
-  </div>
-</div>
-<!-- ================= END FLOOR PLAN MODAL ================= -->
-
-<!-- ================= GALLERY IMAGE MODAL ================= -->
-<div id="galleryModal" 
-     class="fixed inset-0 bg-black/95 hidden z-50 flex items-center justify-center p-4">
-    
-    <div class="relative w-full max-w-6xl flex items-center justify-center">
-
-        <button onclick="closeGallery()" 
-                class="absolute -top-12 right-0 text-white text-4xl hover:text-orange-500 transition">
-            &times;
-        </button>
-
-        <button onclick="prevImage()" 
-                class="absolute left-0 md:-left-12 text-white text-4xl p-2 hover:text-orange-500 transition z-10">
-            &#10094;
-        </button>
-
-        <img id="galleryModalImg" 
-             class="w-full max-h-[85vh] object-contain border border-gray-700 shadow-2xl bg-black">
-
-        <button onclick="nextImage()" 
-                class="absolute right-0 md:-right-12 text-white text-4xl p-2 hover:text-orange-500 transition z-10">
-            &#10095;
-        </button>
-
-    </div>
-</div>
-<!-- ================= END GALLERY IMAGE MODAL ================= -->
-
-
-<!-- ================= CONFIG POPUP MODAL ================= -->
-<div id="configModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
-
+<div id="configModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
   <div class="bg-white w-[92%] max-w-md p-6 relative shadow-2xl">
 
-    <!-- CLOSE -->
-    <button onclick="closeConfigModal()"
-    class="absolute top-4 right-4 w-8 h-8 -full flex items-center justify-center
-                   bg-gray-100 hover:bg-gray-200">
+    <button type="button" onclick="closeConfigModal()" class="absolute top-4 right-4 bg-gray-100 w-8 h-8 flex items-center justify-center hover:bg-gray-200">
       <i class="fa-solid fa-xmark"></i>
     </button>
 
-    <!-- HEADER WITH BORDER -->
     <div class="mb-6 pb-3 border-b-2 border-orange-400">
-      <h3 class="text-lg font-bold text-gray-800">
-        Get Configuration Details
-      </h3>
-      <p class="text-sm text-gray-500">
-        For <span id="selectedBHK"
-                 class="font-semibold text-orange-600"></span>
-      </p>
+      <h3 class="text-lg font-bold text-gray-800">Get Configuration Details</h3>
+      <p class="text-sm text-gray-500">For <span id="selectedBHK" class="text-orange-600 font-semibold">--</span></p>
     </div>
 
-    <!-- FORM -->
-    <form onsubmit="return validateConfigForm()" class="space-y-4">
+    <form method="post" action="{% url 'response:configuration' %}" class="space-y-4">
+      {% csrf_token %}
 
-      <input type="hidden" id="bhkType">
+      <input type="hidden" name="configuration" id="modalConfigInput">
 
-      <!-- NAME -->
-      <div>
-        <label class="text-xs text-gray-500 mb-1 block">Full Name</label>
-        <div class="relative">
-          <i class="fa-solid fa-user absolute left-3 top-3 text-gray-400"></i>
-          <input type="text" required placeholder="Enter full name" class="w-full border
-                pl-10 pr-3 py-2 text-sm
-                focus:ring-2 focus:ring-orange-400 outline-none">
-        </div>
-      </div>
+      <input type="text" name="name" required placeholder="Full Name" class="w-full border px-3 py-2 text-sm">
+      <input type="email" name="email" required placeholder="Email" class="w-full border px-3 py-2 text-sm">
+      <input type="tel" name="phone" maxlength="10" required placeholder="Mobile Number" class="w-full border px-3 py-2 text-sm">
 
-      <!-- EMAIL -->
-      <div>
-        <label class="text-xs text-gray-500 mb-1 block">Email</label>
-        <div class="relative">
-          <i class="fa-solid fa-envelope absolute left-3 top-3 text-gray-400"></i>
-          <input type="email" required
-                 placeholder="Enter email address"
-                 class="w-full border
-                        pl-10 pr-3 py-2 text-sm
-                        focus:ring-2 focus:ring-orange-400 outline-none">
-        </div>
-      </div>
-
-      <!-- PHONE -->
-      <div>
-        <label class="text-xs text-gray-500 mb-1 block">Phone Number</label>
-
-        <div class="flex gap-2">
-
-        <!-- NUMBER -->
-        <div class="relative w-full mb-2">
-          <input type="tel" id="phone" required placeholder="Mobile number" class="w-full
-          border pl-10 pr-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none">
-      </div>
-
-
-        <p id="phoneError"
-           class="text-xs text-red-500 hidden mt-1">
-          Enter a valid phone number for selected country
-        </p>
-      </div>
-
-      <!-- SUBMIT -->
-      <button type="submit"
-              class="w-full bg-orange-500 text-white py-3 font-medium
-                     hover:bg-orange-600 transition">
-        <i class="fa-solid fa-paper-plane mr-1"></i>
+      <button type="submit" class="w-full bg-orange-500 text-white py-3 hover:bg-orange-600 transition">
         Submit & Get Details
       </button>
-
     </form>
+  </div>
+</div>
+
+<div id="visitModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
+
+  <div class="bg-white w-[92%] max-w-md p-6 relative shadow-2xl">
+
+    <button onclick="closeVisitModal()"
+      class="absolute top-4 right-4 bg-gray-100 w-8 h-8 flex items-center justify-center">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h3 class="text-lg font-bold mb-4">Schedule Site Visit</h3>
+
+     <form method="post" action="{% url 'response:additional_info' %}" class="space-y-4">
+      {% csrf_token %}
+
+      <input type="hidden" name="type" value="book_visit">
+
+      <input type="text" name="name" placeholder="Full Name"
+        class="w-full border px-3 py-2 text-sm" required>
+
+      <input type="tel" name="phone" placeholder="Mobile Number"
+        class="phone-input w-full border px-3 py-2 text-sm" required>
+
+      <p class="phone-error text-red-500 text-xs hidden">
+        Please enter a valid mobile number
+      </p>
+
+
+        
+
+      <input type="date" name="visit_date"
+        class="w-full border px-3 py-2 text-sm" required>
+
+      <button class="w-full bg-orange-500 text-white py-3">
+        Book Visit
+      </button>
+    </form>
+
 
   </div>
 </div>
-<!-- ================= END CONFIG POPUP MODAL ================= -->
+
+
+<div id="priceModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
+
+  <div class="bg-white w-[92%] max-w-md p-6 relative shadow-2xl">
+
+    <button onclick="closePriceModal()"
+      class="absolute top-4 right-4 bg-gray-100 w-8 h-8 flex items-center justify-center">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h3 class="text-lg font-bold mb-4">Get Price Details</h3>
+
+    <form method="post" action="{% url 'response:additional_info' %}" class="space-y-4">
+      {% csrf_token %}
+
+      <input type="hidden" name="type" value="get_price">
+
+      <input type="text" name="name" placeholder="Full Name"
+        class="w-full border px-3 py-2 text-sm" required>
+
+      <input type="tel" name="phone" placeholder="Mobile Number"
+        class="phone-input w-full border px-3 py-2 text-sm" required>
+
+      <p class="phone-error text-red-500 text-xs hidden">
+        Please enter a valid mobile number
+      </p>
+
+
+      <button class="w-full bg-orange-500 text-white py-3">
+          Get Price
+      </button>
+    </form>
+
+
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
 
 <script>
-
-const select = document.getElementById("countryCode");
-countries.forEach(c => {
-  const opt = document.createElement("option");
-  opt.value = c.code;
-  opt.textContent = `${c.name} (${c.code})`;
-  select.appendChild(opt);
+document.querySelectorAll(".phone-input").forEach(input => {
+  const iti = window.intlTelInput(input, {
+    initialCountry: "auto",
+    separateDialCode: true,
+    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
+    geoIpLookup: cb => fetch("https://ipapi.co/json").then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb("IN"))
+  });
 });
-select.value = "+91";
+</script>
 
-function updatePhoneLimit() {
-  const phone = document.getElementById("phone");
-  const country = countries.find(c => c.code === select.value);
-  phone.value = "";
-  phone.setAttribute("maxlength", country.max);
-  phone.setAttribute("minlength", country.min);
+<script>
+function openVisitModal(){
+  document.getElementById("visitModal").classList.remove("hidden");
+}
+function closeVisitModal(){
+  document.getElementById("visitModal").classList.add("hidden");
 }
 
-updatePhoneLimit();
+function openPriceModal(){
+  document.getElementById("priceModal").classList.remove("hidden");
+}
+function closePriceModal(){
+  document.getElementById("priceModal").classList.add("hidden");
+}
+</script>
 
-function validateConfigForm() {
-  const phone = document.getElementById("phone").value.trim();
-  const country = countries.find(c => c.code === select.value);
-  const error = document.getElementById("phoneError");
 
-  if (phone.length < country.min || phone.length > country.max) {
-    error.classList.remove("hidden");
+<script>
+function openConfigModal(btn){
+  // 1. Button se Data nikaalo
+  const bhk = btn.getAttribute('data-bhk');
+  
+  // Debugging: Console check karein agar value na aaye
+  console.log("Saving Configuration:", bhk);
+
+  // 2. UI Update (Modal Text)
+  document.getElementById("selectedBHK").innerText = bhk;
+
+  // 3. Backend Input Update (Jo Hidden field hai)
+  const hiddenInput = document.getElementById("modalConfigInput");
+  if(hiddenInput){
+      hiddenInput.value = bhk;
+  }
+
+  // 4. Modal Open
+  document.getElementById("configModal").classList.remove("hidden");
+}
+
+function closeConfigModal(){
+  document.getElementById("configModal").classList.add("hidden");
+}
+</script>
+
+<script>
+let itiInstances = [];
+
+function initPhoneValidation() {
+  itiInstances = [];
+
+  document.querySelectorAll(".phone-input").forEach(input => {
+
+    const iti = window.intlTelInput(input, {
+      initialCountry: "auto",
+      separateDialCode: true,
+      nationalMode: false,
+      utilsScript:
+        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
+      geoIpLookup: cb => {
+        fetch("https://ipapi.co/json/")
+          .then(res => res.json())
+          .then(data => cb(data.country_code))
+          .catch(() => cb("IN"));
+      }
+    });
+
+    itiInstances.push({ input, iti });
+
+    // live validation
+    input.addEventListener("input", () => {
+      validatePhoneInput(input, iti);
+    });
+  });
+}
+
+function validatePhoneInput(input, iti) {
+  const errorEl = input.nextElementSibling;
+
+  if (input.value.trim() === "") {
+    errorEl.classList.add("hidden");
     return false;
   }
 
-  error.classList.add("hidden");
-  alert("Details submitted successfully!");
-  closeConfigModal();
-  return false;
-}
-
-function openConfigModal(btn) {
-  document.getElementById("selectedBHK").innerText =
-    btn.getAttribute("data-bhk");
-
-  const modal = document.getElementById("configModal");
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-}
-
-function closeConfigModal() {
-  const modal = document.getElementById("configModal");
-  modal.classList.add("hidden");
-  modal.classList.remove("flex");
-}
-</script>
-
-<script>
-const phoneInput = document.querySelector("#phone");
-
-const iti = window.intlTelInput(phoneInput, {
-  initialCountry: "auto",
-  separateDialCode: true,
-  nationalMode: false,
-  autoPlaceholder: "polite",
-  utilsScript:
-    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
-  geoIpLookup: function(callback) {
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
-      .then(data => callback(data.country_code))
-      .catch(() => callback("IN"));
+  if (iti.isValidNumber()) {
+    errorEl.classList.add("hidden");
+    input.classList.remove("border-red-500");
+    return true;
+  } else {
+    errorEl.classList.remove("hidden");
+    input.classList.add("border-red-500");
+    return false;
   }
-});
-
-// validation example
-phoneInput.addEventListener("blur", () => {
-  if (!iti.isValidNumber()) {
-    alert("Invalid phone number");
-  }
-});
-</script>
-
-<script>
-  AOS.init({
-    duration: 800,
-    once: true,
-    easing: 'ease-out-cubic'
-  });
-</script>
-
-<script>
-function openFloorPlan(card) {
-  const imgSrc = card.getAttribute("data-img");
-  document.getElementById("floorPlanImg").src = imgSrc;
-
-  const modal = document.getElementById("floorPlanModal");
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
 }
 
-function closeFloorPlan() {
-  const modal = document.getElementById("floorPlanModal");
-  modal.classList.add("hidden");
-  modal.classList.remove("flex");
-}
-</script>
+/* 🔥 FORM SUBMIT BLOCK */
+document.querySelectorAll("form").forEach(form => {
+  form.addEventListener("submit", function (e) {
 
-<script>
-/* =============================
-   GLOBAL STATE
-============================= */
-let selectedPlanImage = "";
+    let valid = true;
 
-/* =============================
-   OPEN REQUEST MODAL
-============================= */
-function openPlanRequestModal(planTitle, planImage) {
-  // set title text
-  document.getElementById("planTitle").innerText = planTitle;
-
-  // store image for next popup
-  selectedPlanImage = planImage;
-
-  // open request modal
-  const modal = document.getElementById("planRequestModal");
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-}
-
-/* =============================
-   CLOSE REQUEST MODAL
-============================= */
-function closePlanRequestModal() {
-  const modal = document.getElementById("planRequestModal");
-  modal.classList.add("hidden");
-  modal.classList.remove("flex");
-}
-
-/* =============================
-   SUBMIT FORM (LOGIC SAME)
-============================= */
-function submitPlanRequest() {
-  // 👉 yahan backend / API later connect kar sakte ho
-
-  // close request modal
-  closePlanRequestModal();
-
-  // set final image
-  const img = document.getElementById("finalPlanImage");
-  img.src = selectedPlanImage;
-
-  // open image modal
-  const imageModal = document.getElementById("planImageModal");
-  imageModal.classList.remove("hidden");
-  imageModal.classList.add("flex");
-
-  // prevent real form submit
-  return false;
-}
-
-/* =============================
-   CLOSE IMAGE MODAL
-============================= */
-function closePlanImageModal() {
-  const imageModal = document.getElementById("planImageModal");
-  imageModal.classList.add("hidden");
-  imageModal.classList.remove("flex");
-}
-
-/* =============================
-   MOBILE DOT PAGINATION
-============================= */
-const slider = document.getElementById("floorPlanSlider");
-const dots = document.querySelectorAll("#floorPlanDots span");
-
-if (slider && dots.length) {
-  slider.addEventListener("scroll", () => {
-    const index = Math.round(
-      slider.scrollLeft / slider.offsetWidth
-    );
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("bg-orange-500", i === index);
-      dot.classList.toggle("bg-gray-300", i !== index);
-    });
-  });
-}
-</script>
-
-<script>
-    const galleryImages = [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
-        "https://images.unsplash.com/photo-1600585154154-2b3a30a87f5a",
-        "https://images.unsplash.com/photo-1600585154084-2b3a30a87f5a",
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498c",
-        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b"
-    ];
-
-    let currentIndex = 0;
-    const modal = document.getElementById("galleryModal");
-    const modalImg = document.getElementById("galleryModalImg");
-
-    function openGallery(index) {
-        currentIndex = index;
-        modalImg.src = galleryImages[currentIndex];
-        modal.classList.remove("hidden");
-        document.body.style.overflow = "hidden"; // Prevent background scrolling
-    }
-
-    function closeGallery() {
-        modal.classList.add("hidden");
-        document.body.style.overflow = "auto"; // Restore scrolling
-        modalImg.src = ""; // Clear src to prevent flicker on next open
-    }
-
-    function nextImage() {
-        currentIndex = (currentIndex + 1) % galleryImages.length;
-        modalImg.src = galleryImages[currentIndex];
-    }
-
-    function prevImage() {
-        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-        modalImg.src = galleryImages[currentIndex];
-    }
-
-    // Close on Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === "Escape" && !modal.classList.contains("hidden")) {
-            closeGallery();
+    itiInstances.forEach(obj => {
+      if (form.contains(obj.input)) {
+        if (!validatePhoneInput(obj.input, obj.iti)) {
+          valid = false;
         }
-    });
-
-    /* MOBILE DOT PAGINATION (With Safety Check) */
-    const slider = document.getElementById("gallerySlider");
-    const dots = document.querySelectorAll("#galleryDots span");
-
-    // Only run this if the slider actually exists on the page
-    if (slider && dots.length > 0) {
-        slider.addEventListener("scroll", () => {
-            const index = Math.round(slider.scrollLeft / slider.offsetWidth);
-            dots.forEach((dot, i) => {
-                // Using standard class toggle
-                if(i === index) {
-                    dot.classList.add("bg-orange-500");
-                    dot.classList.remove("bg-gray-300");
-                } else {
-                    dot.classList.add("bg-gray-300");
-                    dot.classList.remove("bg-orange-500");
-                }
-            });
-        });
-    }
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const buttons = document.querySelectorAll(".faq-btn");
-
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const content = btn.nextElementSibling;
-      const icon = btn.querySelector("i");
-
-      // Close all others
-      buttons.forEach(other => {
-        if (other !== btn) {
-          other.nextElementSibling.classList.add("hidden");
-          const otherIcon = other.querySelector("i");
-          if(otherIcon){
-             otherIcon.classList.remove("fa-minus");
-             otherIcon.classList.add("fa-plus");
-          }
-        }
-      });
-
-      // Toggle current
-      content.classList.toggle("hidden");
-
-      if (content.classList.contains("hidden")) {
-        icon.classList.remove("fa-minus");
-        icon.classList.add("fa-plus");
-      } else {
-        icon.classList.remove("fa-plus");
-        icon.classList.add("fa-minus");
       }
     });
+
+    if (!valid) {
+      e.preventDefault(); // ❌ stop submit
+    }
   });
+});
+
+/* init on load */
+document.addEventListener("DOMContentLoaded", initPhoneValidation);
+</script>
+
+<script>
+document.addEventListener("input", function (e) {
+  if (e.target.classList.contains("phone-input")) {
+    e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10);
+  }
 });
 </script>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

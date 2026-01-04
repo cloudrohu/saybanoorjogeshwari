@@ -6,9 +6,6 @@ from .models import (
     Testimonial, FAQ, ImpactMetric
 )
 
-# =============================
-# 🌐 WEBSITE SETTINGS ADMIN
-# =============================
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
 

@@ -80,16 +80,19 @@
               {{ project.get_price_range }}*
             </p>
           </div>
+                  
+        <div class="flex gap-4">
+          <button onclick="openVisitModal()"
+            class="px-4 py-2 bg-orange-500 text-white text-sm shadow hover:bg-orange-600 transition">
+            Book Visit
+          </button>
 
-          <div class="flex gap-4">
-            <button class="px-4 py-2 bg-orange-500 text-white text-sm -lg shadow hover:bg-orange-600 transition">
-              Book Visit
-            </button>
+          <button onclick="openPriceModal()"
+            class="px-4 py-2 border border-orange-500 text-orange-600 text-sm hover:bg-orange-50 transition">
+            Get Price
+          </button>
+        </div>
 
-            <button class="px-4 py-2 border border-orange-500 text-orange-600 text-sm -lg hover:bg-orange-50 transition">
-              Get Price
-            </button>
-          </div>
         </div>
 
         <div class="lg:hidden mt-6 bg-gray-50 -xl p-4">
@@ -195,7 +198,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
 
       {% for faq in project.faqs.all|slice:":6" %}
-      <div class="border rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition">
+      <div class="border -xl bg-white overflow-hidden shadow-sm hover:shadow-md transition">
         
         <button
           class="w-full flex items-center justify-between p-4 text-left faq-btn focus:outline-none">
@@ -245,7 +248,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for config in project.configurations.all|slice:":3" %}
-      <div class="bg-white -xl shadow hover:shadow-lg transition overflow-hidden">
+      <div class="bg-white shadow hover:shadow-lg transition overflow-hidden">
         <div class="p-6">
           <h3 class="text-lg font-semibold text-gray-800 mb-2">
             {{ config.bhk_type }} {% if config.luxurious %}Luxury{% endif %}
@@ -255,40 +258,26 @@
             Area: {{ config.area_sqft }} sq.ft.
           </p>
 
-        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center justify-between mb-4">
             <span class="text-orange-600 font-semibold text-lg">
                 {{ config.formatted_price }}
             </span>
-
-            <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1 -full">
-                {% if config.price_in_rupees %}
-                Onwards
-                {% else %}
-                Enquire Now
-                {% endif %}
+            <span class="text-xs bg-orange-50 text-orange-600 px-3 py-1">
+                {% if config.price_in_rupees %} Onwards {% else %} Enquire Now {% endif %}
             </span>
-        </div>
+          </div>
 
-          <button data-bhk="{{ config.bhk_type }}" onclick="openConfigModal(this)"
-             class="w-full px-4 py-3 bg-orange-500 text-white text-sm hover:bg-orange-600 transition">
-             Get {{ config.bhk_type }} Details
+          <button type="button" 
+                  data-bhk="{{ config.bhk_type }}" 
+                  onclick="openConfigModal(this)" 
+                  class="w-full px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white transition">
+            Get {{ config.bhk_type }} Details
           </button>
+
         </div>
       </div>
       {% endfor %}
     </div>
-    <div class="mt-10 text-center">
-      <a href="{% url 'all_configurations' %}">
-      <button class="inline-flex items-center gap-2 px-6 py-3 
-      border-2 border-orange-500 text-orange-600 font-medium text-sm
-              hover:bg-orange-500 hover:text-white
-              transition">
-        <i class="fa-solid fa-layer-group"></i>
-        See All Configurations
-      </button>
-      </a>
-    </div>
-
   </div>
 </section>
 <!-- ================= END CONFIGURATIONS SECTION ================= -->
@@ -329,33 +318,37 @@
       </div>
 
       <!-- RIGHT FORM -->
-      <div class="bg-white text-gray-800 rounded-xl shadow-xl p-6">
+      <div class="bg-white text-gray-800 -xl shadow-xl p-6">
 
         <h3 class="text-lg font-semibold mb-4">
           Book Your Visit
         </h3>
 
-        <form method="post" action="">
+        <form method="post" action="{% url 'response:additional_info' %}">
           {% csrf_token %}
 
           <!-- Name -->
+
+        <input type="hidden" name="type" value="get_price">
+
+
           <div class="mb-3">
             <input type="text" name="name" required
               placeholder="Your Name"
-              class="w-full border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
+              class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
           </div>
 
           <!-- Phone -->
           <div class="mb-3">
             <input type="tel" name="phone" required
               placeholder="Mobile Number"
-              class="w-full border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
+              class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
           </div>
 
           <!-- Date -->
           <div class="mb-3">
             <input type="date" name="visit_date"
-              class="w-full border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
+              class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
           </div>
 
           <!-- Hidden Project (Optional) -->
@@ -366,7 +359,7 @@
           <!-- CTA -->
           <button type="submit"
             class="w-full mt-4 bg-orange-500 hover:bg-orange-600
-                   text-white font-semibold py-3 rounded-lg transition">
+                   text-white font-semibold py-3 -lg transition">
             Schedule Visit
           </button>
 
@@ -495,14 +488,14 @@
           class="flex md:grid md:grid-cols-3 gap-4
                   overflow-x-auto md:overflow-visible
                   snap-x snap-mandatory scroll-smooth pb-4 md:pb-0"> {% for photo in project.gallery.all|slice:":5" %}
-        <div class="min-w-[85%] sm:min-w-[60%] md:min-w-0 snap-center rounded-lg overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition">
+        <div class="min-w-[85%] sm:min-w-[60%] md:min-w-0 snap-center -lg overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition">
           <img src="{{ photo.image.url }}" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
         </div>
         {% endfor %}
 
         {% if project.gallery.count > 5 %}
           <a href="{% url 'gallery' %}" class="min-w-[85%] sm:min-w-[60%] md:min-w-0 snap-center">
-              <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-md transition">
+              <div class="relative h-48 -lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-md transition">
 
                 <img src="{{ project.gallery.first.image.url }}"
                      class="absolute inset-0 w-full h-full object-cover blur-md scale-110 transition-transform duration-500 group-hover:scale-125">

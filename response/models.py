@@ -1,3 +1,32 @@
 from django.db import models
 
 # Create your models here.
+
+class AdditionalInfoResponse(models.Model):
+
+    TYPE_CHOICES = (
+        ('book_visit', 'Book Visit'),
+        ('get_price', 'Get Price'),
+    )
+
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
+    visit_date = models.DateField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.type} - {self.name}"
+    
+class ConfigurationResponse(models.Model):
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+
+    configuration = models.CharField(max_length=50)  # 2 BHK / 3 BHK etc
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.configuration} - {self.name}"    
