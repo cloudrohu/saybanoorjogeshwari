@@ -199,26 +199,17 @@ def get_setting():
     return Setting.objects.first()
 
 def privacy_policy(request):
-
-    
     settings_obj = Setting.objects.filter(status="True").first()    
-    context = {
-        "settings_obj": settings_obj,
-    }
 
     return render(request, 'terms/privacy_policy.html', context)
 
 def terms_conditions(request):
-    settings_obj = Setting.objects.filter(status="True").first()   
+    settings_obj = Setting.objects.filter(status="True").first()    
 
-    context = {
-        "settings_obj": settings_obj,
-    }
     return render(request, 'terms/terms_conditions.html', context)
 
 def disclaimer(request):
     settings_obj = Setting.objects.filter(status="True").first()    
-
     context = {
         "settings_obj": settings_obj,
     }

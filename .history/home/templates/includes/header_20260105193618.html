@@ -1,0 +1,229 @@
+{% load static %}
+
+
+<header class="w-full bg-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+
+    <!-- LEFT : PROJECT NAME -->
+     <a href="/">
+       <div class="text-gray-800">
+      <span><img class="h-16" src="{{settings_obj.logo.url}}" alt=""></span>
+    </div>
+    </a>
+
+     <!-- CENTER : MENU WITH | -->
+    <nav class="hidden md:flex items-center text-sm font-medium text-gray-700">
+
+      <a href="/" class="px-3 hover:text-orange-500">Home</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url "about" %}" class="px-3 hover:text-orange-500">About</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'all_configurations' %}" class="px-3 hover:text-orange-500">Configuration</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'amenities' %}" class="px-3 hover:text-orange-500">Amenities</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'gallery' %}" class="px-3 hover:text-orange-500">Gallery</a>
+      <span class="text-gray-300">|</span>
+
+      <a href="{% url 'contact' %}" class="px-3 hover:text-orange-500">Contact</a>
+
+    </nav>
+
+    <!-- RIGHT : CTA BUTTONS -->
+    <div class="flex items-center gap-3">
+
+      <!-- Call Now -->
+      <a href="tel:+{{settings_obj.phone}}"
+         class="hidden sm:flex items-center gap-2 border border-gray-300
+                px-4 py-2 text-sm font-medium text-gray-700 hover:border-orange-500 rounded-md hover:text-orange-500">
+        <i class="fa-solid fa-phone"></i>
+        Call Now  
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/{{settings_obj.whatsapp}}"
+         class="flex items-center gap-2 bg-green-500 hover:bg-green-600
+                text-white px-4 py-2 text-sm font-semibold">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        WhatsApp
+      </a>
+
+     <!-- Mobile Menu Icon -->
+    <button onclick="openMobileMenu()" class="md:hidden text-xl text-gray-700">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ================= MOBILE MENU DRAWER ================= -->
+<div id="mobileMenu"
+     class="fixed inset-0 bg-black/50 z-50 hidden">
+
+  <!-- Drawer -->
+  <div class="absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-xl
+              transform translate-x-full transition-transform duration-300"
+       id="drawerPanel">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4 border-b">
+      <img src="https://saybanoorjogeswari.com/wp-content/uploads/2025/07/saybajogeshwari-logo.webp"
+           class="h-14" alt="">
+      <button onclick="closeMobileMenu()" class="text-xl text-gray-600">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Nav Links -->
+    <nav class="flex flex-col text-sm font-medium text-gray-700 divide-y">
+
+      <a href="/" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Home
+      </a>
+
+      <a href="{% url 'about' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        About
+      </a>
+
+      <a href="{% url 'all_configurations' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Configuration
+      </a>
+
+      <a href="{% url 'amenities' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Amenities
+      </a>
+
+      
+      <a href="{% url 'gallery' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Gallery
+      </a>
+
+      <a href="{% url 'contact' %}" class="px-5 py-4 hover:bg-orange-50 hover:text-orange-500">
+        Contact
+      </a>
+
+    </nav>
+
+    <!-- CTA Buttons -->
+    <div class="px-5 py-5 space-y-3 border-t">
+
+      <a href="tel:+{{settings_obj.phone}}"
+         class="flex items-center justify-center gap-2 border border-gray-300
+                py-3 text-sm font-semibold rounded-md hover:border-orange-500 hover:text-orange-500">
+        <i class="fa-solid fa-phone"></i>
+        Call Now
+      </a>
+
+      <a href="https://wa.me/{{settings_obj.whatsapp}}"
+         class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600
+                text-white py-3 text-sm font-semibold rounded-md">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        WhatsApp
+      </a>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================= MOBILE MENU DRAWER ================= -->
+<div id="mobileMenu" class="fixed inset-0 bg-black/60 z-50 hidden">
+
+  <!-- Drawer -->
+  <div id="drawerPanel"
+       class="absolute right-0 top-0 h-full w-[88%] max-w-sm bg-white
+              shadow-2xl transform translate-x-full transition-transform duration-300">
+
+    <!-- TOP -->
+    <div class="flex items-center justify-between px-5 py-4 border-b">
+      <img src="https://saybanoorjogeswari.com/wp-content/uploads/2025/07/saybajogeshwari-logo.webp"
+           class="h-14" alt="">
+      <button onclick="closeMobileMenu()" class="text-2xl text-gray-600">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- NAV -->
+    <nav class="px-4 py-4 space-y-2 text-sm font-medium text-gray-700">
+
+      <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-house text-orange-500"></i>
+        Home
+      </a>
+
+      <a href="{% url 'about' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-circle-info text-orange-500"></i>
+        About Project
+      </a>
+
+      <a href="{% url 'all_configurations' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-building text-orange-500"></i>
+        Configuration
+      </a>
+
+      <a href="{% url 'amenities' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-star text-orange-500"></i>
+        Amenities
+      </a>
+
+      <a href="{% url 'contact' %}" class="flex items-center gap-3 px-4 py-3 rounded-lg
+                         hover:bg-orange-50 hover:text-orange-500">
+        <i class="fa-solid fa-envelope text-orange-500"></i>
+        Contact
+      </a>
+
+    </nav>
+
+    <!-- CTA -->
+    <div class="px-5 py-5 border-t space-y-3">
+
+      <a href="tel:+{{settings_obj.phone}}"
+         class="flex items-center justify-center gap-2 w-full
+                border border-gray-300 rounded-lg py-3
+                text-sm font-semibold hover:border-orange-500 hover:text-orange-500">
+        <i class="fa-solid fa-phone"></i>
+        Call Now
+      </a>
+
+      <a href="https://wa.me/{{settings_obj.whatsapp}}"
+         class="flex items-center justify-center gap-2 w-full
+                bg-green-500 hover:bg-green-600
+                text-white rounded-lg py-3 text-sm font-semibold">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        WhatsApp
+      </a>
+
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('drawerPanel').classList.remove('translate-x-full');
+    }, 10);
+  }
+
+  function closeMobileMenu() {
+    document.getElementById('drawerPanel').classList.add('translate-x-full');
+    setTimeout(() => {
+      document.getElementById('mobileMenu').classList.add('hidden');
+    }, 300);
+  }
+</script>

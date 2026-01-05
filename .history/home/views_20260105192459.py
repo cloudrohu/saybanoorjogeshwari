@@ -100,7 +100,7 @@ def about_page_view(request):
     """
 
     # 🧠 Global site settings (for logo, footer, SEO)
-    settings_obj = Setting.objects.filter(status="True").first()    
+    settings_obj = Setting.objects.filter(status="True").first()
 
     # 🏠 Fetch active About page content (latest or first)
     about_page = About.objects.filter(is_active=True).order_by('-created_at').first()
@@ -193,41 +193,16 @@ def amenities_view(request):
 #-----------------------------------------------------------------------------------------------
 
 def get_setting():
-
-    settings_obj = Setting.objects.filter(status="True").first()    
-
     return Setting.objects.first()
 
 def privacy_policy(request):
-
-    
-    settings_obj = Setting.objects.filter(status="True").first()    
-    context = {
-        "settings_obj": settings_obj,
-    }
-
-    return render(request, 'terms/privacy_policy.html', context)
+    return render(request, 'terms/privacy_policy.html', {"setting": get_setting()})
 
 def terms_conditions(request):
-    settings_obj = Setting.objects.filter(status="True").first()   
-
-    context = {
-        "settings_obj": settings_obj,
-    }
-    return render(request, 'terms/terms_conditions.html', context)
+    return render(request, 'terms/terms_conditions.html', {"setting": get_setting()})
 
 def disclaimer(request):
-    settings_obj = Setting.objects.filter(status="True").first()    
-
-    context = {
-        "settings_obj": settings_obj,
-    }
-    return render(request, 'terms/disclaimer.html', context)
+    return render(request, 'terms/disclaimer.html', {"setting": get_setting()})
 
 def cookies(request):
-    settings_obj = Setting.objects.filter(status="True").first()    
-
-    context = {
-        "settings_obj": settings_obj,
-    }
-    return render(request, 'terms/cookies-policy.html', context)
+    return render(request, 'terms/cookies-policy.html', {"setting": get_setting()})
