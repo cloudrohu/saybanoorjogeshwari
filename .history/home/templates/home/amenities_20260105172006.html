@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FAQs | {{ settings_obj.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block content %}
+
+<!-- ================= AMENITIES SECTION ================= -->
+<section class="w-full py-14">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Heading -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-800">
+        World-Class Amenities
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Designed for comfort, luxury & modern living
+      </p>
+    </div>
+
+
+     <!-- Amenities Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        {% for item in project.amenities.all|slice:":6" %}
+
+            <!-- Gym -->
+            <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+              <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+                <img src="https://img.icons8.com/color/96/dumbbell.png" class="w-8 h-8" alt="Gym">
+              </div>
+              <p class="text-sm font-medium text-gray-800">Gymnasium</p>
+            </div>
+
+            <!-- {{ item.amenities.title }} -->
+            <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+              <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+                <img src="{{ item.amenities.image.url }}" class="w-8 h-8" alt="{{ item.amenities.title }}">
+              </div>
+              <p class="text-sm font-medium text-gray-800">{{ item.amenities.title }}</p>
+            </div>
+
+          {% endfor %}
+      
+
+    </div>
+
+
+
+  </div>
+</section>
+<!-- ================= END ================= -->
+
+{% endblock content %}

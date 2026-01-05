@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FAQs | {{ settings_obj.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block content %}
+
+<!-- ================= AMENITIES SECTION ================= -->
+<section class="w-full py-14">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Heading -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-800">
+        World-Class Amenities
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Designed for comfort, luxury & modern living
+      </p>
+    </div>
+
+
+     <!-- Amenities Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {% for item in project.amenities.all|slice:":6" %}
+
+      <!-- Gym -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/dumbbell.png" class="w-8 h-8" alt="Gym">
+        </div>
+        <p class="text-sm font-medium text-gray-800">Gymnasium</p>
+      </div>
+
+      <!-- Swimming Pool -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/swimming-pool.png" class="w-8 h-8" alt="Swimming Pool">
+        </div>
+        <p class="text-sm font-medium text-gray-800">Swimming Pool</p>
+      </div>
+
+      <!-- Kids Play Area -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/playground.png" class="w-8 h-8" alt="Kids Play Area">
+        </div>
+        <p class="text-sm font-medium text-gray-800">Kids Play Area</p>
+      </div>
+
+      <!-- Garden -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/park.png" class="w-8 h-8" alt="Garden">
+        </div>
+        <p class="text-sm font-medium text-gray-800">Landscaped Garden</p>
+      </div>
+
+      <!-- Jogging Track -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/running.png" class="w-8 h-8" alt="Jogging Track">
+        </div>
+        <p class="text-sm font-medium text-gray-800">Jogging Track</p>
+      </div>
+
+      <!-- Security -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/security-checked.png" class="w-8 h-8" alt="Security">
+        </div>
+        <p class="text-sm font-medium text-gray-800">24×7 Security</p>
+      </div>
+
+      <!-- CCTV -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/cctv.png" class="w-8 h-8" alt="CCTV">
+        </div>
+        <p class="text-sm font-medium text-gray-800">CCTV Surveillance</p>
+      </div>
+
+      <!-- Indoor Games -->
+      <div class="bg-white border p-4 flex flex-col items-center text-center hover:shadow-lg transition">
+        <div class="w-14 h-14 flex items-center justify-center  bg-orange-50 mb-3">
+          <img src="https://img.icons8.com/color/96/chessboard.png" class="w-8 h-8" alt="Indoor Games">
+        </div>
+        <p class="text-sm font-medium text-gray-800">Indoor Games</p>
+      </div>
+
+      
+
+    </div>
+
+    <!-- Amenities Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+            {% for item in project.amenities.all|slice:":6" %}
+            <div class="relative rounded-xl overflow-hidden border group hover:shadow-xl transition">
+
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center"
+                style="background-image:url('{{ item.amenities.image.url }}');">
+            </div>
+
+            <!-- Dark Overlay -->
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition"></div>
+
+            <!-- Content -->
+            <div class="relative p-5 h-44 flex flex-col justify-end text-white">
+
+                <!-- Icon -->
+                <div class="w-12 h-12 flex items-center justify-center bg-orange-500 rounded-full mb-3">
+                <i class="fa-solid fa-star text-white"></i>
+                </div>
+
+                <!-- Title -->
+                <h4 class="font-semibold text-lg leading-tight">
+                {{ item.amenities.title }}
+                </h4>
+
+            </div>
+
+            </div>
+            {% endfor %}
+
+
+
+    </div>
+
+  </div>
+</section>
+<!-- ================= END ================= -->
+
+{% endblock content %}
