@@ -100,7 +100,6 @@
     <form onsubmit="return submitPlanRequest()" class="space-y-4">
 
       <input type="text" required placeholder="Full Name" class="w-full border px-3 py-2 text-sm">
-      <input type="email" required placeholder="Email" class="w-full border px-3 py-2 text-sm">
 
       <input type="tel" required placeholder="Mobile Number"
         class="phone-input w-full border px-3 py-2 text-sm">
@@ -130,7 +129,6 @@
       <input type="hidden" name="configuration" id="modalConfigInput">
 
       <input type="text" name="name" required placeholder="Full Name" class="w-full border px-3 py-2 text-sm">
-      <input type="email" name="email" required placeholder="Email" class="w-full border px-3 py-2 text-sm">
       <input type="tel" name="phone" maxlength="10" required placeholder="Mobile Number" class="w-full border px-3 py-2 text-sm">
 
       <button type="submit" class="w-full bg-orange-500 text-white py-3 hover:bg-orange-600 transition">
@@ -180,6 +178,43 @@
 
   </div>
 </div>
+
+<!-- ===== GALLERY POPUP ===== -->
+<div id="galleryPopup" class="fixed inset-0 bg-white/95 hidden z-[9999] flex items-center justify-center">
+
+  <div class="absolute inset-0" onclick="closeGalleryPopup()"></div>
+
+  <div class="relative w-full max-w-6xl px-4">
+
+    <!-- Close -->
+    <button onclick="closeGalleryPopup()" class="absolute -top-12 right-4 w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-gray-700 hover:bg-orange-500 hover:text-white transition">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- Image Box -->
+    <div class="relative rounded-xl overflow-hidden">
+
+      <img id="popupImage" src="" class="w-full max-h-[80vh] object-contain">
+
+      <!-- Counter -->
+      <div id="galleryCounter" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 text-gray-700 text-xs px-3 py-1 rounded-full shadow"></div>
+
+      <!-- Prev -->
+      <button onclick="prevImage()" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow text-gray-700 flex items-center justify-center hover:bg-orange-500 hover:text-orange transition">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <!-- Next -->
+      <button onclick="nextImage()" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow text-gray-700 flex items-center justify-center hover:bg-orange-500 hover:text-orange transition">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+    </div>
+  </div>
+</div>
+<!-- ===== END POPUP ===== -->
+
+
 
 
 <div id="priceModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
@@ -248,6 +283,7 @@
     document.getElementById("priceModal").classList.add("hidden");
   }
 </script>
+
 
 
 <script>
@@ -359,66 +395,61 @@ document.addEventListener("input", function (e) {
 </script>
 
 <script>
+let galleryImages = [];
+let currentIndex = 0;
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  const faqButtons = document.querySelectorAll(".faq-btn");
-
-  faqButtons.forEach(btn => {
-
-    const content = btn.nextElementSibling;
-    const icon = btn.querySelector("i");
-
-    // Accessibility
-    btn.setAttribute("aria-expanded", "false");
-    content.setAttribute("aria-hidden", "true");
-
-    btn.addEventListener("click", () => {
-
-      const isOpen = btn.getAttribute("aria-expanded") === "true";
-
-      // Close all others (Accordion behavior)
-      faqButtons.forEach(otherBtn => {
-        if (otherBtn !== btn) {
-          closeFAQ(otherBtn);
-        }
-      });
-
-      // Toggle current
-      isOpen ? closeFAQ(btn) : openFAQ(btn);
-    });
-
-    function openFAQ(button) {
-      const panel = button.nextElementSibling;
-      const iconEl = button.querySelector("i");
-
-      panel.classList.remove("hidden");
-      panel.style.maxHeight = panel.scrollHeight + "px";
-
-      iconEl.classList.remove("fa-plus");
-      iconEl.classList.add("fa-minus", "rotate-180");
-
-      button.setAttribute("aria-expanded", "true");
-      panel.setAttribute("aria-hidden", "false");
-    }
-
-    function closeFAQ(button) {
-      const panel = button.nextElementSibling;
-      const iconEl = button.querySelector("i");
-
-      panel.style.maxHeight = null;
-      setTimeout(() => panel.classList.add("hidden"), 200);
-
-      iconEl.classList.add("fa-plus");
-      iconEl.classList.remove("fa-minus", "rotate-180");
-
-      button.setAttribute("aria-expanded", "false");
-      panel.setAttribute("aria-hidden", "true");
-    }
-
+  // sirf actual gallery images lo
+  document.querySelectorAll(
+    '#gallerySlider img[data-gallery="true"]'
+  ).forEach(img => {
+    galleryImages.push(img.src);
   });
 
+  console.log("Gallery Loaded:", galleryImages);
+});
+
+function openGalleryPopup(index) {
+  if (!galleryImages.length) return;
+
+  currentIndex = index;
+  document.getElementById("popupImage").src =
+    galleryImages[currentIndex];
+
+  document.getElementById("galleryPopup")
+    .classList.remove("hidden");
+
+  document.body.style.overflow = "hidden";
+}
+
+function closeGalleryPopup() {
+  document.getElementById("galleryPopup")
+    .classList.add("hidden");
+
+  document.body.style.overflow = "";
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % galleryImages.length;
+  document.getElementById("popupImage").src =
+    galleryImages[currentIndex];
+}
+
+function prevImage() {
+  currentIndex =
+    (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+
+  document.getElementById("popupImage").src =
+    galleryImages[currentIndex];
+}
+
+// ESC key close
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeGalleryPopup();
 });
 </script>
+
 
 
 <footer class="bg-gray-600 text-gray-400 text-xs bottom-0 w-full mt-10">

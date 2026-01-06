@@ -258,54 +258,40 @@
 
 
 <!-- ================= FAQ SECTION ================= -->
-<section class="w-full py-12 bg-gray-50">
+<section class="w-full py-14 bg-gray-50">
   <div class="max-w-6xl mx-auto px-4">
 
-    <div class="text-center mb-10">
-      <h2 class="text-2xl font-bold text-gray-800">Frequently Asked Questions</h2>
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
       <p class="text-sm text-gray-500 mt-2">Quick answers to common queries</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
 
       {% for faq in project.faqs.all|slice:":6" %}
-      <div class="border -xl bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-        
-        <button
-          class="w-full flex items-center justify-between p-4 text-left faq-btn focus:outline-none">
-          
-          <span class="font-medium text-gray-800">
+      <div class="faq-item bg-white rounded-xl border border-gray-200 transition">
+
+        <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+          <span class="font-medium text-gray-900 text-sm leading-snug">
             {{ faq.question }}
           </span>
 
-          <i class="fa-solid fa-plus text-orange-500 transition duration-200"></i>
+          <span class="faq-icon w-9 h-9 flex items-center justify-center rounded-full bg-orange-50 text-orange-500">
+            <i class="fa-solid fa-plus"></i>
+          </span>
         </button>
-        
-        <div class="faq-content hidden px-4 pb-4 text-sm text-gray-600 bg-gray-50/50">
+
+        <div class="faq-content px-6 pb-5 text-sm text-gray-600 leading-relaxed">
           {{ faq.answer|linebreaks }}
         </div>
-
-      </div>
-      {% empty %}
-      <div class="col-span-2 text-center text-gray-500 py-4">
-        No questions added yet. Please contact us for details.
       </div>
       {% endfor %}
 
     </div>
-     <div class="mt-10 text-center">
-        <a href="{% url 'faq' %}">
-            <button class="inline-flex items-center gap-2 px-6 py-3 
-            border-2 border-orange-500 text-orange-600 font-medium text-sm
-                    hover:bg-orange-500 hover:text-white
-                    transition">
-              <span class="font-lg font-bold">?</span>
-              See All FAQ's And know More
-            </button>
-        </a>
-      </div>
+
   </div>
 </section>
+
 <!-- ================= END FAQ SECTION ================= -->
 
 <hr>
@@ -394,48 +380,62 @@
 </section>
 <!-- ================= END AMENITIES ================= -->
 
-
-
-
-
 <!-- ================= PROJECT GALLERY SECTION ================= -->
 {% if project.gallery.exists %}
 <section class="w-full py-12 bg-gray-50">
   <div class="max-w-6xl mx-auto px-4">
+
     <div class="text-center mb-10">
       <h2 class="text-2xl font-bold text-gray-800">Project Gallery</h2>
     </div>
 
-      <div id="gallerySlider"
-          class="flex md:grid md:grid-cols-3 gap-4
-                  overflow-x-auto md:overflow-visible
-                  snap-x snap-mandatory scroll-smooth pb-4 md:pb-0"> {% for photo in project.gallery.all|slice:":5" %}
-        <div class="min-w-[85%] sm:min-w-[60%] md:min-w-0 snap-center -lg overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition">
-          <img src="{{ photo.image.url }}" class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300">
-        </div>
-        {% endfor %}
+    <div id="gallerySlider"
+         class="flex md:grid md:grid-cols-3 gap-4
+                overflow-x-auto md:overflow-visible
+                snap-x snap-mandatory scroll-smooth pb-4 md:pb-0">
 
-        {% if project.gallery.count > 5 %}
-          <a href="{% url 'gallery' %}" class="min-w-[85%] sm:min-w-[60%] md:min-w-0 snap-center">
-              <div class="relative h-48 -lg overflow-hidden cursor-pointer group shadow-sm hover:shadow-md transition">
+      {# ====== FIRST 5 IMAGES ====== #}
+      {% for photo in project.gallery.all|slice:":5" %}
+      <div class="min-w-[85%] sm:min-w-[60%] md:min-w-0
+                  snap-center rounded-lg overflow-hidden
+                  cursor-pointer shadow-sm hover:shadow-md transition">
 
-                <img src="{{ project.gallery.first.image.url }}"
-                     class="absolute inset-0 w-full h-full object-cover blur-md scale-110 transition-transform duration-500 group-hover:scale-125">
-
-                <div class="absolute inset-0 bg-orange-600/70 mix-blend-multiply transition-colors group-hover:bg-orange-700/70"></div>
-
-                <div class="relative z-10 h-full flex flex-col items-center justify-center text-white p-4">
-                  <i class="fa-solid fa-images text-3xl mb-2 drop-shadow-lg transition-transform group-hover:scale-110"></i>
-                  <span class="font-bold text-lg drop-shadow-md tracking-wide">See All Photos</span>
-                  <span class="text-xs mt-1 font-medium opacity-90 drop-shadow">+{{ project.gallery.count|add:"-5" }} More</span>
-                </div>
-
-              </div>
-          </a>
-        {% endif %}
-
+        <img src="{{ photo.image.url }}"
+             data-gallery="true"
+             onclick="openGalleryPopup({{ forloop.counter0 }})"
+             class="w-full h-48 object-cover
+                    hover:scale-105 transition-transform duration-300">
       </div>
+      {% endfor %}
 
+      {# ====== SEE ALL CARD (6th) ====== #}
+      {% if project.gallery.count > 5 %}
+      <a href="{% url 'gallery' %}"
+         class="min-w-[85%] sm:min-w-[60%] md:min-w-0 snap-center">
+
+        <div class="relative h-48 rounded-lg overflow-hidden
+                    cursor-pointer group shadow-sm hover:shadow-md transition">
+
+          <img src="{{ project.gallery.first.image.url }}"
+               class="absolute inset-0 w-full h-full object-cover
+                      blur-md scale-110">
+
+          <div class="absolute inset-0 bg-orange-600/70"></div>
+
+          <div class="relative z-10 h-full flex flex-col
+                      items-center justify-center text-white">
+            <i class="fa-solid fa-images text-3xl mb-2"></i>
+            <span class="font-bold text-lg">See All Photos</span>
+            <span class="text-xs mt-1">
+              +{{ project.gallery.count|add:"-5" }} More
+            </span>
+          </div>
+
+        </div>
+      </a>
+      {% endif %}
+
+    </div>
   </div>
 </section>
 {% endif %}
@@ -547,11 +547,6 @@
               class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
           </div>
 
-          <!-- Date -->
-          <div class="mb-3">
-            <input type="date" name="visit_date"
-              class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
-          </div>
 
           <!-- Hidden Project (Optional) -->
           {% if project %}
