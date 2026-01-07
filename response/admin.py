@@ -8,6 +8,7 @@ class AdditionalInfoResponseAdmin(admin.ModelAdmin):
     list_display = (
         "type",
         "name",
+        "email",
         "phone",
         "visit_date",
         "created_at",

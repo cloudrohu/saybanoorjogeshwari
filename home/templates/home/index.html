@@ -237,7 +237,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
 
-      {% for faq in project.faqs.all|slice:":6" %}
+      {% for faq in project.faqs.all|slice:":4" %}
       <div class="faq-item bg-white rounded-xl border border-gray-200 transition">
 
         <button class="faq-btn w-full flex items-center justify-between px-6 py-3 text-left">
@@ -259,6 +259,15 @@
     </div>
 
   </div>
+
+      <!-- CTA -->
+    <div class="mt-10 text-center">
+      <a href="{% url 'faq' %}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border transition"
+         style=" color: var(--project-color); border-color: var(--project-color); ">
+        View All FAQs and Know More
+        <i class="fa-solid fa-arrow-right-long"></i>
+      </a>
+    </div>
 </section>
 <!-- ================= END FAQ SECTION ================= -->
 
@@ -281,45 +290,23 @@
     <!-- Grid -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 
-      {% for item in project.amenities.all %}
+      {% for item in project.amenities.all|slice:":6" %}
 
       <!-- Card -->
-      <div
-        class="relative bg-white border border-gray-200
-               px-3 py-4 text-center
-               transition-all duration-300
-               hover:shadow-md group overflow-hidden">
+      <div class="relative bg-white border border-gray-200 px-3 py-4 text-center transition-all duration-300 hover:shadow-md group overflow-hidden">
 
         <!-- Top Border Animation -->
-        <span
-          class="absolute top-0 left-0 h-[3px] w-0
-                 bg-[var(--project-color)]
-                 transition-all duration-300
-                 group-hover:w-full">
+        <span class="absolute top-0 left-0 h-[3px] w-0 bg-[var(--project-color)] transition-all duration-300 group-hover:w-full">
         </span>
 
         <!-- Icon -->
-        <div
-          class="w-28 h-28 mx-auto mb-3
-                 flex items-center justify-center
-                 border bg-gray-50"
-          style="border-color: var(--project-color);">
+        <div class="w-28 h-28 mx-auto mb-3 flex items-center justify-center border bg-gray-50" style="border-color: var(--project-color);">
 
-          <img
-            src="{{ item.amenities.image.url }}"
-            alt="{{ item.amenities.title }}"
-            class="w-24 h-24 object-contain">
+          <img src="{{ item.amenities.image.url }}" alt="{{ item.amenities.title }}"  class="w-24 h-24 object-contain">
         </div>
 
         <!-- Title (2 line clamp) -->
-        <p
-          class="text-sm font-medium text-gray-800 leading-snug
-                 overflow-hidden"
-          style="
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-          ">
+        <p class="text-sm font-medium text-gray-800 leading-snug overflow-hidden" style=" display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
           {{ item.amenities.title }}
         </p>
 
@@ -331,14 +318,8 @@
 
     <!-- CTA -->
     <div class="mt-10 text-center">
-      <a href="{% url 'amenities' %}"
-         class="inline-flex items-center gap-2
-                px-6 py-3 text-sm font-medium
-                border transition"
-         style="
-           color: var(--project-color);
-           border-color: var(--project-color);
-         ">
+      <a href="{% url 'amenities' %}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border transition"
+         style=" color: var(--project-color); border-color: var(--project-color); ">
         View All Amenities
         <i class="fa-solid fa-arrow-right-long"></i>
       </a>
@@ -449,6 +430,14 @@
       {% endfor %}
     </div>
   </div>
+      <!-- CTA -->
+    <div class="mt-10 text-center">
+      <a href="{% url 'all_configurations' %}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border transition"
+         style=" color: var(--project-color); border-color: var(--project-color); ">
+        View All Configurations
+        <i class="fa-solid fa-arrow-right-long"></i>
+      </a>
+    </div>
 </section>
 <!-- ================= END CONFIGURATIONS SECTION ================= -->
 
@@ -507,6 +496,13 @@
               placeholder="Your Name"
               class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
           </div>
+
+          <div class="mb-3">
+            <input type="text" name="email" required
+              placeholder="Your Email"
+              class="w-full border -lg px-4 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none">
+          </div>
+
 
           <!-- Phone -->
           <div class="mb-3">

@@ -12,6 +12,7 @@ class AdditionalInfoResponse(models.Model):
 
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     name = models.CharField(max_length=100)
+    email = models.EmailField(null=True,blank=True)
     phone = models.CharField(max_length=15)
     visit_date = models.DateField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -7,6 +7,7 @@ class AdditionalInfoForm(forms.ModelForm):
         fields = [
             'type',
             'name',
+            'email',
             'phone',
             'visit_date'
         ]
