@@ -189,7 +189,8 @@
 <!-- ================= END WHY INVEST SECTION ================= --> 
 <hr>
 
-<!-- ================= FINAL USP SECTION ================= -->
+<!-- ================= USP SECTION ================= -->
+{% if project.usps.exists %}
 <section class="w-full py-16 bg-gray-100">
   <div class="max-w-6xl mx-auto px-4">
 
@@ -206,54 +207,22 @@
     <!-- USP GRID -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
 
-      <!-- USP ITEM -->
+      {% for usp in project.usps.all %}
       <div class="flex items-start gap-4">
         <i class="fa-solid fa-circle-check text-orange-500 text-lg mt-1"></i>
         <p class="text-sm text-gray-700 leading-relaxed">
-          Prime location with excellent metro & highway connectivity
+          {{ usp.point }}
         </p>
       </div>
-
-      <div class="flex items-start gap-4">
-        <i class="fa-solid fa-circle-check text-orange-500 text-lg mt-1"></i>
-        <p class="text-sm text-gray-700 leading-relaxed">
-          Developed by a reputed builder with strong market credibility
-        </p>
-      </div>
-
-      <div class="flex items-start gap-4">
-        <i class="fa-solid fa-circle-check text-orange-500 text-lg mt-1"></i>
-        <p class="text-sm text-gray-700 leading-relaxed">
-          RERA registered project ensuring complete legal transparency
-        </p>
-      </div>
-
-      <div class="flex items-start gap-4">
-        <i class="fa-solid fa-circle-check text-orange-500 text-lg mt-1"></i>
-        <p class="text-sm text-gray-700 leading-relaxed">
-          Lifestyle-focused amenities for everyday comfort & wellness
-        </p>
-      </div>
-
-      <div class="flex items-start gap-4">
-        <i class="fa-solid fa-circle-check text-orange-500 text-lg mt-1"></i>
-        <p class="text-sm text-gray-700 leading-relaxed">
-          High appreciation potential in a fast-growing micro-market
-        </p>
-      </div>
-
-      <div class="flex items-start gap-4">
-        <i class="fa-solid fa-circle-check text-orange-500 text-lg mt-1"></i>
-        <p class="text-sm text-gray-700 leading-relaxed">
-          Smooth connectivity to schools, hospitals & business hubs
-        </p>
-      </div>
+      {% endfor %}
 
     </div>
 
   </div>
 </section>
-<!-- ================= END FINAL USP ================= -->
+{% endif %}
+<!-- ================= END USP SECTION ================= -->
+
 
 
 
@@ -271,7 +240,7 @@
       {% for faq in project.faqs.all|slice:":6" %}
       <div class="faq-item bg-white rounded-xl border border-gray-200 transition">
 
-        <button class="faq-btn w-full flex items-center justify-between px-6 py-5 text-left">
+        <button class="faq-btn w-full flex items-center justify-between px-6 py-3 text-left">
           <span class="font-medium text-gray-900 text-sm leading-snug">
             {{ faq.question }}
           </span>
@@ -281,7 +250,7 @@
           </span>
         </button>
 
-        <div class="faq-content px-6 pb-5 text-sm text-gray-600 leading-relaxed">
+        <div class="faq-content hidden px-6 pb-3 text-sm text-gray-600 leading-relaxed">
           {{ faq.answer|linebreaks }}
         </div>
       </div>
@@ -291,7 +260,6 @@
 
   </div>
 </section>
-
 <!-- ================= END FAQ SECTION ================= -->
 
 <hr>
@@ -708,54 +676,103 @@
 
 <!-- ================= RERA & LEGAL SECTION ================= -->
 {% with rera=project.rera.first %}
-<section class="w-full bg-gray-50 py-8">
-  <div class="max-w-7xl mx-auto px-0 md:px-4">
+{% if rera %}
+<section class="w-full bg-gray-50 py-10">
+    <div class="max-w-7xl mx-auto px-3 md:px-4">
 
-    <!-- MAIN BOX -->
-    <div class="bg-white border-t border-b md:border md:-xl md:shadow px-4 md:px-6 py-6">
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm px-4 md:px-6 py-6">
 
-      <!-- RERA ITEMS -->
-      <div class="space-y-4 text-sm text-gray-700">
+      <!-- CONTENT WRAPPER -->
+      <div class="flex flex-col md:flex-row gap-6">
 
-        <div class="flex gap-3">
-          <span class="text-green-600 font-bold">✓</span>
-          <div>
-            <strong>Project Registered:</strong>
-            <a href="maharera.maharashtra.gov.in" class="text-blue-600 break-all">
-              maharera.maharashtra.gov.in
-            </a>
+        <!-- LEFT CONTENT -->
+        <div class="flex-1 space-y-4 text-sm text-gray-700">
+
+          <div class="flex gap-3">
+            <span class="text-green-600 font-bold">✓</span>
+            <div>
+              <strong>Project Registered:</strong>
+                {{ rera.project_registered }}
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-green-600 font-bold">✓</span>
+            <div>
+              <strong>Government RERA Authorised Advertiser:</strong>
+              {{ rera.government_rera_authorised_advertiser }}
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-green-600 font-bold">✓</span>
+            <div>
+              <strong>Project’s RERA Registration No:</strong>
+              <span class="font-semibold">{{ rera.registration_no }}</span>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-green-600 font-bold">✓</span>
+            <div>
+              <strong>Site Address:</strong>
+              {{ rera.site_address }}
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-green-600 font-bold">✓</span>
+            <div>
+              <strong>Contact Us:</strong>
+              {{ rera.contact_us }}
+            </div>
+          </div>
+
+          {% if rera.document %}
+          <div class="flex gap-3">
+            <span class="text-green-600 font-bold">✓</span>
+            <div>
+              <strong>Document:</strong>
+              <button onclick="document.getElementById('brochureModal').classList.remove('hidden')" class="text-orange-600 font-semibold underline hover:text-orange-700">
+                Download Brochure
+              </button>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+
+        <!-- RIGHT QR -->
+        {% if rera.qr_image %}
+        <div class="flex justify-center md:justify-end items-start">
+          <div class="text-center">
+            <img src="{{ rera.qr_image.url }}"
+                 alt="RERA QR Code"
+                 class="w-40 h-40 md:w-44 md:h-44 border rounded-xl shadow-sm">
+            <p class="text-xs text-gray-500 mt-2">
+              Scan for RERA Details
+            </p>
           </div>
         </div>
-
-        <div class="flex gap-3">
-          <span class="text-green-600 font-bold">✓</span>
-          <div>
-            <strong>Government RERA Authorised Advertiser’s:</strong>
-            {{rera.government_rera_authorised_advertiser}}
-          </div>
-        </div>
-
-        <div class="flex gap-3">
-          <span class="text-green-600 font-bold">✓</span>
-          <div>
-            <strong>Project's RERA Registration No.:</strong>
-            <span class="font-semibold">{{rera.registration_no}}</span>
-          </div>
-        </div>
-
-        <!-- DISCLAIMER -->
-        <div class="pt-4 text-gray-600 text-sm leading-relaxed">
-          <strong>Disclaimer:</strong>
-          {{rera.disclaimer}}
-        </div>
+        {% endif %}
 
       </div>
-    </div>
 
+      <!-- DISCLAIMER -->
+      {% if rera.disclaimer %}
+      <div class="pt-4 mt-4 border-t text-gray-600 text-xs leading-relaxed">
+        <strong>Disclaimer:</strong>
+        {{ rera.disclaimer }}
+      </div>
+      {% endif %}
+
+    </div>
   </div>
 </section>
+{% endif %}
 {% endwith %}
 <!-- ================= END RERA & LEGAL SECTION ================= -->
+
 
 
 {% else %}

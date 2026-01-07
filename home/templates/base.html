@@ -17,16 +17,10 @@
 <style>
   .iti--separate-dial-code .iti__selected-dial-code {
     margin-left: 8px;
-  }/* ===============================
-    INTL TEL INPUT – CLEAN FIX
-  ================================ */
-
-  /* wrapper full width */
+  }
   .iti {
     width: 100%;
   }
-
-  /* actual input */
   .iti input,
   .iti input[type=tel] {
     width: 100%;
@@ -38,26 +32,18 @@
     border: 1px solid #d1d5db; /* gray-300 */
     outline: none;
   }
-
-  /* flag container */
   .iti__flag-container {
     left: 8px;
   }
-
-  /* country code box */
   .iti__selected-flag {
     height: 100%;
     padding: 0 8px;
     display: flex;
     align-items: center;
   }
-
-  /* dropdown arrow */
   .iti__arrow {
     margin-left: 6px;
   }
-
-  /* focus */
   .iti input:focus {
     border-color: #fb923c; /* orange-400 */
     box-shadow: 0 0 0 2px rgba(251,146,60,0.3);
@@ -67,16 +53,6 @@
 </head>
 <body>
 
-  <style>
-.faq-content {
-  overflow: hidden;
-  transition: max-height 0.35s ease;
-}
-
-.faq-btn i {
-  transition: transform 0.3s ease;
-}
-</style>
 
 {% include 'includes/header.html' %}
 
@@ -164,12 +140,6 @@
         Please enter a valid mobile number
       </p>
 
-
-        
-
-      <input type="date" name="visit_date"
-        class="w-full border px-3 py-2 text-sm" required>
-
       <button class="w-full bg-orange-500 text-white py-3">
         Book Visit
       </button>
@@ -180,14 +150,14 @@
 </div>
 
 <!-- ===== GALLERY POPUP ===== -->
-<div id="galleryPopup" class="fixed inset-0 bg-white/95 hidden z-[9999] flex items-center justify-center">
+<div id="galleryPopup" class="fixed inset-0 bg-black/80 hidden z-[9999] flex items-center justify-center">
 
   <div class="absolute inset-0" onclick="closeGalleryPopup()"></div>
 
   <div class="relative w-full max-w-6xl px-4">
 
     <!-- Close -->
-    <button onclick="closeGalleryPopup()" class="absolute -top-12 right-4 w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-gray-700 hover:bg-orange-500 hover:text-white transition">
+    <button onclick="closeGalleryPopup()" class="absolute -top-12 right-4 w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-gray-700 hover:bg-orange-500 hover:text-black transition">
       <i class="fa-solid fa-xmark"></i>
     </button>
 
@@ -197,7 +167,7 @@
       <img id="popupImage" src="" class="w-full max-h-[80vh] object-contain">
 
       <!-- Counter -->
-      <div id="galleryCounter" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 text-gray-700 text-xs px-3 py-1 rounded-full shadow"></div>
+      <div id="galleryCounter" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/90 text-gray-700 text-xs px-3 py-1 rounded-full shadow"></div>
 
       <!-- Prev -->
       <button onclick="prevImage()" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow text-gray-700 flex items-center justify-center hover:bg-orange-500 hover:text-orange transition">
@@ -214,7 +184,61 @@
 </div>
 <!-- ===== END POPUP ===== -->
 
+<div id="brochureModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
 
+  <div class="bg-white w-[92%] max-w-md p-6 relative rounded-xl shadow-xl">
+
+   <button type="button" onclick="document.getElementById('brochureModal').classList.add('hidden')"
+   class="absolute top-3 right-3 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+   <i class="fa-solid fa-xmark"></i>
+  </button>
+
+    <h3 class="text-lg font-bold text-gray-900 mb-1">
+      Download Brochure
+    </h3>
+    <p class="text-sm text-gray-600 mb-4">
+      Please fill the details to download the brochure.
+    </p>
+
+       <div id="brochureFormWrapper">
+        <form id="brochureForm" class="space-y-3">
+          {% csrf_token %}
+          <input type="hidden" name="project_id" value="{{ project.id }}">
+
+          <input name="name" required placeholder="Full Name"
+            class="w-full border px-3 py-2 text-sm rounded">
+
+          <input name="email" type="email" required placeholder="Email Address"
+            class="w-full border px-3 py-2 text-sm rounded">
+
+          <input name="mobile" required placeholder="Mobile Number"
+            class="w-full border px-3 py-2 text-sm rounded">
+
+          <button type="submit"
+            class="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold">
+            Download Brochure
+          </button>
+        </form>
+      </div>
+
+
+
+  </div>
+</div>
+
+
+<!-- THANK YOU MESSAGE -->
+<div id="thankYouBox" class="hidden text-center py-6">
+  <div class="text-green-600 text-3xl mb-3">✔</div>
+  <h4 class="text-lg font-bold text-gray-900 mb-1">
+    Thank You!
+  </h4>
+  <p class="text-sm text-gray-600">
+    Our team will contact you shortly.
+    <br>
+    Your brochure download has started.
+  </p>
+</div>
 
 
 <div id="priceModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
@@ -253,6 +277,15 @@
   </div>
 </div>
 
+<script>
+window.closeBrochureModal = function () {
+  document.getElementById("brochureModal").classList.add("hidden");
+};
+
+window.openBrochureModal = function () {
+  document.getElementById("brochureModal").classList.remove("hidden");
+};
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"></script>
@@ -264,6 +297,27 @@
       separateDialCode: true,
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
       geoIpLookup: cb => fetch("https://ipapi.co/json").then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb("IN"))
+    });
+  });
+    document.querySelectorAll('.faq-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.closest('.faq-item');
+      const content = item.querySelector('.faq-content');
+      const icon = item.querySelector('.faq-icon i');
+
+      // Close all other FAQs
+      document.querySelectorAll('.faq-item').forEach(other => {
+        if (other !== item) {
+          other.querySelector('.faq-content').classList.add('hidden');
+          other.querySelector('.faq-icon i').classList.remove('fa-minus');
+          other.querySelector('.faq-icon i').classList.add('fa-plus');
+        }
+      });
+
+      // Toggle current FAQ
+      content.classList.toggle('hidden');
+      icon.classList.toggle('fa-plus');
+      icon.classList.toggle('fa-minus');
     });
   });
 </script>
@@ -284,6 +338,56 @@
   }
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.getElementById("brochureForm");
+  const formWrapper = document.getElementById("brochureFormWrapper");
+  const thankYouBox = document.getElementById("thankYouBox");
+
+  if (!form) return;
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch("{% url 'response:brochure_lead' %}", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+      },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+
+        // 🔽 Download brochure
+        const link = document.createElement("a");
+        link.href = "{{ rera.document.url }}";
+        link.download = "";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // ✅ SHOW THANK YOU
+        formWrapper.classList.add("hidden");
+        thankYouBox.classList.remove("hidden");
+
+        // Auto close after 3 sec (optional)
+        setTimeout(() => {
+          document.getElementById("brochureModal").classList.add("hidden");
+          form.reset();
+          thankYouBox.classList.add("hidden");
+          formWrapper.classList.remove("hidden");
+        }, 3000);
+      }
+    });
+  });
+
+});
+</script>
 
 
 <script>
