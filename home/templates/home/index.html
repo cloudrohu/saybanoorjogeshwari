@@ -8,6 +8,13 @@
 
 
 <style>
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
   :root {
     --project-color: #2563eb; /* 🔵 change this (blue / green / gold / etc) */
   }
@@ -223,9 +230,6 @@
 {% endif %}
 <!-- ================= END USP SECTION ================= -->
 
-
-
-
 <!-- ================= FAQ SECTION ================= -->
 <section class="w-full py-14 bg-gray-50">
   <div class="max-w-6xl mx-auto px-4">
@@ -270,61 +274,70 @@
     </div>
 </section>
 <!-- ================= END FAQ SECTION ================= -->
-
 <hr>
 
 <!-- ================= ADVANCED AMENITIES SECTION ================= -->
 <section class="w-full py-14 bg-gray-100">
-  <div class="max-w-6xl mx-auto px-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Heading -->
-    <div class="text-center mb-10">
-      <h2 class="text-2xl font-bold text-gray-800">
-        Project Amenities
-      </h2>
-      <p class="text-sm text-gray-500 mt-2">
-        Comfort, convenience & lifestyle thoughtfully curated
+    <div class="text-center mb-12">
+      <span class="text-orange-600 font-bold tracking-wider uppercase text-xs md:text-sm mt-1">Exquisite Lifestyle</span>
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 mb-2">WORLD-CLASS AMENITIES</h2>
+      <div class="w-20 h-1 bg-orange-500 mx-auto rounded-full mb-4"></div>
+      <p class="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
+        Thoughtfully designed lifestyle amenities for comfort, wellness & convenience.
       </p>
     </div>
 
-    <!-- Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="relative group/container">
 
-      {% for item in project.amenities.all|slice:":6" %}
+      <div id="amenitiesScroll" class="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-8 px-2 hide-scrollbar" style="scrollbar-width: none; -ms-overflow-style: none;">
+        
+        {% for item in project.amenities.all|slice:":5" %}
+        
+          <div class="snap-center min-w-[280px] md:min-w-[320px] bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden group cursor-pointer border border-gray-100">
+            
+            <div class="h-56 overflow-hidden relative">
+              {% if item.amenities.image %}
+                <img src="{{ item.amenities.image.url }}" alt="{{ item.amenities.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              {% else %}
+                <img src="https://via.placeholder.com/600x400?text=No+Image" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              {% endif %}
+              
+              <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500"></div>
+            </div>
 
-      <!-- Card -->
-      <div class="relative bg-white border border-gray-200 px-3 py-4 text-center transition-all duration-300 hover:shadow-md group overflow-hidden">
+            <div class="p-6 text-center">
+              <h3 class="text-lg font-bold text-gray-800 tracking-widest uppercase group-hover:text-orange-600 transition-colors">
+                {{ item.amenities.title }}
+              </h3>
+            </div>
 
-        <!-- Top Border Animation -->
-        <span class="absolute top-0 left-0 h-[3px] w-0 bg-[var(--project-color)] transition-all duration-300 group-hover:w-full">
-        </span>
-
-        <!-- Icon -->
-        <div class="w-28 h-28 mx-auto mb-3 flex items-center justify-center border bg-gray-50" style="border-color: var(--project-color);">
-
-          <img src="{{ item.amenities.image.url }}" alt="{{ item.amenities.title }}"  class="w-24 h-24 object-contain">
-        </div>
-
-        <!-- Title (2 line clamp) -->
-        <p class="text-sm font-medium text-gray-800 leading-snug overflow-hidden" style=" display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-          {{ item.amenities.title }}
-        </p>
+          </div>
+        
+        {% empty %}
+          <div class="w-full text-center py-10 text-gray-500">
+            No amenities added yet.
+          </div>
+        {% endfor %}
 
       </div>
-
-      {% endfor %}
+      <div class="flex justify-center items-center gap-6 mt-1">
+        <button onclick="document.getElementById('amenitiesScroll').scrollBy({left: -320, behavior: 'smooth'})" class="w-14 h-14 rounded-full border-3 border-gray-200 text-gray-500 flex items-center justify-center hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:shadow-xl transition-all duration-300 group">
+          <i class="fa-solid fa-arrow-left text-xl group-hover:-translate-x-1 transition-transform"></i>
+        </button>
+        <button onclick="document.getElementById('amenitiesScroll').scrollBy({left: 320, behavior: 'smooth'})" class="w-14 h-14 rounded-full border-3 border-gray-200 text-gray-500 flex items-center justify-center hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:shadow-xl transition-all duration-300 group">
+          <i class="fa-solid fa-arrow-right text-xl group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      </div>
+      
+      <div class="text-center mt-6">
+         <a href="{% url 'amenities' %}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 tracking-wide uppercase border-b border-transparent hover:border-orange-600 transition-all pb-0.5">
+           View All Amenities <i class="fa-solid fa-arrow-right-long ml-1"></i>
+         </a>
+      </div>
 
     </div>
-
-    <!-- CTA -->
-    <div class="mt-10 text-center">
-      <a href="{% url 'amenities' %}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border transition"
-         style=" color: var(--project-color); border-color: var(--project-color); ">
-        View All Amenities
-        <i class="fa-solid fa-arrow-right-long"></i>
-      </a>
-    </div>
-
   </div>
 </section>
 <!-- ================= END AMENITIES ================= -->
@@ -724,27 +737,13 @@
             </div>
           </div>
 
-          {% if rera.document %}
-          <div class="flex gap-3">
-            <span class="text-green-600 font-bold">✓</span>
-            <div>
-              <strong>Document:</strong>
-              <button onclick="document.getElementById('brochureModal').classList.remove('hidden')" class="text-orange-600 font-semibold underline hover:text-orange-700">
-                Download Brochure
-              </button>
-            </div>
-          </div>
-          {% endif %}
-
         </div>
 
         <!-- RIGHT QR -->
         {% if rera.qr_image %}
         <div class="flex justify-center md:justify-end items-start">
           <div class="text-center">
-            <img src="{{ rera.qr_image.url }}"
-                 alt="RERA QR Code"
-                 class="w-40 h-40 md:w-44 md:h-44 border rounded-xl shadow-sm">
+            <img src="{{ rera.qr_image.url }}" alt="RERA QR Code" class="w-40 h-40 md:w-44 md:h-44 border rounded-xl shadow-sm">
             <p class="text-xs text-gray-500 mt-2">
               Scan for RERA Details
             </p>

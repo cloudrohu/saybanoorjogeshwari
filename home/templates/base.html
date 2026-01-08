@@ -238,65 +238,6 @@
 </div>
 <!-- ===== END POPUP ===== -->
 
-<div id="brochureModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
-
-  <div class="bg-white w-[92%] max-w-md p-6 relative rounded-xl shadow-xl">
-
-   <button type="button" onclick="document.getElementById('brochureModal').classList.add('hidden')"
-   class="absolute top-3 right-3 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-   <i class="fa-solid fa-xmark"></i>
-  </button>
-
-    <h3 class="text-lg font-bold text-gray-900 mb-1">
-      Download Brochure
-    </h3>
-    <p class="text-sm text-gray-600 mb-4">
-      Please fill the details to download the brochure.
-    </p>
-
-       <div id="brochureFormWrapper">
-        <form id="brochureForm" class="space-y-3">
-          {% csrf_token %}
-          <input type="hidden" name="project_id" value="{{ project.id }}">
-
-          <input name="name" required placeholder="Full Name"
-            class="w-full border px-3 py-2 text-sm rounded">
-
-          <input name="email" type="email" required placeholder="Email Address"
-            class="w-full border px-3 py-2 text-sm rounded">
-
-          <input type="email" name="email" required placeholder="Email Address" class="w-full border px-3 py-2 text-sm">
-
-
-          <input name="mobile" required placeholder="Mobile Number"
-            class="w-full border px-3 py-2 text-sm rounded">
-
-          <button type="submit"
-            class="w-full bg-orange-500 text-white py-2 rounded-lg font-semibold">
-            Download Brochure
-          </button>
-        </form>
-      </div>
-
-
-
-  </div>
-</div>
-
-
-<!-- THANK YOU MESSAGE -->
-<div id="thankYouBox" class="hidden text-center py-6">
-  <div class="text-green-600 text-3xl mb-3">✔</div>
-  <h4 class="text-lg font-bold text-gray-900 mb-1">
-    Thank You!
-  </h4>
-  <p class="text-sm text-gray-600">
-    Our team will contact you shortly.
-    <br>
-    Your brochure download has started.
-  </p>
-</div>
-
 
 <div id="priceModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
 
@@ -342,9 +283,9 @@ window.closeBrochureModal = function () {
   document.getElementById("brochureModal").classList.add("hidden");
 };
 
-window.openBrochureModal = function () {
-  document.getElementById("brochureModal").classList.remove("hidden");
-};
+function scrollAmenities(value){
+  document.getElementById('amenitiesScroll').scrollBy({ left:value, behavior:'smooth' });
+}
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
@@ -396,57 +337,6 @@ window.openBrochureModal = function () {
   function closePriceModal(){
     document.getElementById("priceModal").classList.add("hidden");
   }
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const form = document.getElementById("brochureForm");
-  const formWrapper = document.getElementById("brochureFormWrapper");
-  const thankYouBox = document.getElementById("thankYouBox");
-
-  if (!form) return;
-
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-
-    fetch("{% url 'response:brochure_lead' %}", {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
-      },
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === "success") {
-
-        // 🔽 Download brochure
-        const link = document.createElement("a");
-        link.href = "{{ rera.document.url }}";
-        link.download = "";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // ✅ SHOW THANK YOU
-        formWrapper.classList.add("hidden");
-        thankYouBox.classList.remove("hidden");
-
-        // Auto close after 3 sec (optional)
-        setTimeout(() => {
-          document.getElementById("brochureModal").classList.add("hidden");
-          form.reset();
-          thankYouBox.classList.add("hidden");
-          formWrapper.classList.remove("hidden");
-        }, 3000);
-      }
-    });
-  });
-
-});
 </script>
 
 
@@ -556,6 +446,12 @@ document.addEventListener("input", function (e) {
     e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10);
   }
 });
+function scrollAmenities(value) {
+  document.getElementById('amenitiesScroll').scrollBy({
+    left: value,
+    behavior: 'smooth'
+  });
+}
 </script>
 
 <script>
