@@ -225,6 +225,7 @@ class ProjectAdmin(MPTTModelAdmin):
                 'image_preview',
                 'master_plan',
                 'floor_plan',
+                'project_view',
                 'youtube_embed_id',
                 'youtube_preview',
             )

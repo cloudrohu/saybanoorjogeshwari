@@ -241,8 +241,8 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
 
-      {% for faq in project.faqs.all|slice:":4" %}
-      <div class="faq-item bg-white rounded-xl border border-gray-200 transition">
+      {% for faq in project.faqs.all %}
+      <div class="faq-item bg-white border border-gray-200 transition">
 
         <button class="faq-btn w-full flex items-center justify-between px-6 py-3 text-left">
           <span class="font-medium text-gray-900 text-sm leading-snug">
@@ -256,7 +256,7 @@
 
         <div class="faq-content hidden px-6 pb-3 text-sm text-gray-600 leading-relaxed">
           {{ faq.answer|linebreaks }}
-        </div>
+        </div>        
       </div>
       {% endfor %}
 
@@ -264,26 +264,17 @@
 
   </div>
 
-      <!-- CTA -->
-    <div class="mt-10 text-center">
-      <a href="{% url 'faq' %}" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium border transition"
-         style=" color: var(--project-color); border-color: var(--project-color); ">
-        View All FAQs and Know More
-        <i class="fa-solid fa-arrow-right-long"></i>
-      </a>
-    </div>
 </section>
 <!-- ================= END FAQ SECTION ================= -->
 <hr>
 
 <!-- ================= ADVANCED AMENITIES SECTION ================= -->
-<section class="w-full py-14 bg-gray-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="w-full py-8 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
 
-    <div class="text-center mb-12">
-      <span class="text-orange-600 font-bold tracking-wider uppercase text-xs md:text-sm mt-1">Exquisite Lifestyle</span>
+    <div class="text-center mb-4">
       <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 mb-2">WORLD-CLASS AMENITIES</h2>
-      <div class="w-20 h-1 bg-orange-500 mx-auto rounded-full mb-4"></div>
+      <div class="w-20 h-1 bg-orange-500 mx-auto rounded-full mb-2"></div>
       <p class="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
         Thoughtfully designed lifestyle amenities for comfort, wellness & convenience.
       </p>
@@ -291,11 +282,11 @@
 
     <div class="relative group/container">
 
-      <div id="amenitiesScroll" class="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-8 px-2 hide-scrollbar" style="scrollbar-width: none; -ms-overflow-style: none;">
+      <div id="amenitiesScroll" class="flex gap-3 overflow-x-auto scroll-smooth pb-2 hide-scrollbar" style="scrollbar-width: none;" style="scrollbar-width: none; -ms-overflow-style: none;">
         
         {% for item in project.amenities.all|slice:":5" %}
         
-          <div class="snap-center min-w-[280px] md:min-w-[320px] bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden group cursor-pointer border border-gray-100">
+          <div class="snap-center min-w-[280px] md:min-w-[320px] bg-white shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden group cursor-pointer border border-gray-100">
             
             <div class="h-56 overflow-hidden relative">
               {% if item.amenities.image %}
@@ -307,7 +298,7 @@
               <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500"></div>
             </div>
 
-            <div class="p-6 text-center">
+            <div class="p-4 text-center">
               <h3 class="text-lg font-bold text-gray-800 tracking-widest uppercase group-hover:text-orange-600 transition-colors">
                 {{ item.amenities.title }}
               </h3>
@@ -341,6 +332,7 @@
   </div>
 </section>
 <!-- ================= END AMENITIES ================= -->
+<hr>
 
 <!-- ================= PROJECT GALLERY SECTION ================= -->
 {% if project.gallery.exists %}
@@ -551,104 +543,107 @@
 </section>
 <!-- ================= END SCHEDULE SITE VISIT ================= -->
 
+<hr>
 <!-- ================= FLOOR PLANS SECTION ================= -->
-<section class="w-full py-12 bg-white">
-  <div class="max-w-6xl mx-auto px-4">
+<section class="w-full py-8 bg-gray-50" id="gallery-section">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- HEADING -->
-    <div class="text-center mb-10">
-      <h2 class="text-2xl font-bold text-gray-800">
-        Floor Plans
-      </h2>
-      <p class="text-sm text-gray-500 mt-2">
-        Explore detailed layouts of each configuration
+    <div class="text-center mb-8">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-1">PROJECT GALLERY</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto mt-2"></div>
+      <p class="text-gray-500 mt-4 max-w-2xl mx-auto text-sm">
+        Explore the thoughtfully designed layouts and breathtaking views of {{ project.project_name }}.
       </p>
     </div>
 
-    <!-- SLIDER / GRID -->
-    <div id="floorPlanSlider"
-         class="flex lg:grid lg:grid-cols-3 gap-6
-                overflow-x-auto lg:overflow-visible
-                snap-x snap-mandatory scroll-smooth">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div class="relative group overflow-hidden shadow-xl border border-gray-200 h-96 cursor-pointer">
+        {% if project.floor_plan %}
+            <img src="{{ project.floor_plan.url }}" alt="{{ project.project_name }} Floor Plan"
+                 class="w-full h-full object-cover blur-[3px] scale-105 group-hover:scale-110 transition-transform duration-700 ease-in-out">
+        {% else %}
+            <img src="https://via.placeholder.com/600x800?text=Floor+Plan+Coming+Soon" alt="Floor Plan Placeholder"
+                 class="w-full h-full object-cover blur-[2px] scale-105">
+        {% endif %}
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 transition-opacity duration-300"></div>
 
-      <!-- CARD -->
-      <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-0 snap-center">
-        <div class="bg-gray-50 border -xl overflow-hidden shadow">
-
-          <div class="relative">
-            <img
-              src="https://keystonerealestateadvisory.com/public/uploads/property/1YPr43DnXFHmVxeeCFuMPiohrEVAiMAm0zCQiFto.webp"
-              class="w-full h-56 object-cover blur-sm">
-
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <button
-                onclick="openPlanRequestModal('2 BHK Floor Plan','https://keystonerealestateadvisory.com/public/uploads/property/1YPr43DnXFHmVxeeCFuMPiohrEVAiMAm0zCQiFto.webp')"
-                class="px-5 py-2 bg-orange-500 text-white text-sm -lg hover:bg-orange-600 transition">
-                Request Floor Plan
-              </button>
+        <div class="absolute inset-0 flex flex-col items-center justify-end p-8 pb-10">
+          <div class="text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md flex items-center justify-center mx-auto mb-4 text-white">
+              <i class="fa-regular fa-building text-xl"></i>
             </div>
+            <h4 class="text-white text-2xl font-bold mb-2 tracking-wide">Floor Plan</h4>
+            <p class="text-gray-300 text-xs mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">View detailed unit configurations</p>
+            
+            <button onclick="openModal('Floor Plan Request')" 
+                    class="px-8 py-3 bg-white text-gray-900 font-bold text-sm uppercase shadow-lg hover:bg-orange-600 hover:text-black transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 mx-auto">
+              <i class="fa-solid fa-lock text-xs"></i> Request Access
+            </button>
           </div>
-
         </div>
       </div>
 
-      <!-- CARD -->
-      <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-0 snap-center">
-        <div class="bg-gray-50 border -xl overflow-hidden shadow">
+      <div class="relative group overflow-hidden shadow-xl border border-gray-200 h-96 cursor-pointer">
+        {% if project.master_plan %}
+            <img src="{{ project.master_plan.url }}" alt="{{ project.project_name }} Master Plan"
+                 class="w-full h-full object-cover blur-[3px] scale-105 group-hover:scale-110 transition-transform duration-700 ease-in-out">
+        {% else %}
+            <img src="https://via.placeholder.com/600x800?text=Master+Plan+Coming+Soon" alt="Master Plan Placeholder"
+                 class="w-full h-full object-cover blur-[2px] scale-105">
+        {% endif %}
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90"></div>
 
-          <div class="relative">
-            <img
-              src="https://via.placeholder.com/600x400?text=3+BHK+Floor+Plan"
-              class="w-full h-56 object-cover blur-sm">
-
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <button
-                onclick="openPlanRequestModal('3 BHK Floor Plan','https://via.placeholder.com/900x600?text=3+BHK+Floor+Plan')"
-                class="px-5 py-2 bg-orange-500 text-white text-sm -lg hover:bg-orange-600 transition">
-                Request Floor Plan
-              </button>
+        <div class="absolute inset-0 flex flex-col items-center justify-end p-8 pb-10">
+          <div class="text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md flex items-center justify-center mx-auto mb-4 text-white">
+              <i class="fa-solid fa-map-location-dot text-xl"></i>
             </div>
+            <h4 class="text-white text-2xl font-bold mb-2 tracking-wide">Master Plan</h4>
+            <p class="text-gray-300 text-xs mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">View the complete site layout</p>
+
+            <button onclick="openModal('Master Plan Request')" 
+                    class="px-8 py-3 bg-white text-gray-900 font-bold text-sm uppercase shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 mx-auto">
+              <i class="fa-solid fa-lock text-xs"></i> Request Access
+            </button>
           </div>
-
-
         </div>
       </div>
 
-      <!-- CARD -->
-      <div class="min-w-[85%] sm:min-w-[60%] lg:min-w-0 snap-center">
-        <div class="bg-gray-50 border -xl overflow-hidden shadow">
+      <div class="relative group overflow-hidden shadow-xl border border-gray-200 h-96 cursor-pointer">
+        {% if project.project_view %}
+            <img src="{{ project.project_view.url }}" alt="{{ project.project_name }} Project View"
+                 class="w-full h-full object-cover blur-[3px] scale-105 group-hover:scale-110 transition-transform duration-700 ease-in-out">
+        {% else %}
+            <img src="https://via.placeholder.com/600x800?text=Project+View+Coming+Soon" alt="Project View Placeholder"
+                 class="w-full h-full object-cover blur-[2px] scale-105">
+        {% endif %}
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90"></div>
 
-          <div class="relative">
-            <img
-              src="https://via.placeholder.com/600x400?text=4+BHK+Floor+Plan"
-              class="w-full h-56 object-cover blur-sm">
-
-            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <button
-                onclick="openPlanRequestModal('4 BHK Floor Plan','https://via.placeholder.com/900x600?text=4+BHK+Floor+Plan')"
-                class="px-5 py-2 bg-orange-500 text-white text-sm -lg hover:bg-orange-600 transition">
-                Request Floor Plan
-              </button>
+        <div class="absolute inset-0 flex flex-col items-center justify-end p-8 pb-10">
+          <div class="text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-md flex items-center justify-center mx-auto mb-4 text-white">
+              <i class="fa-solid fa-camera text-xl"></i>
             </div>
-          </div>
+            <h4 class="text-white text-2xl font-bold mb-2 tracking-wide">Project View</h4>
+            <p class="text-gray-300 text-xs mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Actual site & amenities photos</p>
 
+            <button onclick="openModal('Project View Request')" 
+                    class="px-8 py-3 bg-white text-gray-900 font-bold text-sm uppercase shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 mx-auto">
+              <i class="fa-solid fa-lock text-xs"></i> Request Access
+            </button>
+          </div>
         </div>
       </div>
 
     </div>
-
-    <!-- MOBILE DOTS -->
-    <div class="flex justify-center gap-2 mt-6 lg:hidden" id="floorPlanDots">
-      <span class="w-2.5 h-2.5 -full bg-orange-500"></span>
-      <span class="w-2.5 h-2.5 -full bg-gray-300"></span>
-      <span class="w-2.5 h-2.5 -full bg-gray-300"></span>
-    </div>
-
-
   </div>
 </section>
 <!-- ================= END FLOOR PLANS SECTION ================= -->
-
+<hr>
 <!-- ================= CONNECTIVITY SECTION ================= -->
 <section class="w-full py-12 bg-white">
   <div class="max-w-6xl mx-auto px-4">

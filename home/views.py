@@ -10,7 +10,7 @@ from .models import (
 from user.models import Developer  
 
 from django.shortcuts import render
-from projects.models import Project  # import your Project model
+from projects.models import Project 
 
 
 
@@ -231,3 +231,4 @@ def cookies(request):
         "settings_obj": settings_obj,
     }
     return render(request, 'terms/cookies-policy.html', context)
+

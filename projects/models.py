@@ -106,6 +106,7 @@ class Project(MPTTModel):
     image = models.ImageField(null=True, blank=True,upload_to='images/')
     master_plan = models.ImageField(null=True, blank=True,upload_to='images/')
     floor_plan = models.ImageField(null=True, blank=True,upload_to='images/')
+    project_view = models.ImageField(null=True, blank=True,upload_to='images/')
     google_map_iframe = models.TextField(null=True, blank=True,)
 
     
