@@ -148,6 +148,82 @@
   </div>
 </div>
 
+<!-- ✅ AUTO ENQUIRY MODAL (Premium Design) -->
+<div id="autoEnquiryModal" class="fixed inset-0 bg-black/70 backdrop-blur-[2px] hidden z-50 flex items-center justify-center px-3">
+
+  <!-- Card -->
+  <div class="relative w-full max-w-md overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.35)] bg-white">
+
+    <!-- Top Accent Banner -->
+    <div class="bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-6 py-5 text-white">
+      <h3 class="text-xl font-extrabold tracking-wide">Enquiry Now</h3>
+      <p class="mt-1 text-white/90 text-sm">
+        Get instant details for
+        <span id="autoEnquiryTitle" class="font-semibold underline underline-offset-4">
+          Project Details
+        </span>
+      </p>
+
+      <!-- Close button -->
+      <button onclick="closeAutoEnquiryModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark text-white text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="px-6 py-6">
+      <p class="text-sm text-gray-600">
+        Fill your details and we will connect with you shortly.
+      </p>
+
+      <form onsubmit="return submitAutoEnquiryForm(event)" class="mt-5 space-y-4">
+
+        <!-- Name -->
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fa-solid fa-user"></i>
+          </span>
+          <input id="enqName" type="text" required placeholder="Full Name" class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-3 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-300 transition">
+        </div>
+
+        <!-- Phone -->
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fa-solid fa-phone"></i>
+          </span>
+          <input id="enqPhone" type="tel" required placeholder="Mobile Number" class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-3 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-300 transition">
+        </div>
+
+        <!-- Email -->
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fa-solid fa-envelope"></i>
+          </span>
+          <input id="enqEmail" type="email" required placeholder="Email Address"
+            class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-3 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-300 transition">
+        </div>
+
+        <!-- CTA Button -->
+        <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-amber-400 text-white py-3 font-bold tracking-wide
+                 shadow-lg shadow-orange-500/30 hover:brightness-110 active:scale-[0.99] transition">
+          Submit & View Plan
+        </button>
+
+        <!-- Bottom Note -->
+        <div class="flex items-center justify-center gap-2 text-xs text-gray-500 pt-1">
+          <i class="fa-solid fa-shield-halved text-orange-500"></i>
+          Your info is safe & secure.
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <div id="configModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
   <div class="bg-white w-[92%] max-w-md p-6 relative shadow-2xl">
 
@@ -416,6 +492,59 @@ function closeVirtualVideo() {
 }
 </script>
 
+<script>
+  // ✅ Auto Open After 5 seconds
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      openAutoEnquiryModal();
+    }, 5000);
+  });
+
+  function openAutoEnquiryModal(title = "Project Details") {
+    const modal = document.getElementById("autoEnquiryModal");
+    const titleEl = document.getElementById("autoEnquiryTitle");
+
+    if (titleEl) titleEl.innerText = title;
+
+    if (modal) {
+      modal.classList.remove("hidden");
+      document.body.classList.add("overflow-hidden"); // stop background scroll
+    }
+  }
+
+  function closeAutoEnquiryModal() {
+    const modal = document.getElementById("autoEnquiryModal");
+    if (modal) modal.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+  }
+
+  // ✅ close on outside click
+  document.addEventListener("click", function (e) {
+    const modal = document.getElementById("autoEnquiryModal");
+    if (!modal || modal.classList.contains("hidden")) return;
+
+    if (e.target === modal) closeAutoEnquiryModal();
+  });
+
+  function submitAutoEnquiryForm(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("enqName").value.trim();
+    const phone = document.getElementById("enqPhone").value.trim();
+    const email = document.getElementById("enqEmail").value.trim();
+
+    // ✅ example action (you can change)
+    console.log("Enquiry Submitted:", { name, phone, email });
+
+    // ✅ Close modal after submit
+    closeAutoEnquiryModal();
+
+    // ✅ Redirect / open plan page etc (optional)
+    // window.location.href = "/plans/";
+
+    return false;
+  }
+</script>
 
 
 <script>
