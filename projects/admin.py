@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from mptt.admin import MPTTModelAdmin
 
 from .models import (
-    Project, BookingOffer, WelcomeTo, WebSlider, Overview, AboutUs,
+    Project, BookingOffer, ProjectContactPerson, WelcomeTo, WebSlider, Overview, AboutUs,
     USP, Configuration, Connectivity, Amenities, Gallery, Header,
     RERA_Info, WhyInvest, BankOffer, Enquiry, ProjectFAQ
 )
@@ -119,6 +119,11 @@ class BankOfferInline(admin.TabularInline):
     model = BankOffer
     extra = 1
 
+
+class ProjectContactPersonInline(admin.TabularInline):
+    model = ProjectContactPerson
+    extra = 1
+    fields = ("order", "name", "phone", "active")   
 
 # =======================
 # PROJECT ADMIN
@@ -267,6 +272,7 @@ class ProjectAdmin(MPTTModelAdmin):
         WhyInvestInline,
         BankOfferInline,
         ProjectFAQInline,
+        ProjectContactPersonInline
     ]
 
     # =====================
@@ -294,6 +300,7 @@ class ProjectAdmin(MPTTModelAdmin):
         return "No Video"
 
     youtube_preview.short_description = "YouTube Video"
+ 
 
 # =======================
 # ENQUIRY ADMIN

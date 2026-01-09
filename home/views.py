@@ -78,9 +78,7 @@ def index(request):
 
 
 def robots_txt(request):
-    """
-    Serves the robots.txt file content for SEO.
-    """
+
     robots_content = """
 User-agent: *
 Disallow: /admin/
@@ -90,7 +88,7 @@ Allow: /
 Sitemap: http://127.0.0.1:8000/sitemap.xml 
     """
     return HttpResponse(robots_content.strip(), content_type="text/plain")
-
+    
 def about_page_view(request):
     """
     Display the About page with:
@@ -99,16 +97,15 @@ def about_page_view(request):
     - Global site settings
     """
 
-    # 🧠 Global site settings (for logo, footer, SEO)
-    settings_obj = Setting.objects.filter(status="True").first()    
-
-    # 🏠 Fetch active About page content (latest or first)
+    # 🧠 Global site settings
+    settings_obj = Setting.objects.filter(status="True").first()   
     about_page = About.objects.filter(is_active=True).order_by('-created_at').first()
-
-    # 👥 Leadership team
     leaders = Leadership.objects.filter(is_active=True).order_by('display_order')
 
-    # ✅ Fallback (safe defaults)
+    project = Project.objects.filter(active=True, featured_property=True)\
+                             .prefetch_related('contact_persons')\
+                             .first()
+
     if not about_page:
         about_page = {
             "title": "About Makaan Hub",
@@ -123,16 +120,13 @@ def about_page_view(request):
         "about_page": about_page,
         "leaders": leaders,
         "settings_obj": settings_obj,
+        "project": project,
     }
     return render(request, "home/about.html", context)
-
-
 
 def contact_view(request):
     """Renders the Contact Page with site contact details."""
     settings_obj = Setting.objects.first()
-    # Contact_Page में 'setting' field नहीं है (traceback के अनुसार),
-    # इसलिए सीधे पहला contact record ले रहें हैं।
     contact_content = Contact_Page.objects.first()
 
     context = {

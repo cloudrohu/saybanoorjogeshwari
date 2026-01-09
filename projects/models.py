@@ -413,17 +413,24 @@ class ProjectFAQ(models.Model):
     def __str__(self):
         return f"{self.project.project_name} - {self.question}"
 
+class ProjectContactPerson(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="contact_persons")
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.project.project_name} - {self.name}"
 
 # projects/models.py  (or a separate app like enquiries/models.py)
 
-from django.db import models
 
 class Enquiry(models.Model):
-    project = models.ForeignKey(
-        'Project',
-        on_delete=models.CASCADE,
-        related_name='enquiries'
-    )
+    project = models.ForeignKey('Project',on_delete=models.CASCADE,related_name='enquiries')
     name = models.CharField(max_length=120)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20)
