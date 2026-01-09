@@ -616,6 +616,38 @@ document.addEventListener("keydown", e => {
   </div>
 </footer>
 
+<!-- ✅ Fixed Bottom Bar (Mobile Only) -->
+<div class="fixed bottom-0 left-0 w-full z-[9999] bg-[#a77b66] md:hidden">
+  <div class="grid grid-cols-3">
+
+    <!-- Enquire -->
+    <a href="mailto:{{settings_obj.email}}"
+      class="flex flex-col items-center justify-center py-3 text-white font-semibold text-[13px]">
+      <i class="fa-solid fa-envelope text-[20px] mb-1"></i>
+      <span class="leading-none">Enquire</span>
+    </a>
+
+    <!-- Whatsapp -->
+    <a href="https://wa.me/{{settings_obj.whatsapp}}" target="_blank"
+      class="flex flex-col items-center justify-center py-3 text-white font-semibold text-[13px]">
+      <i class="fa-brands fa-whatsapp text-[22px] mb-1"></i>
+      <span class="leading-none">Whatsapp</span>
+    </a>
+
+    <!-- Call Now -->
+    <a href="tel:+91{{settings_obj.phone}}"
+      class="flex flex-col items-center justify-center py-3 text-white font-semibold text-[13px]">
+      <i class="fa-solid fa-phone text-[20px] mb-1"></i>
+      <span class="leading-none">Call Now</span>
+    </a>
+
+  </div>
+</div>
+
+<!-- ✅ So content doesn't hide behind fixed bar -->
+<div class="h-[64px] md:hidden"></div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
