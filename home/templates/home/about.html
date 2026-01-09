@@ -48,25 +48,7 @@
   </div>
 </section>
 
-<!-- LEADERSHIP -->
-<section class="bg-gray-100 py-20">
-  <div class="max-w-7xl mx-auto px-6 text-center">
-    <h2 class="text-3xl font-bold mb-12" data-aos="fade-up">Meet Our <span class="text-orange-600">Leadership</span></h2>
-    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10">
-      {% for leader in leaders %}
-      <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group" data-aos="zoom-in">
-        <div class="relative">
-          <img src="{{ leader.image.url }}" alt="{{ leader.name }}"
-               class="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-orange-200 group-hover:border-orange-500 transition-transform duration-500 group-hover:rotate-3">
-          <div class="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 rounded-full blur-md transition-all"></div>
-        </div>
-        <h3 class="font-semibold text-lg">{{ leader.name }}</h3>
-        <p class="text-gray-500 text-sm">{{ leader.designation }}</p>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
+
 
 <!-- ================= SCHEDULE SITE VISIT ================= -->
 <section class="w-full py-14 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
