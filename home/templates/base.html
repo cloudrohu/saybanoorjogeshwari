@@ -392,6 +392,23 @@ function scrollAmenities(value){
 </script>
 
 <script>
+function openVirtualVideo() {
+  document.getElementById('virtualCover').classList.add('hidden');
+  document.getElementById('virtualVideo').classList.remove('hidden');
+  document.getElementById('virtualIframe').src =
+    "https://www.youtube.com/embed/dQw4w9WgXcQ";
+}
+
+function closeVirtualVideo() {
+  document.getElementById('virtualVideo').classList.add('hidden');
+  document.getElementById('virtualCover').classList.remove('hidden');
+  document.getElementById('virtualIframe').src = "";
+}
+</script>
+
+
+
+<script>
 function openConfigModal(btn){
   // 1. Button se Data nikaalo
   const bhk = btn.getAttribute('data-bhk');
