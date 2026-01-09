@@ -396,7 +396,7 @@ function openVirtualVideo() {
   document.getElementById('virtualCover').classList.add('hidden');
   document.getElementById('virtualVideo').classList.remove('hidden');
   document.getElementById('virtualIframe').src =
-    "https://www.youtube.com/embed/dQw4w9WgXcQ";
+    "https://www.youtube.com/embed/{{project.youtube_embed_id }}";
 }
 
 function closeVirtualVideo() {
