@@ -88,8 +88,8 @@ def meta_lead_webhook(request):
         challenge = request.GET.get("hub.challenge")
 
         # ✅ Your verify token (same as Meta dashboard)
-        VERIFY_TOKEN = settings.SAYBANOOR_WEBHOOK_TOKEN_2026
-
+        VERIFY_TOKEN = settings.META_WEBHOOK_VERIFY_TOKEN
+        
         if mode == "subscribe" and token == VERIFY_TOKEN:
             return HttpResponse(challenge)
         return HttpResponse("Invalid verify token", status=403)
