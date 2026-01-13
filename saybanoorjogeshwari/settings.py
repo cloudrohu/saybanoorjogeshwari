@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 
@@ -18,6 +17,7 @@ DATABASES = {
     }
 }
 
+META_WEBHOOK_VERIFY_TOKEN = "SAYBANOOR_WEBHOOK_TOKEN_2026"
 
 
 # 🧠 4️⃣ Installed Apps

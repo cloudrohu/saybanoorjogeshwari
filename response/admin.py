@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AdditionalInfoResponse, ConfigurationResponse,BrochureLead
+from .models import AdditionalInfoResponse, ConfigurationResponse,BrochureLead,MetaLead
 # Register your models here.
 
 
@@ -45,3 +45,9 @@ class ConfigurationResponseAdmin(admin.ModelAdmin):
 class BrochureLeadAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "mobile", "project", "created_at")
     search_fields = ("name", "email", "mobile")
+
+@admin.register(MetaLead)
+class MetaLeadAdmin(admin.ModelAdmin):
+    list_display = ("full_name", "phone_number", "email", "configuration", "budget", "visit_plan", "created_at")
+    search_fields = ("full_name", "phone_number", "email", "leadgen_id")
+    list_filter = ("configuration", "visit_plan", "created_at")    

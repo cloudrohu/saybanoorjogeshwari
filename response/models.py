@@ -44,3 +44,23 @@ class BrochureLead(models.Model):
     def __str__(self):
         return f"{self.name} - {self.project}"
     
+class MetaLead(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    leadgen_id = models.CharField(max_length=100, unique=True)
+    form_id = models.CharField(max_length=100, blank=True, null=True)
+    page_id = models.CharField(max_length=100, blank=True, null=True)
+
+    full_name = models.CharField(max_length=150, blank=True, null=True)
+    phone_number = models.CharField(max_length=30, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+
+    configuration = models.CharField(max_length=50, blank=True, null=True)
+    budget = models.CharField(max_length=100, blank=True, null=True)
+    visit_plan = models.CharField(max_length=100, blank=True, null=True)
+    profession = models.CharField(max_length=120, blank=True, null=True)
+
+    raw_payload = models.JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.phone_number}"    

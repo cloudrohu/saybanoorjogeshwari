@@ -23,7 +23,8 @@ sitemaps = {
 }
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),   # 👈 YAHIN SE home-contact aayega
+    path("", include("response.urls")),
+    path('', include('home.urls')), 
     path('', include('utility.urls')),
     path('projects/', include('projects.urls')),
     path('properties/', include('properties.urls')),
