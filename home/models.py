@@ -11,6 +11,7 @@ class Setting(ImageCompressionMixin, models.Model):
     site_name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to='settings/', blank=True, null=True)
     favicon = models.ImageField(upload_to='settings/', blank=True, null=True)
+    offer_img = models.ImageField(upload_to='settings/', blank=True, null=True)
     search_bg = models.ImageField(upload_to='logo/', blank=True, null=True)
     testmonial_bg = models.ImageField(upload_to='logo/')
     header_footer_color = models.CharField(max_length=150, blank=True)

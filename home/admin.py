@@ -27,6 +27,7 @@ class SettingAdmin(admin.ModelAdmin):
             "fields": (
                 "site_name",
                 "logo",
+                "offer_img",
                 "favicon",
                 "logo_preview",
             )
