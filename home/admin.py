@@ -93,6 +93,7 @@ class SettingAdmin(admin.ModelAdmin):
                 "testmonial_bg",
                 "rera_number",
                 "footer_text",
+                "googletagmanager",
                 "copy_right",
                 "status",
             )
