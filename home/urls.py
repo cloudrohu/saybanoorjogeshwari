@@ -21,5 +21,5 @@ urlpatterns = [
     path('terms-cookies/', views.cookies, name='cookies'),
 
 
-
+    
 ]

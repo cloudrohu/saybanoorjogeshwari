@@ -71,45 +71,52 @@
       <p class="text-sm text-gray-600">
         Fill your details and we will connect with you shortly.
       </p>
+          
+    <form action="{% url 'submit_enquiry' project.id %}" 
+          method="post"
+          onsubmit="return submitPlanRequest()"
+          class="mt-3 space-y-4">
 
-      <form onsubmit="return submitAutoEnquiryForm(event)" class="mt-3 space-y-4">
+      {% csrf_token %}
 
-        <!-- Name -->
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <i class="fa-solid fa-user"></i>
-          </span>
-          <input id="enqName" type="text" required placeholder="Full Name" class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-300 transition">
-        </div>
+      <!-- Name -->
+      <div class="relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <i class="fa-solid fa-user"></i>
+        </span>
+        <input name="name" id="enqName" type="text" required placeholder="Full Name"
+          class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
+      </div>
 
-        <!-- Phone -->
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <i class="fa-solid fa-phone"></i>
-          </span>
-          <input id="enqPhone" type="tel" required placeholder="Mobile Number" class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-300 transition">
-        </div>
+      <!-- Phone -->
+      <div class="relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <i class="fa-solid fa-phone"></i>
+        </span>
+        <input name="phone" id="enqPhone" type="tel" required placeholder="Mobile Number"
+          class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
+      </div>
 
-        <!-- Email -->
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <i class="fa-solid fa-envelope"></i>
-          </span>
-          <input id="enqEmail" type="email" required placeholder="Email Address" class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-300 transition">
-        </div>
+      <!-- Email -->
+      <div class="relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <i class="fa-solid fa-envelope"></i>
+        </span>
+        <input name="email" id="enqEmail" type="email" required placeholder="Email Address"
+          class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
+      </div>
 
-        <!-- CTA Button -->
-        <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-amber-400 text-white py-2 text-sm font-semibold tracking-wide shadow-lg shadow-orange-500/30 hover:brightness-110 active:scale-[0.99] transition">
-          Submit & View Plan
-        </button>
+      <!-- Hidden Message (optional) -->
+      <input type="hidden" name="message" value="User requested plan details">
 
-        <!-- Bottom Note -->
-        <div class="flex items-center justify-center gap-2 text-xs text-gray-500 pt-1">
-          <i class="fa-solid fa-shield-halved text-orange-500"></i>
-          Your info is safe & secure.
-        </div>
+      <!-- Button -->
+      <button type="submit"
+        class="w-full bg-gradient-to-r from-orange-500 to-amber-400 text-white py-2 text-sm font-semibold shadow-lg hover:brightness-110 transition">
+        Submit & View Plan
+      </button>
 
-      </form>
+    </form>
+      
     </div>
   </div>
 </div>
