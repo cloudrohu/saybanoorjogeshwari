@@ -71,51 +71,48 @@
       <p class="text-sm text-gray-600">
         Fill your details and we will connect with you shortly.
       </p>
-          
-    <form action="{% url 'submit_enquiry' project.id %}" 
-          method="post"
-          onsubmit="return submitPlanRequest()"
-          class="mt-3 space-y-4">
+            
+      <form action="{% url 'submit_enquiry' project.id %}" method="post" onsubmit="return submitPlanRequest()" class="mt-3 space-y-4">
 
-      {% csrf_token %}
+        {% csrf_token %}
 
-      <!-- Name -->
-      <div class="relative">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-          <i class="fa-solid fa-user"></i>
-        </span>
-        <input name="name" id="enqName" type="text" required placeholder="Full Name"
-          class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
-      </div>
+        <!-- Name -->
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fa-solid fa-user"></i>
+          </span>
+          <input name="name" id="enqName" type="text" required placeholder="Full Name"
+            class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
+        </div>
 
-      <!-- Phone -->
-      <div class="relative">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-          <i class="fa-solid fa-phone"></i>
-        </span>
-        <input name="phone" id="enqPhone" type="tel" required placeholder="Mobile Number"
-          class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
-      </div>
+        <!-- Phone -->
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fa-solid fa-phone"></i>
+          </span>
+          <input name="phone" id="enqPhone" type="tel" required placeholder="Mobile Number"
+            class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
+        </div>
 
-      <!-- Email -->
-      <div class="relative">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-          <i class="fa-solid fa-envelope"></i>
-        </span>
-        <input name="email" id="enqEmail" type="email" required placeholder="Email Address"
-          class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
-      </div>
+        <!-- Email -->
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <i class="fa-solid fa-envelope"></i>
+          </span>
+          <input name="email" id="enqEmail" type="email" required placeholder="Email Address"
+            class="w-full border border-gray-200 bg-gray-50 pl-10 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400">
+        </div>
 
-      <!-- Hidden Message (optional) -->
-      <input type="hidden" name="message" value="User requested plan details">
+        <!-- Hidden Message (optional) -->
+        <input type="hidden" name="message" value="User requested plan details">
 
-      <!-- Button -->
-      <button type="submit"
-        class="w-full bg-gradient-to-r from-orange-500 to-amber-400 text-white py-2 text-sm font-semibold shadow-lg hover:brightness-110 transition">
-        Submit & View Plan
-      </button>
+        <!-- Button -->
+        <button type="submit"
+          class="w-full bg-gradient-to-r from-orange-500 to-amber-400 text-white py-2 text-sm font-semibold shadow-lg hover:brightness-110 transition">
+          Submit & View Plan
+        </button>
 
-    </form>
+      </form>
       
     </div>
   </div>

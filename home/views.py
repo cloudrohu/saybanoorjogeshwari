@@ -1,11 +1,11 @@
 
-from django.shortcuts import render
+from django.shortcuts import render , redirect
 from django.http import HttpResponse 
 from properties.models import Property 
 from utility.models import Locality,PropertyType,City,Bank
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose, ImpactMetric,Slider
+    Contact_Page, FAQ, Our_Team,Why_Choose, ImpactMetric,Slider, Enquiry
 )
 from user.models import Developer  
 
@@ -76,7 +76,6 @@ def index(request):
         }
     )
 
-
 def robots_txt(request):
 
     robots_content = """
@@ -103,8 +102,8 @@ def about_page_view(request):
     leaders = Leadership.objects.filter(is_active=True).order_by('display_order')
 
     project = Project.objects.filter(active=True, featured_property=True)\
-                             .prefetch_related('contact_persons')\
-                             .first()
+        .prefetch_related('contact_persons')\
+        .first()
 
     if not about_page:
         about_page = {
@@ -125,14 +124,46 @@ def about_page_view(request):
     return render(request, "home/about.html", context)
 
 def contact_view(request):
-    """Renders the Contact Page with site contact details."""
     settings_obj = Setting.objects.first()
     contact_content = Contact_Page.objects.first()
+
+    project = Project.objects.filter(
+        active=True, featured_property=True
+    ).prefetch_related('contact_persons').first()
+
+    success = False
+
+    # ✅ Show success after redirect
+    if request.session.get('form_submitted'):
+        success = True
+        del request.session['form_submitted']
+
+    # ✅ Handle form submit
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        message = request.POST.get("message")
+
+        # 🔥 SAVE DATA
+        Enquiry.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            message=message
+        )
+
+        # ✅ prevent duplicate submit
+        request.session['form_submitted'] = True
+        return redirect('contact')
 
     context = {
         "settings_obj": settings_obj,
         "contact_content": contact_content,
+        "project": project,
+        "success": success,
     }
+
     return render(request, 'home/contact.html', context)
 
 def faq_view(request):
