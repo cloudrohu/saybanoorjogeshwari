@@ -70,7 +70,6 @@ def index(request):
     
     return render(request, 'projects/projects.html', context)
 
-
 def search_projects(request):
     settings_obj = Setting.objects.first()
 

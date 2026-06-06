@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import CustomUser, Developer
+from import_export.admin import ImportExportModelAdmin
+
 
 # ✅ Placeholder image for missing logos
 NO_IMAGE_URL = "https://via.placeholder.com/80x80.png?text=No+Image"
@@ -10,7 +12,7 @@ NO_IMAGE_URL = "https://via.placeholder.com/80x80.png?text=No+Image"
 # 1️⃣  CustomUser Admin
 # --------------------------------------------
 @admin.register(CustomUser)
-class CustomUserAdmin(admin.ModelAdmin):
+class CustomUserAdmin(ImportExportModelAdmin):
     list_display = ('username', 'email', 'user_type', 'is_staff', 'is_active')
     list_filter = ('user_type', 'is_staff', 'is_active', 'date_joined')
     search_fields = ('username', 'email')
@@ -32,7 +34,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 # 2️⃣  Developer Admin
 # --------------------------------------------
 @admin.register(Developer)
-class DeveloperAdmin(admin.ModelAdmin):
+class DeveloperAdmin(ImportExportModelAdmin):
     list_display = (
         'title',
         'city',

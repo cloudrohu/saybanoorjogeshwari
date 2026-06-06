@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from mptt.admin import MPTTModelAdmin
+from import_export.admin import ImportExportModelAdmin
+
 
 from .models import (
     Project, BookingOffer, ProjectContactPerson, WelcomeTo, WebSlider, Overview, AboutUs,
@@ -307,7 +309,7 @@ class ProjectAdmin(MPTTModelAdmin):
 # =======================
 
 @admin.register(Enquiry)
-class EnquiryAdmin(admin.ModelAdmin):
+class EnquiryAdmin(ImportExportModelAdmin):
     list_display = (
         'id',
         'name',

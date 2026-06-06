@@ -3,6 +3,8 @@ from mptt.admin import MPTTModelAdmin
 from django.utils.html import mark_safe
 import admin_thumbnails
 from mptt.admin import DraggableMPTTAdmin
+from import_export.admin import ImportExportModelAdmin
+
 
 from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank
 
@@ -57,13 +59,13 @@ class PropertyTypeAdmin(MPTTModelAdmin):
 # 📅 PossessionIn Admin
 # =======================================================
 @admin.register(PossessionIn)
-class PossessionInAdmin(admin.ModelAdmin):
+class PossessionInAdmin(ImportExportModelAdmin):
     list_display = ('year',)
     ordering = ('year',)
     search_fields = ('year',)
 
 @admin.register(ProjectAmenities)
-class ProjectAmenitiesAdmin(admin.ModelAdmin):
+class ProjectAmenitiesAdmin(ImportExportModelAdmin):
     list_display = ('title', 'preview')
 
     def preview(self, obj):
@@ -89,7 +91,7 @@ class ProjectAmenitiesAdmin(admin.ModelAdmin):
 # 🏦 Bank Admin
 # =======================================================
 @admin.register(Bank)
-class BankAdmin(admin.ModelAdmin):
+class BankAdmin(ImportExportModelAdmin):
     list_display = ('title', 'safe_image_preview')
     search_fields = ('title',)
     readonly_fields = ('safe_image_preview',)

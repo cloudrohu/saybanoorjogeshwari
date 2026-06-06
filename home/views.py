@@ -76,6 +76,8 @@ def index(request):
         }
     )
 
+
+
 def robots_txt(request):
 
     robots_content = """

@@ -1,8 +1,10 @@
 # crm/admin.py
 from django.contrib import admin
 from .models import Inquiry
+from import_export.admin import ImportExportModelAdmin
 
-class InquiryAdmin(admin.ModelAdmin):
+
+class InquiryAdmin(ImportExportModelAdmin):
     list_display = ('id', 'property', 'name', 'email', 'phone', 'inquiry_date', 'is_contacted')
     list_display_links = ('id', 'property')
     list_editable = ('is_contacted',) # Admin se direct status change kar saken

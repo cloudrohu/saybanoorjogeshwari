@@ -1,10 +1,12 @@
 from django.contrib import admin
 from .models import AdditionalInfoResponse, ConfigurationResponse,BrochureLead,MetaLead
 # Register your models here.
+from import_export.admin import ImportExportModelAdmin
+
 
 
 @admin.register(AdditionalInfoResponse)
-class AdditionalInfoResponseAdmin(admin.ModelAdmin):
+class AdditionalInfoResponseAdmin(ImportExportModelAdmin):
     list_display = (
         "type",
         "name",
@@ -27,7 +29,7 @@ class AdditionalInfoResponseAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
 
 @admin.register(ConfigurationResponse)
-class ConfigurationResponseAdmin(admin.ModelAdmin):
+class ConfigurationResponseAdmin(ImportExportModelAdmin):
     list_display = (
         "configuration",
         "name",
@@ -42,12 +44,12 @@ class ConfigurationResponseAdmin(admin.ModelAdmin):
 
 
 @admin.register(BrochureLead)
-class BrochureLeadAdmin(admin.ModelAdmin):
+class BrochureLeadAdmin(ImportExportModelAdmin):
     list_display = ("name", "email", "mobile", "project", "created_at")
     search_fields = ("name", "email", "mobile")
 
 @admin.register(MetaLead)
-class MetaLeadAdmin(admin.ModelAdmin):
+class MetaLeadAdmin(ImportExportModelAdmin):
     list_display = ("full_name", "phone_number", "email", "configuration", "budget", "visit_plan", "created_at")
     search_fields = ("full_name", "phone_number", "email", "leadgen_id")
     list_filter = ("configuration", "visit_plan", "created_at")    
